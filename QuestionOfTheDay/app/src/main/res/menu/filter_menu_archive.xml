@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_java"
+        android:orderInCategory="100"
+        android:title="Java"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_cpp"
+        android:orderInCategory="100"
+        android:title="CPP"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_python"
+        android:orderInCategory="100"
+        android:title="Python"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_android"
+        android:orderInCategory="100"
+        android:title="Android"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_javascript"
+        android:orderInCategory="100"
+        android:title="Java Script"
+        app:showAsAction="never" />
+
+</menu>

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.piyush0.questionoftheday.MainActivity;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.dummy_utils.Topics;
@@ -27,13 +29,17 @@ import java.util.ArrayList;
  */
 public class ArchiveFragment extends Fragment {
 
+
     public static final String TAG = "Archive Fragment";
-    Spinner filter;
     RecyclerView recyclerView;
-    String selectedFilter;
     ArrayList<Question> questions;
+    public String filterSelected;
+    ArchiveAdapter archiveAdapter;
+
 
     static Context context;
+
+
 
     public ArchiveFragment() {
         // Required empty public constructor
@@ -51,66 +57,41 @@ public class ArchiveFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         questions = DummyQuestion.getDummyQuestions();
-        initViews(view);
-        initSpinnerAdapter();
-        initRecyclerView(view);
-        return view;
-    }
 
-    public void initViews(View view) {
-        filter = (Spinner) view.findViewById(R.id.fragment_archive_filter_spinner);
-
-    }
-
-    public void initRecyclerView(View view){
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_archive_list_questions);
-        recyclerView.setAdapter(new ArchiveAdapter());
-        recyclerView.setLayoutManager(new LinearLayoutManager(ArchiveFragment.context));
-    }
-
-    public void initSpinnerAdapter() {
-
-        ArrayAdapter<String> topicsAdapter = new ArrayAdapter<String>(ArchiveFragment.context,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                Topics.getTopics());
-        topicsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        filter.setAdapter(topicsAdapter);
-        filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        MainActivity.setOnItemSelected(new MainActivity.OnItemSelected() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedFilter = adapterView.getSelectedItem().toString();
-//
-//
-//                Log.d(TAG, "onItemSelected: " + questions.size());
-//                ArrayList<Question> dummyQues = DummyQuestion.getDummyQuestions();
-//                for (int j = 0; j < dummyQues.size(); j++) {
-//                    ArrayList<String> dummyTags = dummyQues.get(j).getTags();
-//                    boolean toAdd = false;
-//                    for (int k = 0; k < dummyTags.size(); k++) {
-//                        if (dummyTags.get(k).equals(selectedFilter)) {
-//                            toAdd = true;
-//                            break;
-//                        }
-//                    }
-//                    if (toAdd) {
-//                        questions.add(dummyQues.get(j));
-//                    }
-//                }
-//
-//                Log.d(TAG, "onItemSelected: " + selectedFilter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void filterChosen(String filter) {
+                filterSelected = filter;
+                getQuestion(filterSelected);
 
             }
         });
 
+
+        initRecyclerView(view);
+        return view;
     }
+
+    public void getQuestion(String filter){
+        //TODO: get questions from filter.
+
+        archiveAdapter.notifyDataSetChanged();
+
+    }
+
+
+    public void initRecyclerView(View view){
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_archive_list_questions);
+        archiveAdapter = new ArchiveAdapter() ;
+
+        recyclerView.setAdapter(archiveAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ArchiveFragment.context));
+    }
+
+
 
     public class ArchiveViewHolder extends RecyclerView.ViewHolder{
 

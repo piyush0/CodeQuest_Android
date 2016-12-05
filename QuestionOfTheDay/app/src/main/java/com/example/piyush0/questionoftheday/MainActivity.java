@@ -22,6 +22,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static FragmentManager fragmentManager;
+    private OnFragmentChangedListener ofcl;
+    private static OnItemSelected onItemSelected;
+
+    public void setOnFragmentChangedListener(OnFragmentChangedListener var){
+        this.ofcl = var;
+    }
+
+    public static void setOnItemSelected(MainActivity.OnItemSelected var){
+        MainActivity.onItemSelected = var;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +80,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
+        setOnFragmentChangedListener(new OnFragmentChangedListener() {
+            @Override
+            public void fragmentStatus(int id) {
+                if(id == R.id.nav_archive){
+                    menu.clear();
+                    getMenuInflater().inflate(R.menu.filter_menu_archive,menu);
+                }
+                else{
+                    menu.clear();
+                    getMenuInflater().inflate(R.menu.main, menu);
+                }
+            }
+        });
+
         return true;
     }
 
@@ -88,6 +112,23 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        if(id == R.id.action_java){
+            this.onItemSelected.filterChosen("Java");
+        }
+        if(id == R.id.action_cpp){
+            this.onItemSelected.filterChosen("Cpp");
+        }
+        if(id == R.id.action_android){
+            this.onItemSelected.filterChosen("Android");
+        }
+        if(id == R.id.action_javascript){
+            this.onItemSelected.filterChosen("JavaScript");
+        }
+        if(id == R.id.action_python){
+            this.onItemSelected.filterChosen("Python");
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -98,15 +139,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_today) {
+            ofcl.fragmentStatus(R.id.nav_today);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             TodayQuestionFragment.newInstance(MainActivity.this)).commit();
         } else if (id == R.id.nav_challenge) {
+            ofcl.fragmentStatus(R.id.nav_challenge);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             ChallengeFragment.newInstance(MainActivity.this)).commit();
 
         } else if (id == R.id.nav_archive) {
+            ofcl.fragmentStatus(R.id.nav_archive);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             ArchiveFragment.newInstance(MainActivity.this)).commit();
@@ -116,5 +160,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public interface OnFragmentChangedListener {
+        void fragmentStatus(int id);
+    }
+
+    public interface OnItemSelected{
+        void filterChosen(String filter);
     }
 }
