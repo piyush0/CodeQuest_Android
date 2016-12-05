@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     ArrayList<User> users;
     String selectedTopic;
     Integer numOfQuestionsSelected;
+    Button btn_challenge;
+    ArrayList<String> usersChallenged;
 
     public static final String TAG = "ListOfUsersActivity";
 
@@ -30,8 +34,34 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_users);
-
+        usersChallenged = new ArrayList<>();
         init();
+
+
+
+
+
+
+        btn_challenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for(int i = 0 ; i<users.size(); i++){
+                    View cv = recyclerView.getChildAt(i);
+                    CheckBox cCheckBox = (CheckBox) cv.findViewById(R.id.list_item_user_challenge_checkbox);
+                    TextView tvName = (TextView) cv.findViewById(R.id.user_list_tv_name);
+                    if(cCheckBox.isChecked()){
+                        usersChallenged.add(tvName.getText().toString());
+                    }
+                }
+
+                Intent intent = new Intent(ListOfUsersChallengeActivity.this,WaitingForApprovalActivity.class);
+                intent.putExtra("selectedTopic",selectedTopic);
+                intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);
+                intent.putExtra("usersChallenged",usersChallenged);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -40,13 +70,16 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         selectedTopic = intent.getStringExtra("selectedTopic");
         numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0); // 0 is default value.
         users = Users.getUsers();
+        btn_challenge = (Button) findViewById(R.id.btn_challenge);
         recyclerView = (RecyclerView) findViewById(R.id.activity_challenge_list_of_users);
         recyclerView.setAdapter(new UserAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
-
+        CheckBox checkBox;
         ImageView user_image;
         TextView tv_name;
         TextView tv_score;
@@ -69,17 +102,13 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
             convertView = li.inflate(R.layout.list_item_user, null);
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO: Send push notification to opponent. Start Waiting Activity.
-                }
-            });
+
 
             UserViewHolder userViewHolder = new UserViewHolder(convertView);
             userViewHolder.tv_name = (TextView) convertView.findViewById(R.id.user_list_tv_name);
             userViewHolder.tv_score = (TextView) convertView.findViewById(R.id.user_list_tv_score);
             userViewHolder.user_image = (ImageView) convertView.findViewById(R.id.user_list_iv_userimage);
+            userViewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
 
             return userViewHolder;
         }
@@ -100,6 +129,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+
+            Log.d(TAG, "getItemCount: " + users.size());
             return users.size();
         }
     }
