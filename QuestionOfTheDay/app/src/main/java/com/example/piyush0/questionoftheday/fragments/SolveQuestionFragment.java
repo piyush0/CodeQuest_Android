@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,7 @@ import com.example.piyush0.questionoftheday.models.Question;
  * A simple {@link Fragment} subclass.
  */
 public class SolveQuestionFragment extends Fragment {
-
+    public static final String TAG = "SolveQuesFrag";
 
     TextView tv_quesStatement;
     RecyclerView recyclerViewOptions;
@@ -81,6 +83,7 @@ public class SolveQuestionFragment extends Fragment {
 
         return view;
     }
+
 
     public void initViews(View view){
         context = getActivity().getBaseContext();

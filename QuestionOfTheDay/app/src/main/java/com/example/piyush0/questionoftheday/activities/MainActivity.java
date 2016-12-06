@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -29,9 +30,9 @@ import com.example.piyush0.questionoftheday.utils.FontsOverride;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TAG = "MainAct";
 
-
-
+    public Menu menu;
     public FragmentManager fragmentManager;
     private OnFragmentChangedListener ofcl;
     private static OnItemSelected onItemSelected;
@@ -89,7 +90,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
+        Log.d(TAG, "onCreateOptionsMenu: " + "MENU CHECKER");
+        this.menu = menu;
         setOnFragmentChangedListener(new OnFragmentChangedListener() {
             @Override
             public void fragmentStatus(int id) {

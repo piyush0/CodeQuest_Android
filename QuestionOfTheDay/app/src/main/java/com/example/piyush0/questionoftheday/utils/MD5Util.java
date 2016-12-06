@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
  * Created by piyush0 on 06/12/16.
  */
 
+//This is required for adding gravatar support.
+
 public class MD5Util {
     public static String hex(byte[] array) {
         StringBuffer sb = new StringBuffer();

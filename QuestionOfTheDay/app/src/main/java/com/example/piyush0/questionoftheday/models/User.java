@@ -20,16 +20,17 @@ public class User {
     Integer score;
 
     public User(String name, Integer score) {
-        this.gravatarSupport();
+
         this.name = name;
         this.score = score;
     }
 
-    public User(String email, String image_url, String name) {
-        this.gravatarSupport();
-        this.email = email;
-        this.image_url = image_url;
+    public User(String name, Integer score, String email) {
+
         this.name = name;
+        this.score = score;
+        this.email = email;
+        this.gravatarSupport();
     }
 
     public Integer getScore() {
