@@ -9,25 +9,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.piyush0.questionoftheday.GameActivity">
+    tools:context="com.example.piyush0.questionoftheday.activities.GameActivity">
 
-
-    <TextView
-        android:id="@+id/activity_game_tv_ques"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What is Java?" />
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/activity_game_list_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/activity_game_btn_next"
+        <TextView
+            android:paddingLeft="10dp"
+            android:text="00:"
+            android:id="@+id/activity_game_clock_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="00"
+            android:id="@+id/activity_game_clock_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <fragment
+        android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next" />
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

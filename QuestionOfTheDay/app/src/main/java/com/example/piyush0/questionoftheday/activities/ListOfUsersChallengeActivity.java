@@ -1,4 +1,4 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +14,10 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.Users;
 import com.example.piyush0.questionoftheday.models.User;
+import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_users);
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
         usersChallenged = new ArrayList<>();
         init();
 

@@ -4,22 +4,17 @@ package com.example.piyush0.questionoftheday.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.piyush0.questionoftheday.MainActivity;
+import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
-import com.example.piyush0.questionoftheday.dummy_utils.Topics;
 import com.example.piyush0.questionoftheday.models.Question;
 
 import java.util.ArrayList;
@@ -37,17 +32,16 @@ public class ArchiveFragment extends Fragment {
     ArchiveAdapter archiveAdapter;
 
 
-    static Context context;
-
+    Context context;
 
 
     public ArchiveFragment() {
         // Required empty public constructor
     }
 
-    public static ArchiveFragment newInstance(Context context) {
+    public static ArchiveFragment newInstance() {
         ArchiveFragment fragment = new ArchiveFragment();
-        ArchiveFragment.context = context;
+
         return fragment;
     }
 
@@ -56,7 +50,7 @@ public class ArchiveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        context = getActivity().getBaseContext();
 
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         questions = DummyQuestion.getDummyQuestions();
@@ -75,7 +69,7 @@ public class ArchiveFragment extends Fragment {
         return view;
     }
 
-    public void getQuestion(String filter){
+    public void getQuestion(String filter) {
         //TODO: get questions from filter.
 
         archiveAdapter.notifyDataSetChanged();
@@ -83,25 +77,25 @@ public class ArchiveFragment extends Fragment {
     }
 
 
-    public void initRecyclerView(View view){
+    public void initRecyclerView(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_archive_list_questions);
-        archiveAdapter = new ArchiveAdapter() ;
+        archiveAdapter = new ArchiveAdapter();
 
         recyclerView.setAdapter(archiveAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ArchiveFragment.context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
 
-
-    public class ArchiveViewHolder extends RecyclerView.ViewHolder{
+    public class ArchiveViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_question_statement;
+
         public ArchiveViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveViewHolder>{
+    public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveViewHolder> {
 
         public ArchiveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -113,13 +107,21 @@ public class ArchiveFragment extends Fragment {
             return archiveViewHolder;
         }
 
-        public void onBindViewHolder(ArchiveViewHolder holder, int position) {
+        public void onBindViewHolder(ArchiveViewHolder holder, final int position) {
 
             holder.tv_question_statement.setText(questions.get(position).getStatement());
+
+            holder.tv_question_statement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();
+                }
+            });
         }
 
         public int getItemCount() {
-            Log.d(TAG, "getItemCount: " + questions.size());
+
             return questions.size();
         }
     }

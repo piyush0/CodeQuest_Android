@@ -1,4 +1,4 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
 import com.example.piyush0.questionoftheday.fragments.TodayQuestionFragment;
+import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,17 +39,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.content_main,
-                        TodayQuestionFragment.newInstance(this)).commit();
+                        TodayQuestionFragment.newInstance()).commit();
     }
 
     @Override
@@ -142,18 +137,18 @@ public class MainActivity extends AppCompatActivity
             ofcl.fragmentStatus(R.id.nav_today);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
-                            TodayQuestionFragment.newInstance(MainActivity.this)).commit();
+                            TodayQuestionFragment.newInstance()).commit();
         } else if (id == R.id.nav_challenge) {
             ofcl.fragmentStatus(R.id.nav_challenge);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
-                            ChallengeFragment.newInstance(MainActivity.this)).commit();
+                            ChallengeFragment.newInstance()).commit();
 
         } else if (id == R.id.nav_archive) {
             ofcl.fragmentStatus(R.id.nav_archive);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
-                            ArchiveFragment.newInstance(MainActivity.this)).commit();
+                            ArchiveFragment.newInstance()).commit();
 
         }
 

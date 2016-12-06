@@ -1,7 +1,8 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +16,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
+import com.example.piyush0.questionoftheday.utils.CountUpTimer;
+import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
 
@@ -29,10 +33,17 @@ public class GameActivity extends AppCompatActivity {
     ArrayList<String> usersChallenged;
     ArrayList<Question> questions;
     GameAdapter gameAdapter;
+    CountUpTimer countUpTimer;
 
     TextView tv_quesStatement;
     RecyclerView list_options;
     Button btn_next;
+    TextView tv_clock_minutes;
+    TextView tv_clock_seconds;
+
+    long totalTimeTakenToCompleteInMilis;
+    long startTime;
+    long endTime;
 
     int counter;
     int numCorrect;
@@ -41,7 +52,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
+        startTime = SystemClock.uptimeMillis();
         counter = 0;
         numCorrect = 0;
 
@@ -52,14 +64,8 @@ public class GameActivity extends AppCompatActivity {
         numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0);
         usersChallenged = intent.getStringArrayListExtra("usersChallenged");
 
-        tv_quesStatement = (TextView) findViewById(R.id.activity_game_tv_ques);
-        tv_quesStatement.setText(questions.get(0).getStatement());
-        list_options = (RecyclerView) findViewById(R.id.activity_game_list_options);
-        btn_next = (Button) findViewById(R.id.activity_game_btn_next);
-        gameAdapter = new GameAdapter();
-        list_options.setAdapter(gameAdapter);
-        list_options.setLayoutManager(new LinearLayoutManager(this));
-
+        initViews();
+        setClock();
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +90,10 @@ public class GameActivity extends AppCompatActivity {
                 counter++;
 
                 if (counter == questions.size()) {
-                    Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect, Toast.LENGTH_SHORT).show();
+                    endTime = SystemClock.uptimeMillis();
+                    totalTimeTakenToCompleteInMilis = endTime - startTime;
+                    countUpTimer.stop();
+                    Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + totalTimeTakenToCompleteInMilis, Toast.LENGTH_SHORT).show();
                 } else {
                     tv_quesStatement.setText(questions.get(counter).getStatement());
                     gameAdapter.notifyDataSetChanged();
@@ -96,6 +105,20 @@ public class GameActivity extends AppCompatActivity {
 
     public void getQuestions() {
         questions = DummyQuestion.getDummyQuestions();
+        //TODO: Get Questions based on number of questions.
+    }
+
+    public void initViews() {
+        tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
+        tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
+        tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
+        tv_quesStatement.setText(questions.get(0).getStatement());
+        list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
+        btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
+        btn_next.setText("Next");
+        gameAdapter = new GameAdapter();
+        list_options.setAdapter(gameAdapter);
+        list_options.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public class GameViewHolder extends RecyclerView.ViewHolder {
@@ -134,4 +157,51 @@ public class GameActivity extends AppCompatActivity {
             return questions.get(counter).getOptions().size();
         }
     }
+
+    public void setClock() {
+
+        countUpTimer = new CountUpTimer(1000) {
+            @Override
+            public void onTick(long elapsedTime) {
+
+                TimePair time = beautifyTime(elapsedTime);
+                tv_clock_minutes.setText(String.valueOf(time.getMinutes()) + ": ");
+                tv_clock_seconds.setText(String.valueOf(time.getSeconds()));
+            }
+        };
+        countUpTimer.start();
+    }
+
+    public TimePair beautifyTime(long miliseconds) {
+
+        TimePair timePair = new TimePair();
+        long minutes = (miliseconds / 1000) / 60;
+        long seconds = (miliseconds / 1000) % 60;
+
+        timePair.setMinutes(minutes);
+        timePair.setSeconds(seconds);
+        return timePair;
+    }
+
+    public class TimePair {
+        long minutes;
+        long seconds;
+
+        public long getMinutes() {
+            return minutes;
+        }
+
+        public void setMinutes(long minutes) {
+            this.minutes = minutes;
+        }
+
+        public long getSeconds() {
+            return seconds;
+        }
+
+        public void setSeconds(long seconds) {
+            this.seconds = seconds;
+        }
+    }
+
 }

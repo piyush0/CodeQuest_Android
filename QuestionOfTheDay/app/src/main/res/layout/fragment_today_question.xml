@@ -15,23 +15,10 @@
             android:layout_height="wrap_content"
             android:text="Solve this question to earn a tip" />
 
-        <TextView
-            android:id="@+id/fragment_today_question_tv_statement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="What is x?" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_today_options_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
-        <Button
-            android:id="@+id/fragment_today_btn_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit" />
-
+       <fragment
+           android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <TextView

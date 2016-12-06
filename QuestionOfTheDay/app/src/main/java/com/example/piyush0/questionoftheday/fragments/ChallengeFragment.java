@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.example.piyush0.questionoftheday.ListOfUsersChallengeActivity;
+import com.example.piyush0.questionoftheday.activities.ListOfUsersChallengeActivity;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.NumberOfOptions;
 import com.example.piyush0.questionoftheday.dummy_utils.Topics;
@@ -26,7 +25,7 @@ public class ChallengeFragment extends Fragment {
 
     public static final String TAG = "ChallengeFragment";
 
-    static Context context;
+    Context context;
     Button chooseOpponentButton;
     Spinner topicsSpinner;
     Spinner numOfQuestionSpinner;
@@ -38,9 +37,9 @@ public class ChallengeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ChallengeFragment newInstance(Context context) {
+    public static ChallengeFragment newInstance() {
         ChallengeFragment fragment = new ChallengeFragment();
-        ChallengeFragment.context = context;
+
         return fragment;
     }
 
@@ -49,7 +48,7 @@ public class ChallengeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        context = getActivity().getBaseContext();
         View view = inflater.inflate(R.layout.fragment_challenge, container, false);
         initViews(view);
         initButtonListener();
@@ -69,7 +68,7 @@ public class ChallengeFragment extends Fragment {
     }
 
     public void initTopicAdapter() {
-        ArrayAdapter<String> topicsAdapter = new ArrayAdapter<String>(ChallengeFragment.context,
+        ArrayAdapter<String> topicsAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 Topics.getTopics());
@@ -93,7 +92,7 @@ public class ChallengeFragment extends Fragment {
     }
 
     public void initNumOfQuesAdapter() {
-        ArrayAdapter<Integer> numOfQuesAdapter = new ArrayAdapter<Integer>(ChallengeFragment.context,
+        ArrayAdapter<Integer> numOfQuesAdapter = new ArrayAdapter<Integer>(context,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 NumberOfOptions.getNumberOfOptions());
@@ -121,7 +120,7 @@ public class ChallengeFragment extends Fragment {
         chooseOpponentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChallengeFragment.context, ListOfUsersChallengeActivity.class);
+                Intent intent = new Intent(context, ListOfUsersChallengeActivity.class);
                 intent.putExtra("selectedTopic",selectedTopic);
                 intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);
                 startActivity(intent);

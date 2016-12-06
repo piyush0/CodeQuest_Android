@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class TodayQuestionFragment extends Fragment {
 
-    static Context context;
+    Context context;
 
 
     TextView tv_question;
@@ -48,9 +48,9 @@ public class TodayQuestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static TodayQuestionFragment newInstance(Context context) {
+    public static TodayQuestionFragment newInstance() {
         TodayQuestionFragment fragment = new TodayQuestionFragment();
-        TodayQuestionFragment.context = context;
+
         return fragment;
     }
 
@@ -58,6 +58,8 @@ public class TodayQuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        context = getActivity().getBaseContext();
 
         View view = inflater.inflate(R.layout.fragment_today_question, container, false);
 
@@ -95,11 +97,11 @@ public class TodayQuestionFragment extends Fragment {
     }
 
     public void initViews(View view){
-        tv_question = (TextView) view.findViewById(R.id.fragment_today_question_tv_statement);
-        recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_today_options_list);
+        tv_question = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
+        recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
-        submit = (Button) view.findViewById(R.id.fragment_today_btn_submit);
+        submit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
         linearLayout_MakeDisappear = (LinearLayout) view.findViewById(R.id.fragment_today_question_layout);
         tip = (TextView) view.findViewById(R.id.fragment_today_tip);
         oops = (TextView) view.findViewById(R.id.fragment_today_oops);
@@ -118,33 +120,35 @@ public class TodayQuestionFragment extends Fragment {
         }
     }
 
-    public class OptionAdapter extends RecyclerView.Adapter<OptionViewHolder>{
+    public class OptionAdapter extends RecyclerView.Adapter<TodayQuestionFragment.OptionViewHolder>{
 
         @Override
-        public OptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TodayQuestionFragment.OptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View convertView = li.inflate(R.layout.list_item_today_options, null);
 
-            OptionViewHolder optionViewHolder = new OptionViewHolder(convertView);
+            TodayQuestionFragment.OptionViewHolder optionViewHolder = new TodayQuestionFragment.OptionViewHolder(convertView);
             optionViewHolder.checkbox = (CheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
 
             return optionViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(OptionViewHolder holder, final int position) {
-
+        public void onBindViewHolder(OptionViewHolder holder, int position) {
             holder.checkbox.setChecked(false);
             holder.checkbox.setText(todaysQuestion.getOptions().get(position).getOption_statement());
-
         }
+
+
 
         @Override
         public int getItemCount() {
             return todaysQuestion.getOptions().size();
         }
     }
+
+
 
 }

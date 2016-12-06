@@ -1,10 +1,13 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,7 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_for_approval);
 
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
         Intent intent = getIntent();
         btn_temp = (Button) findViewById(R.id.btn_temporary);
         selectedTopic = intent.getStringExtra("selectedTopic");
