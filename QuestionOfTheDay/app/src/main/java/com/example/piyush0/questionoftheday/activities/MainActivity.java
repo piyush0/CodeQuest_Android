@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,15 +16,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
+import com.example.piyush0.questionoftheday.fragments.MyProfileFragment;
 import com.example.piyush0.questionoftheday.fragments.TodayQuestionFragment;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+
 
     public FragmentManager fragmentManager;
     private OnFragmentChangedListener ofcl;
@@ -54,9 +62,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         init();
 
     }
+
+
 
     public void init() {
         fragmentManager = getSupportFragmentManager();
@@ -88,7 +99,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 else{
                     menu.clear();
-                    getMenuInflater().inflate(R.menu.main, menu);
+                    menu.close();
                 }
             }
         });
@@ -104,11 +115,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_myProfile) {
-            Intent intent = new Intent(this,ProfileActivity.class);
-            startActivity(intent);
-            return true;
-        }
+
 
         if(id == R.id.action_java){
             this.onItemSelected.filterChosen("Java");
@@ -153,6 +160,13 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_main,
                             ArchiveFragment.newInstance()).commit();
 
+        }
+
+        else if(id == R.id.nav_profile){
+            ofcl.fragmentStatus(R.id.nav_profile);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_main,
+                            MyProfileFragment.newInstance()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

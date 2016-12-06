@@ -19,10 +19,13 @@ import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SolveQuestionFragment extends Fragment {
+
+
     TextView tv_quesStatement;
     RecyclerView recyclerViewOptions;
     Button btn_sumbit;

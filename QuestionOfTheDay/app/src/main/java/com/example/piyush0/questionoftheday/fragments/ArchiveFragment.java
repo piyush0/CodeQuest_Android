@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class ArchiveFragment extends Fragment {
 
 
+
     public static final String TAG = "Archive Fragment";
     RecyclerView recyclerView;
     ArrayList<Question> questions;

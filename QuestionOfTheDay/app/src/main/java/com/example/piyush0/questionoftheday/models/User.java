@@ -1,5 +1,10 @@
 package com.example.piyush0.questionoftheday.models;
 
+import com.example.piyush0.questionoftheday.utils.MD5Util;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
@@ -15,8 +20,16 @@ public class User {
     Integer score;
 
     public User(String name, Integer score) {
+        this.gravatarSupport();
         this.name = name;
         this.score = score;
+    }
+
+    public User(String email, String image_url, String name) {
+        this.gravatarSupport();
+        this.email = email;
+        this.image_url = image_url;
+        this.name = name;
     }
 
     public Integer getScore() {
@@ -39,16 +52,13 @@ public class User {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        this.gravatarSupport();
     }
 
     public ArrayList<String> getTags() {
@@ -58,4 +68,13 @@ public class User {
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
+
+    public void gravatarSupport(){
+
+        String hash = MD5Util.md5Hex(email);
+        image_url = "https://www.gravatar.com/avatar/" + hash;
+
+    }
+
+
 }
