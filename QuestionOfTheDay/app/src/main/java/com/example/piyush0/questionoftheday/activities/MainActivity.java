@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity
 
     public Menu menu;
     public FragmentManager fragmentManager;
-    private OnFragmentChangedListener ofcl;
+    public static OnFragmentChangedListener ofcl;
     private static OnItemSelected onItemSelected;
 
-    public void setOnFragmentChangedListener(OnFragmentChangedListener var){
-        this.ofcl = var;
+    public static void setOnFragmentChangedListener(OnFragmentChangedListener var){
+        MainActivity.ofcl = var;
     }
 
     public static void setOnItemSelected(MainActivity.OnItemSelected var){

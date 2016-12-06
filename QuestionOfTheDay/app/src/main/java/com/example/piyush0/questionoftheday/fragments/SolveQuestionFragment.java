@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 
@@ -27,7 +28,7 @@ import com.example.piyush0.questionoftheday.models.Question;
  */
 public class SolveQuestionFragment extends Fragment {
     public static final String TAG = "SolveQuesFrag";
-
+    public static final int SOLVE_QUES_FRAG_ID = 100;
     TextView tv_quesStatement;
     RecyclerView recyclerViewOptions;
     Button btn_sumbit;
@@ -74,7 +75,7 @@ public class SolveQuestionFragment extends Fragment {
                 else{
                     Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
                 }
-
+                MainActivity.ofcl.fragmentStatus(R.id.nav_archive);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_main, ArchiveFragment.newInstance()).commit();
             }

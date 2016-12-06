@@ -117,7 +117,7 @@ public class ArchiveFragment extends Fragment {
             holder.tv_question_statement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    MainActivity.ofcl.fragmentStatus(SolveQuestionFragment.SOLVE_QUES_FRAG_ID);
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();
                 }
