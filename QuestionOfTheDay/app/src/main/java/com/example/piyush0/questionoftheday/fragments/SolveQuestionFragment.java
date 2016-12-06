@@ -75,7 +75,7 @@ public class SolveQuestionFragment extends Fragment {
                 else{
                     Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
                 }
-                MainActivity.ofcl.fragmentStatus(R.id.nav_archive);
+
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_main, ArchiveFragment.newInstance()).commit();
             }

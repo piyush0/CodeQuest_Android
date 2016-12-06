@@ -32,18 +32,9 @@ public class MainActivity extends AppCompatActivity
 
     public static final String TAG = "MainAct";
 
-    public Menu menu;
+
     public FragmentManager fragmentManager;
-    public static OnFragmentChangedListener ofcl;
-    private static OnItemSelected onItemSelected;
 
-    public static void setOnFragmentChangedListener(OnFragmentChangedListener var){
-        MainActivity.ofcl = var;
-    }
-
-    public static void setOnItemSelected(MainActivity.OnItemSelected var){
-        MainActivity.onItemSelected = var;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,57 +78,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        Log.d(TAG, "onCreateOptionsMenu: " + "MENU CHECKER");
-        this.menu = menu;
-        setOnFragmentChangedListener(new OnFragmentChangedListener() {
-            @Override
-            public void fragmentStatus(int id) {
-                if(id == R.id.nav_archive){
-                    menu.clear();
-                    getMenuInflater().inflate(R.menu.filter_menu_archive,menu);
-                }
-                else{
-                    menu.clear();
-                    menu.close();
-                }
-            }
-        });
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-
-        if(id == R.id.action_java){
-            this.onItemSelected.filterChosen("Java");
-        }
-        if(id == R.id.action_cpp){
-            this.onItemSelected.filterChosen("Cpp");
-        }
-        if(id == R.id.action_android){
-            this.onItemSelected.filterChosen("Android");
-        }
-        if(id == R.id.action_javascript){
-            this.onItemSelected.filterChosen("JavaScript");
-        }
-        if(id == R.id.action_python){
-            this.onItemSelected.filterChosen("Python");
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -146,18 +86,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_today) {
-            ofcl.fragmentStatus(R.id.nav_today);
+
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             TodayQuestionFragment.newInstance()).commit();
         } else if (id == R.id.nav_challenge) {
-            ofcl.fragmentStatus(R.id.nav_challenge);
+
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             ChallengeFragment.newInstance()).commit();
 
         } else if (id == R.id.nav_archive) {
-            ofcl.fragmentStatus(R.id.nav_archive);
+
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             ArchiveFragment.newInstance()).commit();
@@ -165,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         else if(id == R.id.nav_profile){
-            ofcl.fragmentStatus(R.id.nav_profile);
+
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             MyProfileFragment.newInstance()).commit();
@@ -176,11 +116,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public interface OnFragmentChangedListener {
-        void fragmentStatus(int id);
-    }
-
-    public interface OnItemSelected{
-        void filterChosen(String filter);
-    }
 }

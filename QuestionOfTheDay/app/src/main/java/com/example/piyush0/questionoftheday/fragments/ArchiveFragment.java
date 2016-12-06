@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -46,25 +48,52 @@ public class ArchiveFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.filter_menu_archive,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+
+        if(id == R.id.action_java){
+            getQuestion("Java");
+        }
+        if(id == R.id.action_cpp){
+            getQuestion("Cpp");
+        }
+        if(id == R.id.action_android){
+            getQuestion("Android");
+        }
+        if(id == R.id.action_javascript){
+            getQuestion("JavaScript");
+        }
+        if(id == R.id.action_python){
+            getQuestion("Python");
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         context = getActivity().getBaseContext();
-
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         questions = DummyQuestion.getDummyQuestions();
         Log.d(TAG, "onCreateView: " + questions.size());
 
-        MainActivity.setOnItemSelected(new MainActivity.OnItemSelected() {
-            @Override
-            public void filterChosen(String filter) {
-                filterSelected = filter;
-                getQuestion(filterSelected);
-
-            }
-        });
 
 
         initRecyclerView(view);
@@ -117,7 +146,8 @@ public class ArchiveFragment extends Fragment {
             holder.tv_question_statement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainActivity.ofcl.fragmentStatus(SolveQuestionFragment.SOLVE_QUES_FRAG_ID);
+
+
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();
                 }
