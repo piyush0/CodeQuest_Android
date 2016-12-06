@@ -1,5 +1,6 @@
 package com.example.piyush0.questionoftheday.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,7 +24,7 @@ import com.example.piyush0.questionoftheday.utils.FontsOverride;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static FragmentManager fragmentManager;
+    public FragmentManager fragmentManager;
     private OnFragmentChangedListener ofcl;
     private static OnItemSelected onItemSelected;
 
@@ -103,7 +104,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_myProfile) {
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
             return true;
         }
 

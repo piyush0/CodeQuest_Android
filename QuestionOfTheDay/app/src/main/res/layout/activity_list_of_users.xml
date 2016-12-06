@@ -11,7 +11,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.piyush0.questionoftheday.activities.ListOfUsersChallengeActivity">
 
+    <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:text="Select users to challenge!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="30dp"
         android:id="@+id/activity_challenge_list_of_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,9 +26,10 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
+        android:layout_marginTop="30dp"
         android:text="Challenge"
         android:id="@+id/btn_challenge"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class ArchiveFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         questions = DummyQuestion.getDummyQuestions();
+        Log.d(TAG, "onCreateView: " + questions.size());
 
         MainActivity.setOnItemSelected(new MainActivity.OnItemSelected() {
             @Override
@@ -71,6 +73,7 @@ public class ArchiveFragment extends Fragment {
 
     public void getQuestion(String filter) {
         //TODO: get questions from filter.
+        Log.d(TAG, "getQuestion: " + filter);
 
         archiveAdapter.notifyDataSetChanged();
 
@@ -114,6 +117,7 @@ public class ArchiveFragment extends Fragment {
             holder.tv_question_statement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();
                 }

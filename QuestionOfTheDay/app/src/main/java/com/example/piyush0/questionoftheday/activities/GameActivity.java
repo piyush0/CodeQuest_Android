@@ -71,6 +71,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
+
                 boolean isCorrectlySolved = true;
                 for (int i = 0; i < questions.get(counter).getOptions().size(); i++) {
                     View cv = list_options.getChildAt(i);
@@ -88,6 +89,10 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 counter++;
+
+                if(counter == questions.size() - 1){
+                    btn_next.setText("Submit");
+                }
 
                 if (counter == questions.size()) {
                     endTime = SystemClock.uptimeMillis();
@@ -165,8 +170,26 @@ public class GameActivity extends AppCompatActivity {
             public void onTick(long elapsedTime) {
 
                 TimePair time = beautifyTime(elapsedTime);
-                tv_clock_minutes.setText(String.valueOf(time.getMinutes()) + ": ");
-                tv_clock_seconds.setText(String.valueOf(time.getSeconds()));
+
+                String minutesString = "";
+                if(time.getMinutes() < 10) {
+                    minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
+                }
+                else{
+                    minutesString = String.valueOf(time.getMinutes()) + ": ";
+                }
+
+                String secondsString = "";
+                if(time.getSeconds() < 10) {
+                    secondsString = "0" + String.valueOf(time.getSeconds());
+                }
+                else{
+                    secondsString = String.valueOf(time.getSeconds());
+                }
+
+
+                tv_clock_minutes.setText(minutesString);
+                tv_clock_seconds.setText(secondsString);
             }
         };
         countUpTimer.start();

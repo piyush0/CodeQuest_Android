@@ -8,52 +8,57 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Make a quiz" />
+        android:layout_gravity="center"
+        android:text="Make a quiz"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Select topic"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select topics" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select no of questions" />
-        </LinearLayout>
-
-        <LinearLayout
+        <Spinner
+            android:layout_marginLeft="30dp"
+            android:id="@+id/challenge_fragment_topic_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"></Spinner>
 
-            <Spinner
-                android:id="@+id/challenge_fragment_topic_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></Spinner>
-
-            <Spinner
-                android:id="@+id/challenge_fragment_noOfQues_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></Spinner>
-
-        </LinearLayout>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select no of questions"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+        <Spinner
+            android:layout_marginLeft="30dp"
+            android:id="@+id/challenge_fragment_noOfQues_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
+
+    </LinearLayout>
+
+
     <Button
         android:id="@+id/challenge_fragment_opponent_button"
-        android:text="Choose opponent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Choose opponent" />
 
 </LinearLayout>

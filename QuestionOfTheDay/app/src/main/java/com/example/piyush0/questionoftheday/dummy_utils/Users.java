@@ -13,11 +13,11 @@ public class Users {
     public static ArrayList<User> getUsers(){
         ArrayList<User> users = new ArrayList<>();
 
-        users.add(new User("Piyush",50));
-        users.add(new User("Aayush",30));
-        users.add(new User("Ram",70));
-        users.add(new User("Akshay",100));
-        users.add(new User("Parth",35));
+        users.add(new User("User1",50));
+        users.add(new User("User2",30));
+        users.add(new User("User3",70));
+        users.add(new User("User4",100));
+        users.add(new User("User5",35));
 
 
         return users;

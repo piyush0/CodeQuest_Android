@@ -24,7 +24,7 @@ public class DummyQuestion {
         tags.add("Java");
         tags.add("CPP");
 
-        Question question = new Question("What is x?",
+        Question question = new Question("What is this?",
                 options,tags);
 
         return question;
@@ -66,6 +66,13 @@ public class DummyQuestion {
         questions.add(question1);
         questions.add(question2);
 
+        Question question3 = new Question("What is 3?", new ArrayList<Option>(), new ArrayList<String>());
+        Question question4 = new Question("What is 4?", new ArrayList<Option>(), new ArrayList<String>());
+        Question question5 = new Question("What is 5?", new ArrayList<Option>(), new ArrayList<String>());
+
+        questions.add(question3);
+        questions.add(question4);
+        questions.add(question5);
         return questions;
 
     }

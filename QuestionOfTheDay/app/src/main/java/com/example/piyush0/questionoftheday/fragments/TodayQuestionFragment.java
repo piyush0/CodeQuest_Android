@@ -34,8 +34,8 @@ public class TodayQuestionFragment extends Fragment {
     RecyclerView recyclerViewOptions;
     Button submit;
     LinearLayout linearLayout_MakeDisappear;
-    TextView tip;
-    TextView oops;
+    LinearLayout tip;
+    LinearLayout oops;
 
     Question todaysQuestion;
 
@@ -103,8 +103,8 @@ public class TodayQuestionFragment extends Fragment {
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
         submit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
         linearLayout_MakeDisappear = (LinearLayout) view.findViewById(R.id.fragment_today_question_layout);
-        tip = (TextView) view.findViewById(R.id.fragment_today_tip);
-        oops = (TextView) view.findViewById(R.id.fragment_today_oops);
+        tip = (LinearLayout) view.findViewById(R.id.fragment_today_tip_layout);
+        oops = (LinearLayout) view.findViewById(R.id.fragment_today_oops_layout);
         tip.setVisibility(View.GONE);
         oops.setVisibility(View.GONE);
 

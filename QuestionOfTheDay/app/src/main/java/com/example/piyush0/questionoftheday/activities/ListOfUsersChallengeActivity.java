@@ -37,13 +37,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_users);
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
-        usersChallenged = new ArrayList<>();
+
         init();
-
-
-
-
-
 
         btn_challenge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +61,12 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        usersChallenged = new ArrayList<>();
     }
 
     public void init() {
@@ -109,6 +110,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
             UserViewHolder userViewHolder = new UserViewHolder(convertView);
             userViewHolder.tv_name = (TextView) convertView.findViewById(R.id.user_list_tv_name);
+
             userViewHolder.tv_score = (TextView) convertView.findViewById(R.id.user_list_tv_score);
             userViewHolder.user_image = (ImageView) convertView.findViewById(R.id.user_list_iv_userimage);
             userViewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
@@ -117,7 +119,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(UserViewHolder holder, int position) {
+        public void onBindViewHolder(final UserViewHolder holder, int position) {
 
 
             User user = users.get(position);
@@ -125,7 +127,12 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             holder.tv_name.setText(user.getName());
             holder.tv_score.setText(String.valueOf(user.getScore()));
             String image_url = user.getImage_url();
-
+            holder.tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.checkBox.setChecked(!holder.checkBox.isChecked());
+                }
+            });
             //TODO: Set image from url using picasso
 
         }

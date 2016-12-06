@@ -4,6 +4,7 @@ package com.example.piyush0.questionoftheday.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
@@ -26,6 +28,9 @@ public class SolveQuestionFragment extends Fragment {
     Button btn_sumbit;
     Context context;
     Question question;
+
+    Boolean isCorrectlySolved;
+
     public SolveQuestionFragment() {
         // Required empty public constructor
     }
@@ -37,11 +42,40 @@ public class SolveQuestionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_solve_question,null);
         initViews(view);
+
+        btn_sumbit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                for(int i = 0 ; i<question.getOptions().size(); i++){
+                    View cv = recyclerViewOptions.getChildAt(i);
+                    CheckBox currentCheckBox = (CheckBox) cv.findViewById(R.id.list_item_option_checkbox);
+                    isCorrectlySolved = true;
+                    if(currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()){
+                        isCorrectlySolved = false;
+                        break;
+                    }
+                }
+
+                if(isCorrectlySolved){
+                    Toast.makeText(context, "Correct", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
+                }
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_main, ArchiveFragment.newInstance()).commit();
+            }
+
+        });
+
         return view;
     }
 
@@ -51,9 +85,10 @@ public class SolveQuestionFragment extends Fragment {
         recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         btn_sumbit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
         question = DummyQuestion.getDummyQuestion();
+        //TODO: Get this from the id.
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
-        //TODO: Get this from the id.
+
         //TODO: Set on click listener to button.
 
     }

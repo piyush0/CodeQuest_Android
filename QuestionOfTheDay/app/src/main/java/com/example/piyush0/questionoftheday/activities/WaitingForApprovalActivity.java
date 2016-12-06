@@ -3,6 +3,7 @@ package com.example.piyush0.questionoftheday.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,6 +19,8 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
     Integer numOfQuestionsSelected;
     ArrayList<String> usersChallenged;
 
+    public static final String TAG = "WaitingForAppAct";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,11 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
         selectedTopic = intent.getStringExtra("selectedTopic");
         numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected",0);
         usersChallenged = intent.getStringArrayListExtra("usersChallenged");
+
+
+        for(int i = 0 ; i< usersChallenged.size() ; i++){
+            Log.d(TAG, "onCreate: " + usersChallenged.get(i));
+        }
 
         btn_temp.setOnClickListener(new View.OnClickListener() {
             @Override
