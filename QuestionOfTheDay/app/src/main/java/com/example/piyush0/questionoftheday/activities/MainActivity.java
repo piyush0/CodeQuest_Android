@@ -1,37 +1,38 @@
 package com.example.piyush0.questionoftheday.activities;
 
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
 import com.example.piyush0.questionoftheday.fragments.MyProfileFragment;
-import com.example.piyush0.questionoftheday.fragments.TodayQuestionFragment;
+import com.example.piyush0.questionoftheday.fragments.OOPSFragment;
+import com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment;
+import com.example.piyush0.questionoftheday.fragments.SolveTodayQuestionFragment;
+import com.example.piyush0.questionoftheday.fragments.TipFragment;
+import com.example.piyush0.questionoftheday.fragments.YouHaveANewQuesFragment;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
+import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "MainAct";
+    public static final String SHARED_PREF_NAME = "TodaySolved";
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     public FragmentManager fragmentManager;
 
@@ -54,18 +55,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         init();
 
     }
 
 
-
     public void init() {
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.content_main,
-                        TodayQuestionFragment.newInstance()).commit();
+        UtilForRefresh.refresh(sharedPreferences,fragmentManager);
     }
 
     @Override
@@ -87,9 +86,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_today) {
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_main,
-                            TodayQuestionFragment.newInstance()).commit();
+            UtilForRefresh.refresh(sharedPreferences,fragmentManager);
+
         } else if (id == R.id.nav_challenge) {
 
             fragmentManager.beginTransaction()
@@ -102,9 +100,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_main,
                             ArchiveFragment.newInstance()).commit();
 
-        }
-
-        else if(id == R.id.nav_profile){
+        } else if (id == R.id.nav_profile) {
 
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
@@ -115,5 +111,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }

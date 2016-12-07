@@ -12,10 +12,10 @@ public class Topics {
         ArrayList<String> topics = new ArrayList<>();
 
         topics.add("Java");
-        topics.add("CPP");
+        topics.add("C++");
         topics.add("Python");
         topics.add("Android");
-        topics.add("Java Script");
+        topics.add("JavaScript");
 
         return topics;
 

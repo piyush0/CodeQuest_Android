@@ -40,7 +40,7 @@
 
     <Button
         android:id="@+id/splash_activity_btn_submit"
-        android:text="Submit"
+        android:text="Log In"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

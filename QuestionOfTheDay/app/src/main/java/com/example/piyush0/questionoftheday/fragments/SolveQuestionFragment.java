@@ -28,7 +28,8 @@ import com.example.piyush0.questionoftheday.models.Question;
  */
 public class SolveQuestionFragment extends Fragment {
     public static final String TAG = "SolveQuesFrag";
-    public static final int SOLVE_QUES_FRAG_ID = 100;
+
+
     TextView tv_quesStatement;
     RecyclerView recyclerViewOptions;
     Button btn_sumbit;
@@ -51,7 +52,7 @@ public class SolveQuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_solve_question,null);
+        View view = inflater.inflate(R.layout.fragment_solve_question, null);
         initViews(view);
 
         btn_sumbit.setOnClickListener(new View.OnClickListener() {
@@ -59,20 +60,19 @@ public class SolveQuestionFragment extends Fragment {
             public void onClick(View view) {
 
 
-                for(int i = 0 ; i<question.getOptions().size(); i++){
+                for (int i = 0; i < question.getOptions().size(); i++) {
                     View cv = recyclerViewOptions.getChildAt(i);
                     CheckBox currentCheckBox = (CheckBox) cv.findViewById(R.id.list_item_option_checkbox);
                     isCorrectlySolved = true;
-                    if(currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()){
+                    if (currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()) {
                         isCorrectlySolved = false;
                         break;
                     }
                 }
 
-                if(isCorrectlySolved){
+                if (isCorrectlySolved) {
                     Toast.makeText(context, "Correct", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
                 }
 
@@ -86,7 +86,7 @@ public class SolveQuestionFragment extends Fragment {
     }
 
 
-    public void initViews(View view){
+    public void initViews(View view) {
         context = getActivity().getBaseContext();
         tv_quesStatement = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
         recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
@@ -100,15 +100,16 @@ public class SolveQuestionFragment extends Fragment {
 
     }
 
-    public class OptionViewHolder extends RecyclerView.ViewHolder{
+    public class OptionViewHolder extends RecyclerView.ViewHolder {
 
         CheckBox checkbox;
+
         public OptionViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class OptionAdapter extends RecyclerView.Adapter<SolveQuestionFragment.OptionViewHolder>{
+    public class OptionAdapter extends RecyclerView.Adapter<SolveQuestionFragment.OptionViewHolder> {
 
         @Override
         public SolveQuestionFragment.OptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -130,13 +131,11 @@ public class SolveQuestionFragment extends Fragment {
         }
 
 
-
         @Override
         public int getItemCount() {
             return question.getOptions().size();
         }
     }
-
 
 
 }

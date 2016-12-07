@@ -20,6 +20,8 @@ import com.example.piyush0.questionoftheday.models.User;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
@@ -30,6 +32,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     Button btn_challenge;
     ArrayList<String> usersChallenged;
 
+
+
     public static final String TAG = "ListOfUsersActivity";
 
     @Override
@@ -39,6 +43,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
         init();
+
+
 
         btn_challenge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +64,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
                 intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);
                 intent.putExtra("usersChallenged",usersChallenged);
                 startActivity(intent);
+                finish();
             }
         });
 

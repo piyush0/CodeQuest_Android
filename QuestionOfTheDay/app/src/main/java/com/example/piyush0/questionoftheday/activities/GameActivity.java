@@ -35,11 +35,9 @@ public class GameActivity extends AppCompatActivity {
     GameAdapter gameAdapter;
     CountUpTimer countUpTimer;
 
-    TextView tv_quesStatement;
+    TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
     RecyclerView list_options;
     Button btn_next;
-    TextView tv_clock_minutes;
-    TextView tv_clock_seconds;
 
     long totalTimeTakenToCompleteInMilis;
     long startTime;
@@ -71,7 +69,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
                 boolean isCorrectlySolved = true;
                 for (int i = 0; i < questions.get(counter).getOptions().size(); i++) {
                     View cv = list_options.getChildAt(i);
@@ -90,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
 
                 counter++;
 
-                if(counter == questions.size() - 1){
+                if (counter == questions.size() - 1) {
                     btn_next.setText("Submit");
                 }
 
@@ -172,18 +169,16 @@ public class GameActivity extends AppCompatActivity {
                 TimePair time = beautifyTime(elapsedTime);
 
                 String minutesString = "";
-                if(time.getMinutes() < 10) {
+                if (time.getMinutes() < 10) {
                     minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
-                }
-                else{
+                } else {
                     minutesString = String.valueOf(time.getMinutes()) + ": ";
                 }
 
                 String secondsString = "";
-                if(time.getSeconds() < 10) {
+                if (time.getSeconds() < 10) {
                     secondsString = "0" + String.valueOf(time.getSeconds());
-                }
-                else{
+                } else {
                     secondsString = String.valueOf(time.getSeconds());
                 }
 

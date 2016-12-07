@@ -25,7 +25,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
         <Spinner
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="100dp"
             android:id="@+id/challenge_fragment_topic_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"></Spinner>

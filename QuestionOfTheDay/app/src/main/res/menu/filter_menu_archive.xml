@@ -9,7 +9,7 @@
     <item
         android:id="@+id/action_cpp"
         android:orderInCategory="100"
-        android:title="CPP"
+        android:title="C++"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_python"
@@ -24,7 +24,7 @@
     <item
         android:id="@+id/action_javascript"
         android:orderInCategory="100"
-        android:title="Java Script"
+        android:title="JavaScript"
         app:showAsAction="never" />
 
 </menu>

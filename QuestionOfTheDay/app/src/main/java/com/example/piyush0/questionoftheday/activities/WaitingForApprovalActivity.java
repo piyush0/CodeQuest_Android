@@ -46,6 +46,7 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
                 intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);
                 intent.putExtra("usersChallenged",usersChallenged);
                 startActivity(intent);
+                finish();
 
             }
         });
