@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.TimeCountingService;
+import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
@@ -38,11 +41,13 @@ public class SolveTodayQuestionFragment extends Fragment {
     Button submit;
     Handler handler;
 
+
     TextView tv_clock_seconds, tv_clock_minutes;
+    TextView tv_attemptsRemaining;
 
     Question todaysQuestion;
     Long timeTaken;
-
+    int attempts;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -50,8 +55,6 @@ public class SolveTodayQuestionFragment extends Fragment {
 
 
     boolean isCorrectlySolved;
-
-
 
 
     public SolveTodayQuestionFragment() {
@@ -75,14 +78,15 @@ public class SolveTodayQuestionFragment extends Fragment {
 
         initViews(view);
 
-
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int attempts = sharedPreferences.getInt("attempts", 0);
+                attempts = sharedPreferences.getInt("attempts", 0);
                 attempts++;
                 editor.putInt("attempts", attempts);
+
+                tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
+
 
                 for (int i = 0; i < todaysQuestion.getOptions().size(); i++) {
                     View cv = recyclerViewOptions.getChildAt(i);
@@ -96,17 +100,19 @@ public class SolveTodayQuestionFragment extends Fragment {
 
 
                 if (isCorrectlySolved) {
+
                     editor.putBoolean("isCorrect", true);
 
                 } else {
+
                     editor.putBoolean("isCorrect", false);
                 }
 
                 editor.commit();
+
                 UtilForRefresh.refresh(sharedPreferences, fragmentManager);
             }
         });
-
 
 
         return view;
@@ -115,18 +121,17 @@ public class SolveTodayQuestionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         stopTimeCountingService();
         editor = sharedPreferences.edit();
         Long zero = 0L;
-        timeTaken = sharedPreferences.getLong("timeForTodayQues",zero);
+        timeTaken = sharedPreferences.getLong("timeForTodayQues", zero);
         handler = new Handler();
         handler.post(runnable);
     }
 
-    public void stopTimeCountingService(){
-        Intent intent = new Intent(getContext(),TimeCountingService.class);
+    public void stopTimeCountingService() {
+        Intent intent = new Intent(getContext(), TimeCountingService.class);
         context.stopService(intent);
     }
 
@@ -135,11 +140,15 @@ public class SolveTodayQuestionFragment extends Fragment {
         tv_question = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
         tv_clock_minutes = (TextView) view.findViewById(R.id.fragment_solve_today_question_minute);
         tv_clock_seconds = (TextView) view.findViewById(R.id.fragment_solve_today_question_second);
+        tv_attemptsRemaining = (TextView) view.findViewById(R.id.fragment_solve_today_question_attempts);
         recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
         submit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
+        sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
+        attempts = sharedPreferences.getInt("attempts", 0);
+        tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
         todaysQuestion = DummyQuestion.getDummyQuestion();
         //TODO: Get appropriate question
 
@@ -204,18 +213,18 @@ public class SolveTodayQuestionFragment extends Fragment {
 
             tv_clock_minutes.setText(minutesString);
             tv_clock_seconds.setText(secondsString);
-            timeTaken = timeTaken+1000;
-            handler.postDelayed(this,1000);
+            timeTaken = timeTaken + 1000;
+            handler.postDelayed(this, 1000);
         }
     };
 
     @Override
     public void onPause() {
-        editor.putLong("timeForTodayQues",timeTaken);
+        editor.putLong("timeForTodayQues", timeTaken);
         editor.commit();
         handler.removeCallbacks(runnable);
         Intent intent = new Intent(getContext(), TimeCountingService.class);
-        intent.putExtra("timeForTodayQues",timeTaken);
+        intent.putExtra("timeForTodayQues", timeTaken);
         context.startService(intent);
         super.onPause();
     }

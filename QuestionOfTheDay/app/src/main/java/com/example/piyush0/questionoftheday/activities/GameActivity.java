@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
@@ -39,6 +40,8 @@ public class GameActivity extends AppCompatActivity {
     TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
     RecyclerView list_options;
     Button btn_next;
+
+
 
     long timeForGame;
     SharedPreferences sharedPreferences;
