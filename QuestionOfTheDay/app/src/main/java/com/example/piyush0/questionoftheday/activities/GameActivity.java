@@ -135,6 +135,7 @@ public class GameActivity extends AppCompatActivity {
 
         handler = new Handler();
         handler.post(runnable);
+        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter",0)).getStatement());
     }
 
     @Override
@@ -195,7 +196,7 @@ public class GameActivity extends AppCompatActivity {
         tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
         tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
         tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
-        tv_quesStatement.setText(questions.get(0).getStatement());
+
         list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
         btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
         btn_next.setText("Next");
@@ -246,8 +247,6 @@ public class GameActivity extends AppCompatActivity {
             return questions.get(counter).getOptions().size();
         }
     }
-
-
 
     public TimePair beautifyTime(long miliseconds) {
 

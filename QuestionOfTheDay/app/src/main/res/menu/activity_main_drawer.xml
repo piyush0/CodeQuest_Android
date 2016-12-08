@@ -4,22 +4,22 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_today"
-
+            android:icon="@drawable/today"
             android:title="Today's Question" />
 
         <item
             android:id="@+id/nav_challenge"
-
-            android:title="Challenge a friend" />
+            android:icon="@drawable/friends"
+            android:title="Challenge friends" />
 
         <item
             android:id="@+id/nav_archive"
-
+            android:icon="@drawable/archive"
             android:title="Archive" />
 
         <item
             android:id="@+id/nav_profile"
-
+            android:icon="@drawable/myprofile"
             android:title="My Profile" />
 
 

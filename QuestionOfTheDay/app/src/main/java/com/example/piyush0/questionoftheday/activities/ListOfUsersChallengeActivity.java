@@ -141,6 +141,12 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
                     holder.checkBox.setChecked(!holder.checkBox.isChecked());
                 }
             });
+            holder.user_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.checkBox.setChecked(!holder.checkBox.isChecked());
+                }
+            });
             //TODO: Set image from url using picasso
 
         }

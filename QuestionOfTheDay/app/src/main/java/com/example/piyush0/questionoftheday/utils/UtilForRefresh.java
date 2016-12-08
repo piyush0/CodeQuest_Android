@@ -70,13 +70,11 @@ public class UtilForRefresh {
 
 
     /*
-
     TODO:
     clear shared prefs ->
     timeForTodaysQues
     isOpened
     attempts
     isCorrect
-
      */
 }
