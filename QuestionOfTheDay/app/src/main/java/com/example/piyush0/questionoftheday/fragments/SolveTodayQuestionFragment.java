@@ -26,6 +26,8 @@ import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
 
+import cn.refactor.library.SmoothCheckBox;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -90,7 +92,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
                 for (int i = 0; i < todaysQuestion.getOptions().size(); i++) {
                     View cv = recyclerViewOptions.getChildAt(i);
-                    CheckBox currentCheckBox = (CheckBox) cv.findViewById(R.id.list_item_option_checkbox);
+                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
                     isCorrectlySolved = true;
                     if (currentCheckBox.isChecked() != todaysQuestion.getOptions().get(i).isCorrect()) {
                         isCorrectlySolved = false;
@@ -156,7 +158,8 @@ public class SolveTodayQuestionFragment extends Fragment {
 
     public class OptionViewHolder extends RecyclerView.ViewHolder {
 
-        CheckBox checkbox;
+        SmoothCheckBox checkbox;
+        TextView textView;
 
         public OptionViewHolder(View itemView) {
             super(itemView);
@@ -173,15 +176,21 @@ public class SolveTodayQuestionFragment extends Fragment {
             View convertView = li.inflate(R.layout.list_item_today_options, null);
 
             SolveTodayQuestionFragment.OptionViewHolder optionViewHolder = new SolveTodayQuestionFragment.OptionViewHolder(convertView);
-            optionViewHolder.checkbox = (CheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
-
+            optionViewHolder.checkbox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
+            optionViewHolder.textView = (TextView) convertView.findViewById(R.id.list_item_option_textView);
             return optionViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(OptionViewHolder holder, int position) {
+        public void onBindViewHolder(final OptionViewHolder holder, int position) {
             holder.checkbox.setChecked(false);
-            holder.checkbox.setText(todaysQuestion.getOptions().get(position).getOption_statement());
+            holder.textView.setText(todaysQuestion.getOptions().get(position).getOption_statement());
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.checkbox.setChecked(!holder.checkbox.isChecked());
+                }
+            });
         }
 
 

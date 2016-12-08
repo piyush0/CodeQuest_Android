@@ -26,6 +26,8 @@ import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
 
+import cn.refactor.library.SmoothCheckBox;
+
 public class GameActivity extends AppCompatActivity {
 
     public static final String TAG = "GameActivity";
@@ -77,7 +79,7 @@ public class GameActivity extends AppCompatActivity {
                 boolean isCorrectlySolved = true;
                 for (int i = 0; i < questions.get(counter).getOptions().size(); i++) {
                     View cv = list_options.getChildAt(i);
-                    CheckBox currentCheckBox = (CheckBox) cv.findViewById(R.id.list_item_option_checkbox);
+                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
                     isCorrectlySolved = true;
                     if (currentCheckBox.isChecked() != questions.get(counter).getOptions().get(i).isCorrect()) {
                         isCorrectlySolved = false;
@@ -204,8 +206,8 @@ public class GameActivity extends AppCompatActivity {
 
     public class GameViewHolder extends RecyclerView.ViewHolder {
 
-        CheckBox option;
-
+        SmoothCheckBox option;
+        TextView textView;
         public GameViewHolder(View itemView) {
             super(itemView);
         }
@@ -220,16 +222,22 @@ public class GameActivity extends AppCompatActivity {
             View view = li.inflate(R.layout.list_item_today_options, null);
 
             GameViewHolder gameViewHolder = new GameViewHolder(view);
-            gameViewHolder.option = (CheckBox) view.findViewById(R.id.list_item_option_checkbox);
-
+            gameViewHolder.option = (SmoothCheckBox) view.findViewById(R.id.list_item_option_checkbox);
+            gameViewHolder.textView = (TextView) view.findViewById(R.id.list_item_option_textView);
             return gameViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(GameViewHolder holder, int position) {
+        public void onBindViewHolder(final GameViewHolder holder, int position) {
             Log.d(TAG, "onBindViewHolder: " + questions.get(counter).getOptions().get(position).getOption_statement());
             holder.option.setChecked(false);
-            holder.option.setText(questions.get(counter).getOptions().get(position).getOption_statement());
+            holder.textView.setText(questions.get(counter).getOptions().get(position).getOption_statement());
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.option.setChecked(!holder.option.isChecked());
+                }
+            });
         }
 
         @Override

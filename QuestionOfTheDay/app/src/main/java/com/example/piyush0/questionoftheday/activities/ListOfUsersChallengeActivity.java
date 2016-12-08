@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import cn.refactor.library.SmoothCheckBox;
+
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -52,7 +54,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
                 for(int i = 0 ; i<users.size(); i++){
                     View cv = recyclerView.getChildAt(i);
-                    CheckBox cCheckBox = (CheckBox) cv.findViewById(R.id.list_item_user_challenge_checkbox);
+                    SmoothCheckBox cCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_user_challenge_checkbox);
                     TextView tvName = (TextView) cv.findViewById(R.id.user_list_tv_name);
                     if(cCheckBox.isChecked()){
                         usersChallenged.add(tvName.getText().toString());
@@ -90,7 +92,8 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkBox;
+//        CheckBox checkBox;
+        SmoothCheckBox checkBox;
         ImageView user_image;
         TextView tv_name;
         TextView tv_score;
@@ -110,9 +113,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
             View convertView = null;
 
-
             convertView = li.inflate(R.layout.list_item_user, null);
-
 
 
             UserViewHolder userViewHolder = new UserViewHolder(convertView);
@@ -120,7 +121,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
             userViewHolder.tv_score = (TextView) convertView.findViewById(R.id.user_list_tv_score);
             userViewHolder.user_image = (ImageView) convertView.findViewById(R.id.user_list_iv_userimage);
-            userViewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
+            userViewHolder.checkBox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
 
             return userViewHolder;
         }

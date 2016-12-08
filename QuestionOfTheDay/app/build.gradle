@@ -37,3 +37,14 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
+
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+dependencies {
+    compile 'com.github.andyxialm:SmoothCheckBox:4d4825562b'
+}
+

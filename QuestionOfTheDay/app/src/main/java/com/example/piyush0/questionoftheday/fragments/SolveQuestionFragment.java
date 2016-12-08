@@ -17,10 +17,13 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
+
+import cn.refactor.library.SmoothCheckBox;
 
 
 /**
@@ -35,6 +38,8 @@ public class SolveQuestionFragment extends Fragment {
     Button btn_sumbit;
     Context context;
     Question question;
+
+//    CircularProgressButton circularProgressButton;
 
     Boolean isCorrectlySolved;
 
@@ -62,7 +67,7 @@ public class SolveQuestionFragment extends Fragment {
 
                 for (int i = 0; i < question.getOptions().size(); i++) {
                     View cv = recyclerViewOptions.getChildAt(i);
-                    CheckBox currentCheckBox = (CheckBox) cv.findViewById(R.id.list_item_option_checkbox);
+                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
                     isCorrectlySolved = true;
                     if (currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()) {
                         isCorrectlySolved = false;
@@ -70,9 +75,12 @@ public class SolveQuestionFragment extends Fragment {
                     }
                 }
 
+
                 if (isCorrectlySolved) {
+
                     Toast.makeText(context, "Correct", Toast.LENGTH_SHORT).show();
                 } else {
+
                     Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
                 }
 
@@ -91,7 +99,9 @@ public class SolveQuestionFragment extends Fragment {
         tv_quesStatement = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
         recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         btn_sumbit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
+
         question = DummyQuestion.getDummyQuestion();
+        tv_quesStatement.setText(question.getStatement());
         //TODO: Get this from the id.
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
@@ -102,7 +112,8 @@ public class SolveQuestionFragment extends Fragment {
 
     public class OptionViewHolder extends RecyclerView.ViewHolder {
 
-        CheckBox checkbox;
+        SmoothCheckBox checkbox;
+        TextView textView;
 
         public OptionViewHolder(View itemView) {
             super(itemView);
@@ -119,15 +130,21 @@ public class SolveQuestionFragment extends Fragment {
             View convertView = li.inflate(R.layout.list_item_today_options, null);
 
             SolveQuestionFragment.OptionViewHolder optionViewHolder = new SolveQuestionFragment.OptionViewHolder(convertView);
-            optionViewHolder.checkbox = (CheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
-
+            optionViewHolder.checkbox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
+            optionViewHolder.textView = (TextView) convertView.findViewById(R.id.list_item_option_textView);
             return optionViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(SolveQuestionFragment.OptionViewHolder holder, int position) {
+        public void onBindViewHolder(final SolveQuestionFragment.OptionViewHolder holder, int position) {
             holder.checkbox.setChecked(false);
-            holder.checkbox.setText(question.getOptions().get(position).getOption_statement());
+            holder.textView.setText(question.getOptions().get(position).getOption_statement());
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.checkbox.setChecked(!holder.checkbox.isChecked());
+                }
+            });
         }
 
 

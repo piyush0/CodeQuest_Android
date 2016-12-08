@@ -12,10 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <CheckBox
+        <!--<CheckBox-->
+            <!--android:id="@+id/list_item_user_challenge_checkbox"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <cn.refactor.library.SmoothCheckBox
+            android:layout_marginTop="10dp"
             android:id="@+id/list_item_user_challenge_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:duration="100"
+            app:color_checked="#000000"
+            app:color_unchecked="#FFFFFF"
+            app:color_unchecked_stroke="@android:color/black"
+            />
 
 
         <ImageView
