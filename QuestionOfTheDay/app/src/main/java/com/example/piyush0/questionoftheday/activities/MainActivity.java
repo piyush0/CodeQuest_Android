@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_filter);
+        toolbar.setOverflowIcon(drawable);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
