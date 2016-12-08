@@ -2,6 +2,7 @@ package com.example.piyush0.questionoftheday.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,17 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
-import com.example.piyush0.questionoftheday.activities.GameActivity;
+import com.example.piyush0.questionoftheday.TimeCountingService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
-import com.example.piyush0.questionoftheday.utils.CountUpTimer;
 import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
-
-import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,15 +36,18 @@ public class SolveTodayQuestionFragment extends Fragment {
     TextView tv_question;
     RecyclerView recyclerViewOptions;
     Button submit;
+    Handler handler;
 
     TextView tv_clock_seconds, tv_clock_minutes;
 
     Question todaysQuestion;
+    Long timeTaken;
 
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     FragmentManager fragmentManager;
+
 
     boolean isCorrectlySolved;
 
@@ -73,10 +73,8 @@ public class SolveTodayQuestionFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_solve_today_question, null);
 
-
         initViews(view);
-        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -109,10 +107,27 @@ public class SolveTodayQuestionFragment extends Fragment {
             }
         });
 
-        //TODO: Remove the callback.
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        stopTimeCountingService();
+        editor = sharedPreferences.edit();
+        Long zero = 0L;
+        timeTaken = sharedPreferences.getLong("timeForTodayQues",zero);
+        handler = new Handler();
+        handler.post(runnable);
+    }
+
+    public void stopTimeCountingService(){
+        Intent intent = new Intent(getContext(),TimeCountingService.class);
+        context.stopService(intent);
     }
 
     public void initViews(View view) {
@@ -167,7 +182,74 @@ public class SolveTodayQuestionFragment extends Fragment {
         }
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
 
+            TimePair time = beautifyTime(timeTaken);
 
+            String minutesString = "";
+            if (time.getMinutes() < 10) {
+                minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
+            } else {
+                minutesString = String.valueOf(time.getMinutes()) + ": ";
+            }
+
+            String secondsString = "";
+            if (time.getSeconds() < 10) {
+                secondsString = "0" + String.valueOf(time.getSeconds());
+            } else {
+                secondsString = String.valueOf(time.getSeconds());
+            }
+
+            tv_clock_minutes.setText(minutesString);
+            tv_clock_seconds.setText(secondsString);
+            timeTaken = timeTaken+1000;
+            handler.postDelayed(this,1000);
+        }
+    };
+
+    @Override
+    public void onPause() {
+        editor.putLong("timeForTodayQues",timeTaken);
+        editor.commit();
+        handler.removeCallbacks(runnable);
+        Intent intent = new Intent(getContext(), TimeCountingService.class);
+        intent.putExtra("timeForTodayQues",timeTaken);
+        context.startService(intent);
+        super.onPause();
+    }
+
+    public TimePair beautifyTime(long miliseconds) {
+
+        TimePair timePair = new TimePair();
+        long minutes = (miliseconds / 1000) / 60;
+        long seconds = (miliseconds / 1000) % 60;
+
+        timePair.setMinutes(minutes);
+        timePair.setSeconds(seconds);
+        return timePair;
+    }
+
+    public class TimePair {
+        long minutes;
+        long seconds;
+
+        public long getMinutes() {
+            return minutes;
+        }
+
+        public void setMinutes(long minutes) {
+            this.minutes = minutes;
+        }
+
+        public long getSeconds() {
+            return seconds;
+        }
+
+        public void setSeconds(long seconds) {
+            this.seconds = seconds;
+        }
+    }
 
 }

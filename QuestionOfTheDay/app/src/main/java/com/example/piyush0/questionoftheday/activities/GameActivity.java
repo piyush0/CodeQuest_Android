@@ -2,7 +2,8 @@ package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
-import com.example.piyush0.questionoftheday.utils.CountUpTimer;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
@@ -33,27 +34,28 @@ public class GameActivity extends AppCompatActivity {
     ArrayList<String> usersChallenged;
     ArrayList<Question> questions;
     GameAdapter gameAdapter;
-    CountUpTimer countUpTimer;
+
 
     TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
     RecyclerView list_options;
     Button btn_next;
 
-    long totalTimeTakenToCompleteInMilis;
-    long startTime;
-    long endTime;
+    long timeForGame;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    Handler handler;
 
     int counter;
     int numCorrect;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
-        startTime = SystemClock.uptimeMillis();
-        counter = 0;
-        numCorrect = 0;
+
+
 
         Intent intent = getIntent();
 
@@ -63,7 +65,7 @@ public class GameActivity extends AppCompatActivity {
         usersChallenged = intent.getStringArrayListExtra("usersChallenged");
 
         initViews();
-        setClock();
+
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,10 +94,18 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 if (counter == questions.size()) {
-                    endTime = SystemClock.uptimeMillis();
-                    totalTimeTakenToCompleteInMilis = endTime - startTime;
-                    countUpTimer.stop();
-                    Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + totalTimeTakenToCompleteInMilis, Toast.LENGTH_SHORT).show();
+
+                    handler.removeCallbacks(runnable);
+                    editor.putLong("timeForGame",0L);
+                    editor.putInt("numOfCorrect",0);
+                    editor.putInt("counter",0);
+                    editor.commit();
+                    Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + timeForGame, Toast.LENGTH_SHORT).show();
+                    timeForGame = 0L;
+                    numCorrect = 0;
+                    counter = 0;
+                    Log.d(TAG, "onClick: " + sharedPreferences.getInt("counter",1000));
+
                 } else {
                     tv_quesStatement.setText(questions.get(counter).getStatement());
                     gameAdapter.notifyDataSetChanged();
@@ -104,6 +114,72 @@ public class GameActivity extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME,MODE_PRIVATE);
+        counter = sharedPreferences.getInt("counter",0);
+        Log.d(TAG, "onResume: " + counter);
+        numCorrect = sharedPreferences.getInt("numOfCorrect",0);
+        Long zero = 0L;
+        timeForGame = sharedPreferences.getLong("timeForGame",zero);
+        stopTimeCountingService();
+        editor = sharedPreferences.edit();
+
+        handler = new Handler();
+        handler.post(runnable);
+    }
+
+    @Override
+    public void onPause() {
+        editor.putLong("timeForGame",timeForGame);
+        editor.putInt("numOfCorrect",numCorrect);
+        editor.putInt("counter",counter);
+        editor.commit();
+
+        Log.d(TAG, "onPause: " + sharedPreferences.getInt("counter",1000));
+        handler.removeCallbacks(runnable);
+        Intent intent = new Intent(this, TimeCountingForGameService.class);
+        intent.putExtra("timeForGame",timeForGame);
+        startService(intent);
+        super.onPause();
+    }
+
+    public void stopTimeCountingService(){
+        Intent intent = new Intent(this,TimeCountingForGameService.class);
+        stopService(intent);
+    }
+
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            TimePair time = beautifyTime(timeForGame);
+
+            String minutesString = "";
+            if (time.getMinutes() < 10) {
+                minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
+            } else {
+                minutesString = String.valueOf(time.getMinutes()) + ": ";
+            }
+
+            String secondsString = "";
+            if (time.getSeconds() < 10) {
+                secondsString = "0" + String.valueOf(time.getSeconds());
+            } else {
+                secondsString = String.valueOf(time.getSeconds());
+            }
+
+            tv_clock_minutes.setText(minutesString);
+            tv_clock_seconds.setText(secondsString);
+            timeForGame = timeForGame+1000;
+            handler.postDelayed(this,1000);
+        }
+    };
+
 
     public void getQuestions() {
         questions = DummyQuestion.getDummyQuestions();
@@ -155,40 +231,12 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            Log.d(TAG, "getItemCount: " + questions.get(counter).getOptions().size());
+
             return questions.get(counter).getOptions().size();
         }
     }
 
-    public void setClock() {
 
-        countUpTimer = new CountUpTimer(1000) {
-            @Override
-            public void onTick(long elapsedTime) {
-
-                TimePair time = beautifyTime(elapsedTime);
-
-                String minutesString = "";
-                if (time.getMinutes() < 10) {
-                    minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
-                } else {
-                    minutesString = String.valueOf(time.getMinutes()) + ": ";
-                }
-
-                String secondsString = "";
-                if (time.getSeconds() < 10) {
-                    secondsString = "0" + String.valueOf(time.getSeconds());
-                } else {
-                    secondsString = String.valueOf(time.getSeconds());
-                }
-
-
-                tv_clock_minutes.setText(minutesString);
-                tv_clock_seconds.setText(secondsString);
-            }
-        };
-        countUpTimer.start();
-    }
 
     public TimePair beautifyTime(long miliseconds) {
 

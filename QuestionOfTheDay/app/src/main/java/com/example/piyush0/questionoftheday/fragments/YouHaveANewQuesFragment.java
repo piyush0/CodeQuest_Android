@@ -47,10 +47,7 @@ public class YouHaveANewQuesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editor.putBoolean("isOpened",true);
-
-
-
-                editor.putInt("timeForTodayQues", 0);
+                editor.putLong("timeForTodayQues", 0);
 
                 editor.commit();
                 getFragmentManager().beginTransaction().replace(R.id.content_main,SolveTodayQuestionFragment.newInstance()).commit();

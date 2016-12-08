@@ -1,6 +1,7 @@
 package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,9 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
     String selectedTopic;
     Integer numOfQuestionsSelected;
     ArrayList<String> usersChallenged;
+    public static final String SHARED_PREF_FOR_GAME = "SharedPrefsForGame";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     public static final String TAG = "WaitingForAppAct";
 
@@ -25,6 +29,9 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_for_approval);
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_FOR_GAME,MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
         Intent intent = getIntent();
@@ -41,6 +48,9 @@ public class WaitingForApprovalActivity extends AppCompatActivity {
         btn_temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editor.putLong("timeForGame",0L);
+                editor.putInt("numOfCorrect",0);
+                editor.commit();
                 Intent intent = new Intent(WaitingForApprovalActivity.this,GameActivity.class);
                 intent.putExtra("selectedTopic",selectedTopic);
                 intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);

@@ -67,4 +67,16 @@ public class UtilForRefresh {
     public static void clearSharedPref(){
         //TODO
     }
+
+
+    /*
+
+    TODO:
+    clear shared prefs ->
+    timeForTodaysQues
+    isOpened
+    attempts
+    isCorrect
+
+     */
 }
