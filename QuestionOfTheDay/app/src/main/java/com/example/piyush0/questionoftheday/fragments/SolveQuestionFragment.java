@@ -7,21 +7,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.piyush0.questionoftheday.R;
-import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
+import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -65,15 +61,7 @@ public class SolveQuestionFragment extends Fragment {
             public void onClick(View view) {
 
 
-                for (int i = 0; i < question.getOptions().size(); i++) {
-                    View cv = recyclerViewOptions.getChildAt(i);
-                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
-                    isCorrectlySolved = true;
-                    if (currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()) {
-                        isCorrectlySolved = false;
-                        break;
-                    }
-                }
+                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions, question);
 
 
                 if (isCorrectlySolved) {

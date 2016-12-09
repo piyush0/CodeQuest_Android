@@ -3,6 +3,7 @@ package com.example.piyush0.questionoftheday.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,11 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.piyush0.questionoftheday.activities.MainActivity;
+import com.example.piyush0.questionoftheday.FilterDialogFragment;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -51,34 +53,39 @@ public class ArchiveFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.filter_menu_archive,menu);
+        inflater.inflate(R.menu.filter_menu_archive, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+
         int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//
+        if (id == R.id.action_filter) {
+            FragmentManager fm = getFragmentManager();
+            FilterDialogFragment filterDiagFrag = new FilterDialogFragment();
+            filterDiagFrag.show(fm, "filter");
+            filterDiagFrag.setOnSubmitListener(new FilterDialogFragment.OnSubmitListener() {
+                @Override
+                public void filtersSelected(ArrayList<String> filters, String selectedSort) {
+                    getQuestion(filters, selectedSort);
+                }
 
-        //noinspection SimplifiableIfStatement
 
+            });
+            return true;
+        }
 
-        if(id == R.id.action_java){
-            getQuestion("Java");
-        }
-        if(id == R.id.action_cpp){
-            getQuestion("Cpp");
-        }
-        if(id == R.id.action_android){
-            getQuestion("Android");
-        }
-        if(id == R.id.action_javascript){
-            getQuestion("JavaScript");
-        }
-        if(id == R.id.action_python){
-            getQuestion("Python");
+        if (id == R.id.action_refersh) {
+            // Refresh the list
         }
 
 
@@ -97,14 +104,14 @@ public class ArchiveFragment extends Fragment {
         Log.d(TAG, "onCreateView: " + questions.size());
 
 
-
         initRecyclerView(view);
         return view;
     }
 
-    public void getQuestion(String filter) {
+    public void getQuestion(ArrayList<String> filter, String selectedSort) {
+        Log.d(TAG, "getQuestion: " + selectedSort);
         //TODO: get questions from filter.
-        Log.d(TAG, "getQuestion: " + filter);
+        Log.d(TAG, "getQuestion: " + filter.size());
 
         archiveAdapter.notifyDataSetChanged();
 

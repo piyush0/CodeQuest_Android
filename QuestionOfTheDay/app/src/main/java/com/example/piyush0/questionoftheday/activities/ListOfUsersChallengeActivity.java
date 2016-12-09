@@ -1,8 +1,8 @@
 package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +19,6 @@ import com.example.piyush0.questionoftheday.models.User;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import cn.refactor.library.SmoothCheckBox;
 

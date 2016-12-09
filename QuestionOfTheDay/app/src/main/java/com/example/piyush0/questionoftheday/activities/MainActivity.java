@@ -1,11 +1,12 @@
 package com.example.piyush0.questionoftheday.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,16 +14,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
 import com.example.piyush0.questionoftheday.fragments.MyProfileFragment;
-import com.example.piyush0.questionoftheday.fragments.OOPSFragment;
-import com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment;
-import com.example.piyush0.questionoftheday.fragments.SolveTodayQuestionFragment;
-import com.example.piyush0.questionoftheday.fragments.TipFragment;
-import com.example.piyush0.questionoftheday.fragments.YouHaveANewQuesFragment;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
 

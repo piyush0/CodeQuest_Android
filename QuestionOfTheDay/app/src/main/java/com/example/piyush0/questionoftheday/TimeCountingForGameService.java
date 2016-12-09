@@ -16,7 +16,6 @@ public class TimeCountingForGameService extends Service {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    public static final String TAG = "GameCounting";
 
     public TimeCountingForGameService() {
     }
@@ -38,7 +37,7 @@ public class TimeCountingForGameService extends Service {
         sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         timeForGame = intent.getLongExtra("timeForGame", 0);
-        Log.d(TAG, "onStartCommand: " + timeForGame);
+
         handler = new Handler();
         handler.post(runnable);
 

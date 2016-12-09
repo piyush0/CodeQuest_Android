@@ -18,6 +18,7 @@ public class Users {
         users.add(new User("User3",70,"453@gmail.com"));
         users.add(new User("User4",100,"dfsv@gmail.com"));
         users.add(new User("User5",35,"asdfv@gmail.com"));
+        users.add(new User("User6",234,"asdfv@gmail.com"));
 
 
         return users;

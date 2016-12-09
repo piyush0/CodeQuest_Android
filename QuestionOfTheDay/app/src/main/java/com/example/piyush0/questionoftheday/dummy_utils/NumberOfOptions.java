@@ -1,8 +1,5 @@
 package com.example.piyush0.questionoftheday.dummy_utils;
 
-import android.content.Intent;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

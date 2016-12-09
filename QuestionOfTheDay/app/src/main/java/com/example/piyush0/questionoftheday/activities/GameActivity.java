@@ -3,9 +3,9 @@ package com.example.piyush0.questionoftheday.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,15 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
+import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import java.util.ArrayList;
@@ -43,8 +42,6 @@ public class GameActivity extends AppCompatActivity {
     RecyclerView list_options;
     Button btn_next;
 
-
-
     long timeForGame;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -61,7 +58,6 @@ public class GameActivity extends AppCompatActivity {
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
 
-
         Intent intent = getIntent();
 
         getQuestions();
@@ -76,16 +72,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                boolean isCorrectlySolved = true;
-                for (int i = 0; i < questions.get(counter).getOptions().size(); i++) {
-                    View cv = list_options.getChildAt(i);
-                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
-                    isCorrectlySolved = true;
-                    if (currentCheckBox.isChecked() != questions.get(counter).getOptions().get(i).isCorrect()) {
-                        isCorrectlySolved = false;
-                        break;
-                    }
-                }
+                boolean isCorrectlySolved = CheckAnswer.isCorrect(list_options, questions.get(counter));
 
 
                 if (isCorrectlySolved) {
@@ -101,15 +88,15 @@ public class GameActivity extends AppCompatActivity {
                 if (counter == questions.size()) {
 
                     handler.removeCallbacks(runnable);
-                    editor.putLong("timeForGame",0L);
-                    editor.putInt("numOfCorrect",0);
-                    editor.putInt("counter",0);
+                    editor.putLong("timeForGame", 0L);
+                    editor.putInt("numOfCorrect", 0);
+                    editor.putInt("counter", 0);
                     editor.commit();
                     Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + timeForGame, Toast.LENGTH_SHORT).show();
                     timeForGame = 0L;
                     numCorrect = 0;
                     counter = 0;
-                    Log.d(TAG, "onClick: " + sharedPreferences.getInt("counter",1000));
+                    Log.d(TAG, "onClick: " + sharedPreferences.getInt("counter", 1000));
 
                 } else {
                     tv_quesStatement.setText(questions.get(counter).getStatement());
@@ -124,37 +111,37 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME,MODE_PRIVATE);
-        counter = sharedPreferences.getInt("counter",0);
+        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
+        counter = sharedPreferences.getInt("counter", 0);
         Log.d(TAG, "onResume: " + counter);
-        numCorrect = sharedPreferences.getInt("numOfCorrect",0);
+        numCorrect = sharedPreferences.getInt("numOfCorrect", 0);
         Long zero = 0L;
-        timeForGame = sharedPreferences.getLong("timeForGame",zero);
+        timeForGame = sharedPreferences.getLong("timeForGame", zero);
         stopTimeCountingService();
         editor = sharedPreferences.edit();
 
         handler = new Handler();
         handler.post(runnable);
-        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter",0)).getStatement());
+        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter", 0)).getStatement());
     }
 
     @Override
     public void onPause() {
-        editor.putLong("timeForGame",timeForGame);
-        editor.putInt("numOfCorrect",numCorrect);
-        editor.putInt("counter",counter);
+        editor.putLong("timeForGame", timeForGame);
+        editor.putInt("numOfCorrect", numCorrect);
+        editor.putInt("counter", counter);
         editor.commit();
 
-        Log.d(TAG, "onPause: " + sharedPreferences.getInt("counter",1000));
+        Log.d(TAG, "onPause: " + sharedPreferences.getInt("counter", 1000));
         handler.removeCallbacks(runnable);
         Intent intent = new Intent(this, TimeCountingForGameService.class);
-        intent.putExtra("timeForGame",timeForGame);
+        intent.putExtra("timeForGame", timeForGame);
         startService(intent);
         super.onPause();
     }
 
-    public void stopTimeCountingService(){
-        Intent intent = new Intent(this,TimeCountingForGameService.class);
+    public void stopTimeCountingService() {
+        Intent intent = new Intent(this, TimeCountingForGameService.class);
         stopService(intent);
     }
 
@@ -181,8 +168,8 @@ public class GameActivity extends AppCompatActivity {
 
             tv_clock_minutes.setText(minutesString);
             tv_clock_seconds.setText(secondsString);
-            timeForGame = timeForGame+1000;
-            handler.postDelayed(this,1000);
+            timeForGame = timeForGame + 1000;
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -209,6 +196,7 @@ public class GameActivity extends AppCompatActivity {
 
         SmoothCheckBox option;
         TextView textView;
+
         public GameViewHolder(View itemView) {
             super(itemView);
         }

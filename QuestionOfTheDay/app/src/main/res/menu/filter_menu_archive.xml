@@ -2,30 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_java"
-        android:orderInCategory="100"
-        android:title="Java"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_cpp"
-        android:orderInCategory="100"
-        android:title="C++"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_python"
-        android:orderInCategory="100"
-        android:title="Python"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_android"
-        android:orderInCategory="100"
-        android:title="Android"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_javascript"
-        android:orderInCategory="100"
-        android:title="JavaScript"
-        app:showAsAction="never" />
-
+    <item android:title="Filter"
+        android:id="@+id/action_filter"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_sort_by_size"></item>
+    <item android:title="Refresh"
+        android:id="@+id/action_refersh"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_rotate"></item>
 </menu>

@@ -10,20 +10,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
-
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.TimeCountingService;
 import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
+import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
 
 import cn.refactor.library.SmoothCheckBox;
@@ -89,16 +87,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
                 tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
 
-
-                for (int i = 0; i < todaysQuestion.getOptions().size(); i++) {
-                    View cv = recyclerViewOptions.getChildAt(i);
-                    SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
-                    isCorrectlySolved = true;
-                    if (currentCheckBox.isChecked() != todaysQuestion.getOptions().get(i).isCorrect()) {
-                        isCorrectlySolved = false;
-                        break;
-                    }
-                }
+                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions,todaysQuestion);
 
 
                 if (isCorrectlySolved) {
