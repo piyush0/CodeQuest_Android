@@ -3,9 +3,9 @@ package com.example.piyush0.questionoftheday.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.piyush0.questionoftheday.FilterDialogFragment;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +31,6 @@ public class ArchiveFragment extends Fragment {
     public static final String TAG = "Archive Fragment";
     RecyclerView recyclerView;
     ArrayList<Question> questions;
-    public String filterSelected;
     ArchiveAdapter archiveAdapter;
 
 
@@ -130,6 +127,7 @@ public class ArchiveFragment extends Fragment {
     public class ArchiveViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_question_statement;
+        CardView cardView;
 
         public ArchiveViewHolder(View itemView) {
             super(itemView);
@@ -144,7 +142,7 @@ public class ArchiveFragment extends Fragment {
 
             ArchiveViewHolder archiveViewHolder = new ArchiveViewHolder(view);
             archiveViewHolder.tv_question_statement = (TextView) view.findViewById(R.id.item_list_archive_question_statement);
-
+            archiveViewHolder.cardView = (CardView) view.findViewById(R.id.item_list_archive_card);
             return archiveViewHolder;
         }
 
@@ -152,10 +150,9 @@ public class ArchiveFragment extends Fragment {
 
             holder.tv_question_statement.setText(questions.get(position).getStatement());
 
-            holder.tv_question_statement.setOnClickListener(new View.OnClickListener() {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-
+                public void onClick(View v) {
 
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();

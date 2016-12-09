@@ -4,44 +4,75 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Choose filter"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Title" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/filter_dialog_recycler_view"
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="30dp" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort By : "
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/filter_dialog_frag_sortBy_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></Spinner>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Choose filter"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Title" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/filter_dialog_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sort By : "
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+                <Spinner
+                    android:id="@+id/filter_dialog_frag_sortBy_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Spinner>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/filter_dialog_frag_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Done" />
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/filter_dialog_frag_submit"
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Done" />
+        android:layout_height="30dp" />
+
+
 </LinearLayout>

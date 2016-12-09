@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -45,29 +46,28 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_filter);
-        toolbar.setOverflowIcon(drawable);
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         init();
+
 
     }
 
 
     public void init() {
         fragmentManager = getSupportFragmentManager();
-        UtilForRefresh.refresh(sharedPreferences,fragmentManager);
+        UtilForRefresh.refresh(sharedPreferences, fragmentManager);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_today) {
 
-            UtilForRefresh.refresh(sharedPreferences,fragmentManager);
+            UtilForRefresh.refresh(sharedPreferences, fragmentManager);
 
         } else if (id == R.id.nav_challenge) {
 
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
 }

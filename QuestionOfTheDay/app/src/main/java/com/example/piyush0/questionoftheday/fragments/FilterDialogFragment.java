@@ -1,4 +1,4 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.fragments;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.Topics;
 
 import java.util.ArrayList;

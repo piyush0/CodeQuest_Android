@@ -1,10 +1,7 @@
 package com.example.piyush0.questionoftheday.models;
 
-import com.example.piyush0.questionoftheday.utils.MD5Util;
+import com.example.piyush0.questionoftheday.utils.MD5Gravatar;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +69,7 @@ public class User {
 
     public void gravatarSupport(){
 
-        String hash = MD5Util.md5Hex(email);
+        String hash = MD5Gravatar.md5Hex(email);
         image_url = "https://www.gravatar.com/avatar/" + hash;
 
     }

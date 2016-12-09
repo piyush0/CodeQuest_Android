@@ -1,23 +1,21 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.piyush0.questionoftheday.activities.MainActivity;
-import com.example.piyush0.questionoftheday.activities.WaitingForApprovalActivity;
 
-public class TimeCountingForGameService extends Service {
-    long timeForGame;
+public class TimeCountingService extends Service {
+
+    long timeTaken;
     Handler handler;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-
-    public TimeCountingForGameService() {
+    public TimeCountingService() {
     }
 
     @Override
@@ -34,10 +32,9 @@ public class TimeCountingForGameService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREF_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        timeForGame = intent.getLongExtra("timeForGame", 0);
-
+        timeTaken = intent.getLongExtra("timeForTodayQues", 0);
         handler = new Handler();
         handler.post(runnable);
 
@@ -49,9 +46,9 @@ public class TimeCountingForGameService extends Service {
         @Override
         public void run() {
 
-            timeForGame = timeForGame + 1000;
+            timeTaken = timeTaken + 1000;
 
-            editor.putLong("timeForGame", timeForGame);
+            editor.putLong("timeForTodayQues", timeTaken);
             editor.commit();
 
             handler.postDelayed(this, 1000);
@@ -60,6 +57,7 @@ public class TimeCountingForGameService extends Service {
 
     @Override
     public void onDestroy() {
+
         handler.removeCallbacks(runnable);
         super.onDestroy();
     }

@@ -1,21 +1,23 @@
-package com.example.piyush0.questionoftheday;
+package com.example.piyush0.questionoftheday.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.piyush0.questionoftheday.activities.MainActivity;
+import com.example.piyush0.questionoftheday.activities.WaitingForApprovalActivity;
 
-public class TimeCountingService extends Service {
-
-    long timeTaken;
+public class TimeCountingForGameService extends Service {
+    long timeForGame;
     Handler handler;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    public TimeCountingService() {
+
+    public TimeCountingForGameService() {
     }
 
     @Override
@@ -32,9 +34,10 @@ public class TimeCountingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREF_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        timeTaken = intent.getLongExtra("timeForTodayQues", 0);
+        timeForGame = intent.getLongExtra("timeForGame", 0);
+
         handler = new Handler();
         handler.post(runnable);
 
@@ -46,9 +49,9 @@ public class TimeCountingService extends Service {
         @Override
         public void run() {
 
-            timeTaken = timeTaken + 1000;
+            timeForGame = timeForGame + 1000;
 
-            editor.putLong("timeForTodayQues", timeTaken);
+            editor.putLong("timeForGame", timeForGame);
             editor.commit();
 
             handler.postDelayed(this, 1000);
@@ -57,7 +60,6 @@ public class TimeCountingService extends Service {
 
     @Override
     public void onDestroy() {
-
         handler.removeCallbacks(runnable);
         super.onDestroy();
     }
