@@ -1,28 +1,23 @@
 package com.example.piyush0.questionoftheday.activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
 import com.example.piyush0.questionoftheday.fragments.MyProfileFragment;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
-import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
+import com.example.piyush0.questionoftheday.utils.Refresh;
 
 
 public class MainActivity extends AppCompatActivity
@@ -67,7 +62,7 @@ public class MainActivity extends AppCompatActivity
 
     public void init() {
         fragmentManager = getSupportFragmentManager();
-        UtilForRefresh.refresh(sharedPreferences, fragmentManager);
+        Refresh.refresh(sharedPreferences, fragmentManager,this);
     }
 
     @Override
@@ -89,7 +84,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_today) {
 
-            UtilForRefresh.refresh(sharedPreferences, fragmentManager);
+            Refresh.refresh(sharedPreferences, fragmentManager,this);
 
         } else if (id == R.id.nav_challenge) {
 

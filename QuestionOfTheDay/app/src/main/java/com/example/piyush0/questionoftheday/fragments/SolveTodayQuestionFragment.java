@@ -22,7 +22,7 @@ import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
-import com.example.piyush0.questionoftheday.utils.UtilForRefresh;
+import com.example.piyush0.questionoftheday.utils.Refresh;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -101,7 +101,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
                 editor.commit();
 
-                UtilForRefresh.refresh(sharedPreferences, fragmentManager);
+                Refresh.refresh(sharedPreferences, fragmentManager, getContext());
             }
         });
 
