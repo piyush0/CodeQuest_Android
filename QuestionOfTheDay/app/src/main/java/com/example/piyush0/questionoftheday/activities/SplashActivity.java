@@ -35,11 +35,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void init(){
-        et_email = (EditText) findViewById(R.id.splash_acitivity_et_email);
-        et_password = (EditText) findViewById(R.id.splash_activity_et_password);
+
         btn_submit = (Button) findViewById(R.id.splash_activity_btn_submit);
-        btn_forgotPass = (Button) findViewById(R.id.splash_activity_btn_forgotPass);
-        btn_signUp = (Button) findViewById(R.id.splash_activity_btn_signUp);
+
 
     }
 }
