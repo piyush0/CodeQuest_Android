@@ -1,22 +1,38 @@
 package com.codingblocks.attendancetracker.models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+
 
 /**
  * Created by piyush0 on 12/12/16.
  */
 
-public class Student {
 
+
+public class Student  {
+    public static final String TAG = "students";
+
+    Integer uniqueId;
     String name;
     String batch;
     String image_url;
 
 
-    public Student(String name, String batch, String image_url) {
+    public Student(Integer uniqueId, String name, String batch, String image_url) {
+        this.uniqueId = uniqueId;
         this.name = name;
         this.batch = batch;
         this.image_url = image_url;
+    }
+
+    public Integer getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(Integer uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public String getName() {
@@ -47,11 +63,11 @@ public class Student {
 
         ArrayList<Student> students = new ArrayList<>();
 
-        students.add(new Student("Piyush","Crux","abcd"));
-        students.add(new Student("Abcd","Pandora","abcd"));
-        students.add(new Student("Efgh","Elixir","abcd"));
-        students.add(new Student("Ijkl","Launchpad","abcd"));
-        students.add(new Student("Mnop","Django","abcd"));
+        for(int i = 0 ; i < 25 ; i++ ) {
+
+            students.add(new Student(i,"user" + i, i+"user", "www"));
+            Log.d(TAG, "getDummyStudents: " + students.get(students.size()-1).getName());
+        }
 
 
         return students;

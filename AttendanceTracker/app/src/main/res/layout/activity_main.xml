@@ -25,6 +25,7 @@
 
 
         <TextView
+
             android:text="Choose a batch : "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -35,32 +36,23 @@
             android:layout_height="wrap_content"></Spinner>
     </LinearLayout>
 
-    <com.andtinder.view.CardContainer
+    <com.daprlabs.cardstack.SwipeFrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/cardContainer"
-        android:layout_width="fill_parent"
-        android:layout_height="300dp" />
+        xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <com.daprlabs.cardstack.SwipeDeck
+            android:id="@+id/swipe_deck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            swipedeck:card_spacing="10dp"
+            swipedeck:max_visible="3"
+            swipedeck:render_above="true"
+            swipedeck:rotation_degrees="15" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:text="Submit"
-            android:id="@+id/btn_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:text="Undo"
-            android:id="@+id/btn_undo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
-
+    </com.daprlabs.cardstack.SwipeFrameLayout>
 
 </LinearLayout>

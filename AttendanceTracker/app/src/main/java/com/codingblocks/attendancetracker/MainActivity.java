@@ -1,14 +1,11 @@
 package com.codingblocks.attendancetracker;
 
-import android.database.DataSetObserver;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,113 +15,70 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.andtinder.model.CardModel;
-import com.andtinder.model.Orientations;
-import com.andtinder.view.CardContainer;
-import com.andtinder.view.CardStackAdapter;
-import com.andtinder.view.SimpleCardStackAdapter;
 import com.codingblocks.attendancetracker.models.Batch;
 import com.codingblocks.attendancetracker.models.Student;
+import com.daprlabs.cardstack.SwipeDeck;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    CardContainer cardContainer;
-    CardStackAdapter customAdapter;
+    SwipeDeck cardStack;
     String selectedBatch;
+    MyAdapter myAdapter;
 
     LinearLayout background;
 
     ArrayList<Student> students;
-    ArrayList<Student> presentStudents;
-    ArrayList<Student> absentStudents;
+
+    ArrayList<Integer> absentIds;
+    ArrayList<Integer> presentIds;
 
     Handler handler;
 
     Spinner spinner;
 
+
     public static final String TAG = "MainAct";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        background = (LinearLayout) findViewById(R.id.activity_main);
-        spinner = (Spinner) findViewById(R.id.spinner_batch);
+        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+
+        initViews();
         initSpinnerAdapter();
+
+        absentIds = new ArrayList<>();
+        presentIds = new ArrayList<>();
 
         handler = new Handler();
 
-        presentStudents = new ArrayList<>();
-        absentStudents = new ArrayList<>();
-
-        cardContainer = (CardContainer) findViewById(R.id.cardContainer);
-        cardContainer.setOrientation(Orientations.Orientation.Disordered);
 
     }
 
-    public void setupCardAdapter() {
-        customAdapter = new CardStackAdapter(this) {
-            @Override
-            protected View getCardView(final int i, CardModel cardModel, View view, ViewGroup viewGroup) {
+    public void initViews() {
 
-                final StudentViewHolder studentViewHolder;
+        background = (LinearLayout) findViewById(R.id.activity_main);
+        spinner = (Spinner) findViewById(R.id.spinner_batch);
 
-                if (view == null) {
-                    view = getLayoutInflater().inflate(R.layout.list_item_students, null);
-                    studentViewHolder = new StudentViewHolder();
-
-                    studentViewHolder.tv_name = (TextView) view.findViewById(R.id.tv_studentName);
-                    studentViewHolder.tv_batch = (TextView) view.findViewById(R.id.tv_batchName);
-                    studentViewHolder.iv_photo = (ImageView) view.findViewById(R.id.iv_studentPhoto);
-
-                    view.setTag(studentViewHolder);
-                } else {
-                    studentViewHolder = (StudentViewHolder) view.getTag();
-                }
-
-
-                studentViewHolder.tv_name.setText(students.get(i).getName());
-                studentViewHolder.tv_batch.setText(students.get(i).getBatch());
-                //TODO: Set photo
-
-                cardModel.setOnCardDimissedListener(new CardModel.OnCardDimissedListener() {
-                    @Override
-                    public void onLike() {
-                        absentStudents.add(students.get(i));
-                        background.setBackgroundColor(Color.RED);
-                        handler.postDelayed(run,200);
-
-                    }
-
-                    @Override
-                    public void onDislike() {
-                        presentStudents.add(students.get(i));
-                        background.setBackgroundColor(Color.GREEN);
-                        handler.postDelayed(run,200);
-                    }
-                });
-
-                return view;
-
-            }
-        };
     }
+
 
     public void initSpinnerAdapter() {
 
         ArrayList<String> batches = Batch.getDummyBatches();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,batches);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, batches);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
@@ -144,24 +98,95 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fetchStudent(String batch) {
-
-        if(batch.equals("Crux")){
-            students = new ArrayList<>();
-        }
-        else {
-            students = Student.getDummyStudents();
-        }
-        setupCardAdapter();
-        addDummyCards();
-        cardContainer.setAdapter(customAdapter);
         //TODO: Get students based on batch
+        students = Student.getDummyStudents();
+        myAdapter = new MyAdapter();
+        cardStack.setAdapter(myAdapter);
+        cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
+            @Override
+            public void cardSwipedLeft(int position) {
+                background.setBackgroundColor(Color.RED);
+                handler.postDelayed(run, 200);
+                absentIds.add(students.get(position).getUniqueId());
+                Log.d(TAG, "cardSwipedLeft: " + students.get(position).getUniqueId());
+            }
+
+            @Override
+            public void cardSwipedRight(int position) {
+                //present
+                background.setBackgroundColor(Color.GREEN);
+                handler.postDelayed(run, 200);
+                presentIds.add(students.get(position).getUniqueId());
+                Log.d(TAG, "cardSwipedRight: " + students.get(position).getUniqueId());
+            }
+
+            @Override
+            public void cardsDepleted() {
+                Intent intent = new Intent(MainActivity.this, ListOfAbsentPresentStudents.class);
+                intent.putExtra("presentIds", presentIds);
+                intent.putExtra("absentIds", absentIds);
+                startActivity(intent);
+            }
+
+            @Override
+            public void cardActionDown() {
+
+            }
+
+            @Override
+            public void cardActionUp() {
+
+            }
+        });
+
+
     }
 
-    public void addDummyCards() {
-        for (int i = 0; i < students.size(); i++) {
-            customAdapter.add(new CardModel("DummyTitle", "DummyDescription", ContextCompat.getDrawable(MainActivity.this,android.R.drawable.btn_star)));
+    public class MyAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return students.size();
+        }
+
+        @Override
+        public Student getItem(int position) {
+            return students.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater li = getLayoutInflater();
+            StudentViewHolder studentViewHolder;
+
+            if (convertView == null) {
+                convertView = li.inflate(R.layout.list_item_students, parent, false);
+                studentViewHolder = new StudentViewHolder();
+                studentViewHolder.tv_batch = (TextView) convertView.findViewById(R.id.tv_batchName);
+                studentViewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_studentName);
+                studentViewHolder.iv_photo = (ImageView) convertView.findViewById(R.id.iv_studentPhoto);
+
+                convertView.setTag(studentViewHolder);
+            } else {
+                studentViewHolder = (StudentViewHolder) convertView.getTag();
+            }
+
+            Student stu = getItem(position);
+            studentViewHolder.tv_name.setText(stu.getName());
+            studentViewHolder.tv_batch.setText(stu.getBatch());
+            //TODO: Set Pic
+
+            return convertView;
+
         }
     }
+
 
     private Runnable run = new Runnable() {
         @Override
@@ -175,8 +200,5 @@ public class MainActivity extends AppCompatActivity {
         TextView tv_batch;
         ImageView iv_photo;
     }
-
-
-
 
 }
