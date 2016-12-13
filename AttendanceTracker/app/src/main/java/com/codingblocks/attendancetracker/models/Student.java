@@ -63,7 +63,7 @@ public class Student  {
 
         ArrayList<Student> students = new ArrayList<>();
 
-        for(int i = 0 ; i < 25 ; i++ ) {
+        for(int i = 0 ; i < 20 ; i++ ) {
 
             students.add(new Student(i,"user" + i, i+"user", "www"));
             Log.d(TAG, "getDummyStudents: " + students.get(students.size()-1).getName());

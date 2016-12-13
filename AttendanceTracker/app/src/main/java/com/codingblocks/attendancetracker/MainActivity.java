@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         students = Student.getDummyStudents();
         myAdapter = new MyAdapter();
         cardStack.setAdapter(myAdapter);
+        setupEventListener();
+
+
+    }
+
+    public void setupEventListener() {
+
+
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
@@ -138,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public class MyAdapter extends BaseAdapter {

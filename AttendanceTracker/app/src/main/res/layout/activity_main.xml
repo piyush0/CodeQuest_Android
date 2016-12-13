@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-
         <TextView
 
             android:text="Choose a batch : "
@@ -51,7 +50,10 @@
             swipedeck:card_spacing="10dp"
             swipedeck:max_visible="3"
             swipedeck:render_above="true"
-            swipedeck:rotation_degrees="15" />
+            swipedeck:rotation_degrees="30"
+
+
+            />
 
     </com.daprlabs.cardstack.SwipeFrameLayout>
 
