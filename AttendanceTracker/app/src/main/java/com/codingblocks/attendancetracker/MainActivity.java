@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         presentIds = new ArrayList<>();
 
         handler = new Handler();
-
-
     }
 
     public void initViews() {
@@ -103,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new MyAdapter();
         cardStack.setAdapter(myAdapter);
         setupEventListener();
-
-
     }
 
     public void setupEventListener() {
@@ -130,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void cardsDepleted() {
-                Intent intent = new Intent(MainActivity.this, ListOfAbsentPresentStudents.class);
+                Intent intent = new Intent(MainActivity.this, ListOfAbsentPresentStudentsActivity.class);
                 intent.putExtra("presentIds", presentIds);
                 intent.putExtra("absentIds", absentIds);
                 startActivity(intent);

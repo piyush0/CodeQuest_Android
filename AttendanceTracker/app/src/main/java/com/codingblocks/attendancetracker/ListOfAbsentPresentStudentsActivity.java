@@ -15,7 +15,7 @@ import com.codingblocks.attendancetracker.models.Student;
 
 import java.util.ArrayList;
 
-public class ListOfAbsentPresentStudents extends AppCompatActivity {
+public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
 
     Button submitBtn;
 
@@ -71,7 +71,7 @@ public class ListOfAbsentPresentStudents extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Save attendance online.
-                Toast.makeText(ListOfAbsentPresentStudents.this, "Today's Attendance is saved.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListOfAbsentPresentStudentsActivity.this, "Today's Attendance is saved.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,7 +146,6 @@ public class ListOfAbsentPresentStudents extends AppCompatActivity {
                 public void onClick(View v) {
                     presentStudents.add(absentStudents.get(position));
                     absentStudents.remove(absentStudents.get(position));
-
 
                     presentAdapter.notifyDataSetChanged();
                     absentAdapter.notifyDataSetChanged();
