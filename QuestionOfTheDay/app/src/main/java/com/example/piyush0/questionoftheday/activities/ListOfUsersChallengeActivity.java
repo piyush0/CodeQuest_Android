@@ -26,25 +26,25 @@ import cn.refactor.library.SmoothCheckBox;
 
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    ArrayList<User> users;
-    String selectedTopic;
-    Integer numOfQuestionsSelected;
-    Button btn_challenge;
-    ArrayList<String> usersChallenged;
+    private RecyclerView usersRecyclerView;
+    private Button btn_challenge;
 
+    private ArrayList<User> users;
+    private String selectedTopic;
+    private Integer numOfQuestionsSelected;
+    private ArrayList<String> usersChallenged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_users);
+
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
         getIntentExtras();
         fetchUsers();
         initViews();
         setListenerToButtonChallenge();
-
     }
 
     private void setListenerToButtonChallenge() {
@@ -52,7 +52,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < users.size(); i++) {
-                    View cv = recyclerView.getChildAt(i);
+                    View cv = usersRecyclerView.getChildAt(i);
                     SmoothCheckBox cCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_user_challenge_checkbox);
                     TextView tvName = (TextView) cv.findViewById(R.id.user_list_tv_name);
                     if (cCheckBox.isChecked()) {
@@ -77,6 +77,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         usersChallenged = new ArrayList<>();
     }
 
@@ -87,9 +88,9 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     private void initViews() {
 
         btn_challenge = (Button) findViewById(R.id.activity_list_of_users_btn_challenege);
-        recyclerView = (RecyclerView) findViewById(R.id.activity_challenge_list_of_users);
-        recyclerView.setAdapter(new UserAdapter());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        usersRecyclerView = (RecyclerView) findViewById(R.id.activity_challenge_list_of_users);
+        usersRecyclerView.setAdapter(new UserAdapter());
+        usersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void getIntentExtras() {
@@ -107,25 +108,21 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
         UserViewHolder(View itemView) {
             super(itemView);
-
         }
     }
 
-    public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
+    private class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
         @Override
         public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater li = getLayoutInflater();
 
-
-            View convertView = null;
-
-            convertView = li.inflate(R.layout.list_item_user, null);
+            View convertView = li.inflate(R.layout.list_item_user, null);
 
 
             UserViewHolder userViewHolder = new UserViewHolder(convertView);
-            userViewHolder.tv_name = (TextView) convertView.findViewById(R.id.user_list_tv_name);
 
+            userViewHolder.tv_name = (TextView) convertView.findViewById(R.id.user_list_tv_name);
             userViewHolder.tv_score = (TextView) convertView.findViewById(R.id.user_list_tv_score);
             userViewHolder.user_image = (ImageView) convertView.findViewById(R.id.user_list_iv_userimage);
             userViewHolder.checkBox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
@@ -136,7 +133,6 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final UserViewHolder holder, int position) {
-
 
             User user = users.get(position);
 
