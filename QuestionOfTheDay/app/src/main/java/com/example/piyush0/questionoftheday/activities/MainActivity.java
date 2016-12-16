@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         initDrawerAndNavigationView();
         initSharedPrefs();
         initFragmentManager();
+
         Refresh.refresh(sharedPreferences, fragmentManager, this);
     }
 

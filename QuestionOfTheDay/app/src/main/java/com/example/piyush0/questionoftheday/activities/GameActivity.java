@@ -60,7 +60,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
-        optionsSelected= InitOptionsSelectedArray.init(optionsSelected);
+        optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
 
         Intent intent = getIntent();
@@ -82,7 +82,6 @@ public class GameActivity extends AppCompatActivity {
 
                 if (isCorrectlySolved) {
                     numCorrect++;
-                    Toast.makeText(GameActivity.this, "Correct", Toast.LENGTH_SHORT).show();
                 }
 
                 counter++;
@@ -146,7 +145,7 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void stopTimeCountingService() {
+    private void stopTimeCountingService() {
         Intent intent = new Intent(this, TimeCountingForGameService.class);
         stopService(intent);
     }
@@ -180,12 +179,12 @@ public class GameActivity extends AppCompatActivity {
     };
 
 
-    public void getQuestions() {
+    private void getQuestions() {
         questions = DummyQuestion.getDummyQuestions();
         //TODO: Get Questions based on number of questions.
     }
 
-    public void initViews() {
+    private void initViews() {
         tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
         tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
         tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
@@ -198,17 +197,17 @@ public class GameActivity extends AppCompatActivity {
         list_options.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public class GameViewHolder extends RecyclerView.ViewHolder {
+    private class GameViewHolder extends RecyclerView.ViewHolder {
 
         SmoothCheckBox option;
         TextView textView;
 
-        public GameViewHolder(View itemView) {
+        GameViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
+    private class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
 
         @Override
         public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -248,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public TimePair beautifyTime(long miliseconds) {
+    private TimePair beautifyTime(long miliseconds) {
 
         TimePair timePair = new TimePair();
         long minutes = (miliseconds / 1000) / 60;
@@ -259,23 +258,23 @@ public class GameActivity extends AppCompatActivity {
         return timePair;
     }
 
-    public class TimePair {
+    private class TimePair {
         long minutes;
         long seconds;
 
-        public long getMinutes() {
+        long getMinutes() {
             return minutes;
         }
 
-        public void setMinutes(long minutes) {
+        void setMinutes(long minutes) {
             this.minutes = minutes;
         }
 
-        public long getSeconds() {
+        long getSeconds() {
             return seconds;
         }
 
-        public void setSeconds(long seconds) {
+        void setSeconds(long seconds) {
             this.seconds = seconds;
         }
     }

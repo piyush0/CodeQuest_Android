@@ -3,10 +3,8 @@ package com.example.piyush0.questionoftheday.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,8 +93,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         LinearLayout outerLayout;
         SmoothCheckBox checkBox;
         ImageView user_image;
-        TextView tv_name;
-        TextView tv_score;
+        TextView tv_name, tv_score;
 
         UserViewHolder(View itemView) {
             super(itemView);
@@ -110,7 +107,6 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             LayoutInflater li = getLayoutInflater();
 
             View convertView = li.inflate(R.layout.list_item_user, null);
-
 
             UserViewHolder userViewHolder = new UserViewHolder(convertView);
 

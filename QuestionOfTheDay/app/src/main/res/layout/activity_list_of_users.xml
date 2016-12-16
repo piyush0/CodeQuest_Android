@@ -18,22 +18,19 @@
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:id="@+id/activity_challenge_list_of_users"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
-
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        
         android:layout_marginTop="30dp"
         android:text="Challenge"
         android:id="@+id/activity_list_of_users_btn_challenege"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:textAppearance="@style/Widget.AppCompat.Button.Colored"
         android:textColor="#000000"
         android:textSize="20sp"
