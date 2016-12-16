@@ -54,34 +54,33 @@ public class Refresh {
             }
 
         } else {
-            if(youHaveInternet(context)){
+            if (youHaveInternet(context)) {
                 clearSharedPref(sharedPreferences);
                 download();
                 sharedPreferences.edit().putBoolean("isDownloaded", true).commit();
-            }
-            else {
+            } else {
                 //TODO: Please connect to the internet
             }
         }
     }
 
-    public static boolean youHaveTheSameQuestion() {
+    private static boolean youHaveTheSameQuestion() {
         //TODO:
         return false;
 
     }
 
-    public static void download() {
+    private static void download() {
         //TODO:
     }
 
-    public static void clearSharedPref(SharedPreferences sharedPreferences) {
+    private static void clearSharedPref(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Long zero = 0L;
-        editor.putLong("timeForTodayQues",zero);
-        editor.putBoolean("isOpened",false);
-        editor.putInt("attempts",0);
-        editor.putBoolean("isCorrect",false);
+        editor.putLong("timeForTodayQues", zero);
+        editor.putBoolean("isOpened", false);
+        editor.putInt("attempts", 0);
+        editor.putBoolean("isCorrect", false);
         editor.commit();
     }
 
@@ -115,22 +114,16 @@ public class Refresh {
 
     }
 
-    public static boolean youHaveAQuestion() {
+    private static boolean youHaveAQuestion() {
         //TODO:
         return true;
     }
 
 
-
     public static boolean youHaveInternet(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
-
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
 
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-
-        return false;
     }
 }

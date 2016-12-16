@@ -30,7 +30,7 @@
         
         android:layout_marginTop="30dp"
         android:text="Challenge"
-        android:id="@+id/btn_challenge"
+        android:id="@+id/activity_list_of_users_btn_challenege"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

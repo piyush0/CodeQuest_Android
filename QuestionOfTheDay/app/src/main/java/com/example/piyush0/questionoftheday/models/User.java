@@ -16,12 +16,6 @@ public class User {
     ArrayList<String> tags;
     Integer score;
 
-    public User(String name, Integer score) {
-
-        this.name = name;
-        this.score = score;
-    }
-
     public User(String name, Integer score, String email) {
 
         this.name = name;

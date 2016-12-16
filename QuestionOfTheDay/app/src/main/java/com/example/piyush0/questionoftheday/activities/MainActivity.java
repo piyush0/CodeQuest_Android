@@ -23,46 +23,51 @@ import com.example.piyush0.questionoftheday.utils.Refresh;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String TAG = "MainAct";
     public static final String SHARED_PREF_NAME = "TodaySolved";
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
-    public FragmentManager fragmentManager;
+    private SharedPreferences sharedPreferences;
+    private FragmentManager fragmentManager;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*This is done in every activity to change the font of the toolbar*/
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initToolbar();
+        initDrawerAndNavigationView();
+        initSharedPrefs();
+        initFragmentManager();
+        Refresh.refresh(sharedPreferences, fragmentManager, this);
+    }
 
+    private void initSharedPrefs() {
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    private void initDrawerAndNavigationView() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        init();
-
-
     }
 
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
 
-    public void init() {
+    private void initFragmentManager() {
         fragmentManager = getSupportFragmentManager();
-        Refresh.refresh(sharedPreferences, fragmentManager,this);
+
     }
 
     @Override
@@ -75,8 +80,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_today) {
 
-            Refresh.refresh(sharedPreferences, fragmentManager,this);
+            Refresh.refresh(sharedPreferences, fragmentManager, this);
 
         } else if (id == R.id.nav_challenge) {
 
