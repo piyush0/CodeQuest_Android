@@ -18,6 +18,9 @@ import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
+import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
+
+import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -35,9 +38,10 @@ public class SolveQuestionFragment extends Fragment {
     Context context;
     Question question;
 
-//    CircularProgressButton circularProgressButton;
 
     Boolean isCorrectlySolved;
+
+    ArrayList<Boolean> optionsSelected;
 
     public SolveQuestionFragment() {
         // Required empty public constructor
@@ -48,6 +52,7 @@ public class SolveQuestionFragment extends Fragment {
 
         return fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -61,8 +66,8 @@ public class SolveQuestionFragment extends Fragment {
             public void onClick(View view) {
 
 
-                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions, question);
-
+//                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions, question);
+                isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, question);
 
                 if (isCorrectlySolved) {
 
@@ -94,6 +99,8 @@ public class SolveQuestionFragment extends Fragment {
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
 
+        optionsSelected= InitOptionsSelectedArray.init(optionsSelected);
+
         //TODO: Set on click listener to button.
 
     }
@@ -124,15 +131,23 @@ public class SolveQuestionFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final SolveQuestionFragment.OptionViewHolder holder, int position) {
+        public void onBindViewHolder(final SolveQuestionFragment.OptionViewHolder holder, final int position) {
             holder.checkbox.setChecked(false);
             holder.textView.setText(question.getOptions().get(position).getOption_statement());
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.checkbox.setChecked(!holder.checkbox.isChecked(), true);
+
+                    if(holder.checkbox.isChecked()) {
+                        optionsSelected.set(holder.getAdapterPosition(), true);
+                    }
+                    else{
+                        optionsSelected.set(holder.getAdapterPosition(), false);
+                    }
                 }
             });
+
         }
 
 

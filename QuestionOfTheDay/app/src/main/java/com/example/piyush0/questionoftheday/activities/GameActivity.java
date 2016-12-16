@@ -22,6 +22,7 @@ import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
+import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
 
 import java.util.ArrayList;
 
@@ -50,12 +51,16 @@ public class GameActivity extends AppCompatActivity {
     int counter;
     int numCorrect;
 
+    ArrayList<Boolean> optionsSelected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
+
+        optionsSelected= InitOptionsSelectedArray.init(optionsSelected);
 
 
         Intent intent = getIntent();
@@ -72,11 +77,12 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                boolean isCorrectlySolved = CheckAnswer.isCorrect(list_options, questions.get(counter));
-
+                boolean isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, questions.get(counter));
+                optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
                 if (isCorrectlySolved) {
                     numCorrect++;
+                    Toast.makeText(GameActivity.this, "Correct", Toast.LENGTH_SHORT).show();
                 }
 
                 counter++;
@@ -225,6 +231,12 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     holder.option.setChecked(!holder.option.isChecked(), true);
+                    if (holder.option.isChecked()) {
+                        optionsSelected.set(holder.getAdapterPosition(), true);
+                    } else {
+                        optionsSelected.set(holder.getAdapterPosition(), false);
+                    }
+
                 }
             });
         }

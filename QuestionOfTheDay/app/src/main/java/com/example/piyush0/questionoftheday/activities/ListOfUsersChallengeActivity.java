@@ -51,14 +51,6 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         btn_challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < users.size(); i++) {
-                    View cv = usersRecyclerView.getChildAt(i);
-                    SmoothCheckBox cCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_user_challenge_checkbox);
-                    TextView tvName = (TextView) cv.findViewById(R.id.user_list_tv_name);
-                    if (cCheckBox.isChecked()) {
-                        usersChallenged.add(tvName.getText().toString());
-                    }
-                }
                 sendIntent();
             }
         });
@@ -143,7 +135,14 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             holder.outerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     holder.checkBox.setChecked(!holder.checkBox.isChecked(), true);
+
+                    if (holder.checkBox.isChecked()) {
+                        usersChallenged.add(holder.tv_name.getText().toString());
+                    } else {
+                        usersChallenged.remove(holder.tv_name.getText().toString());
+                    }
 
                 }
             });

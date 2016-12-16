@@ -22,7 +22,10 @@ import com.example.piyush0.questionoftheday.activities.MainActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
+import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
 import com.example.piyush0.questionoftheday.utils.Refresh;
+
+import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -56,6 +59,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
     boolean isCorrectlySolved;
 
+    ArrayList<Boolean> optionsSelected;
 
     public SolveTodayQuestionFragment() {
         // Required empty public constructor
@@ -77,6 +81,7 @@ public class SolveTodayQuestionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_solve_today_question, null);
 
         initViews(view);
+        optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +92,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
                 tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
 
-                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions,todaysQuestion);
+                isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, todaysQuestion);
 
 
                 if (isCorrectlySolved) {
@@ -150,7 +155,7 @@ public class SolveTodayQuestionFragment extends Fragment {
         SmoothCheckBox checkbox;
         TextView textView;
 
-        public OptionViewHolder(View itemView) {
+        OptionViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -178,6 +183,13 @@ public class SolveTodayQuestionFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     holder.checkbox.setChecked(!holder.checkbox.isChecked(),true);
+
+                    if(holder.checkbox.isChecked()) {
+                        optionsSelected.set(holder.getAdapterPosition(), true);
+                    }
+                    else{
+                        optionsSelected.set(holder.getAdapterPosition(), false);
+                    }
                 }
             });
         }

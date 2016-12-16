@@ -6,6 +6,8 @@ import android.view.View;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.models.Question;
 
+import java.util.ArrayList;
+
 import cn.refactor.library.SmoothCheckBox;
 
 /**
@@ -14,18 +16,18 @@ import cn.refactor.library.SmoothCheckBox;
 
 public class CheckAnswer {
 
-    public static boolean isCorrect(RecyclerView recyclerView, Question question){
-        boolean isCorrectlySolved = true;
-        for (int i = 0; i < question.getOptions().size(); i++) {
-            View cv = recyclerView.getChildAt(i);
-            SmoothCheckBox currentCheckBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_option_checkbox);
-            isCorrectlySolved = true;
-            if (currentCheckBox.isChecked() != question.getOptions().get(i).isCorrect()) {
-                isCorrectlySolved = false;
-                break;
+
+    public static boolean isCorrect(ArrayList<Boolean> optionsSelected, Question question) {
+
+
+        for(int i = 0 ; i< question.getOptions().size(); i++) {
+            if(optionsSelected.get(i) != question.getOptions().get(i).isCorrect()) {
+                return false;
             }
         }
+        return true;
 
-        return isCorrectlySolved;
     }
+
+
 }
