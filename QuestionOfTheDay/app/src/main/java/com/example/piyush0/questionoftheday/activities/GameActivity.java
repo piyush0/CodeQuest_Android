@@ -32,50 +32,47 @@ public class GameActivity extends AppCompatActivity {
 
     public static final String TAG = "GameActivity";
 
-    String selectedTopic;
-    Integer numOfQuestionsSelected;
-    ArrayList<String> usersChallenged;
-    ArrayList<Question> questions;
-    GameAdapter gameAdapter;
+    private String selectedTopic;
+    private Integer numOfQuestionsSelected;
+    private ArrayList<String> usersChallenged;
 
+    private ArrayList<Question> questions;
+    private GameAdapter gameAdapter;
 
-    TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
-    RecyclerView list_options;
-    Button btn_next;
+    private TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
+    private RecyclerView list_options;
+    private Button btn_next;
 
-    long timeForGame;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    Handler handler;
+    private long timeForGame;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private Handler handler;
 
-    int counter;
-    int numCorrect;
+    private int counter;
+    private int numCorrect;
 
-    ArrayList<Boolean> optionsSelected;
+    private ArrayList<Boolean> optionsSelected;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
         optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
-
-        Intent intent = getIntent();
-
         getQuestions();
-        selectedTopic = intent.getStringExtra("selectedTopic");
-        numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0);
-        usersChallenged = intent.getStringArrayListExtra("usersChallenged");
-
+        getIntentExtras();
         initViews();
+        setListenerOnButton();
+    }
 
+    private void setListenerOnButton() {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 boolean isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, questions.get(counter));
                 optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
@@ -90,44 +87,74 @@ public class GameActivity extends AppCompatActivity {
                     btn_next.setText("Submit");
                 }
 
-                if (counter == questions.size()) {
+                if (counter == questions.size()) { /*Game ended*/
 
-                    handler.removeCallbacks(runnable);
-                    editor.putLong("timeForGame", 0L);
-                    editor.putInt("numOfCorrect", 0);
-                    editor.putInt("counter", 0);
-                    editor.commit();
+                    stopClock();
+                    clearGameSharedPrefs();
                     Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + timeForGame, Toast.LENGTH_SHORT).show();
-                    timeForGame = 0L;
-                    numCorrect = 0;
-                    counter = 0;
-                    Log.d(TAG, "onClick: " + sharedPreferences.getInt("counter", 1000));
+                    clearLocalVars();
 
                 } else {
-                    tv_quesStatement.setText(questions.get(counter).getStatement());
-                    gameAdapter.notifyDataSetChanged();
+                    loadNextQuestion();
                 }
             }
         });
+    }
 
+    private void loadNextQuestion() {
+        tv_quesStatement.setText(questions.get(counter).getStatement());
+        gameAdapter.notifyDataSetChanged();
+    }
+
+    private void clearGameSharedPrefs() {
+        editor.putLong("timeForGame", 0L);
+        editor.putInt("numOfCorrect", 0);
+        editor.putInt("counter", 0);
+        editor.commit();
+    }
+
+    private void clearLocalVars() {
+        timeForGame = 0L;
+        numCorrect = 0;
+        counter = 0;
+    }
+
+    private void stopClock() {
+        handler.removeCallbacks(runnable);
+    }
+
+    private void getIntentExtras() {
+        Intent intent = getIntent();
+        selectedTopic = intent.getStringExtra("selectedTopic");
+        numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0);
+        usersChallenged = intent.getStringArrayListExtra("usersChallenged");
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
+
+        getSharedPrefs();
+        stopTimeCountingService();
+        resumeClock();
+
+        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter", 0)).getStatement());
+    }
+
+    private void resumeClock() {
+        handler = new Handler();
+        handler.post(runnable);
+    }
+
+    private void getSharedPrefs() {
         sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         counter = sharedPreferences.getInt("counter", 0);
-        Log.d(TAG, "onResume: " + counter);
         numCorrect = sharedPreferences.getInt("numOfCorrect", 0);
         Long zero = 0L;
         timeForGame = sharedPreferences.getLong("timeForGame", zero);
-        stopTimeCountingService();
-        editor = sharedPreferences.edit();
-
-        handler = new Handler();
-        handler.post(runnable);
-        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter", 0)).getStatement());
     }
 
     @Override
@@ -181,7 +208,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void getQuestions() {
         questions = DummyQuestion.getDummyQuestions();
-        //TODO: Get Questions based on number of questions.
+        //TODO: Get Questions based on number of questions and topic.
     }
 
     private void initViews() {
@@ -190,8 +217,10 @@ public class GameActivity extends AppCompatActivity {
         tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
 
         list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
+
         btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
         btn_next.setText("Next");
+
         gameAdapter = new GameAdapter();
         list_options.setAdapter(gameAdapter);
         list_options.setLayoutManager(new LinearLayoutManager(this));
@@ -235,7 +264,6 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
-
                 }
             });
         }
