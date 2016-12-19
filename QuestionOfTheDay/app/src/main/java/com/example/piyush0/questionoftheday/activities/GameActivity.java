@@ -69,6 +69,26 @@ public class GameActivity extends AppCompatActivity {
         setListenerOnButton();
     }
 
+    private void initViews() {
+        tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
+        tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
+        tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
+
+        list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
+
+        btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
+        btn_next.setText("Next");
+
+        gameAdapter = new GameAdapter();
+        list_options.setAdapter(gameAdapter);
+        list_options.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void getQuestions() {
+        questions = DummyQuestion.getDummyQuestions();
+        //TODO: Get Questions based on number of questions and topic.
+    }
+
     private void setListenerOnButton() {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +159,7 @@ public class GameActivity extends AppCompatActivity {
         stopTimeCountingService();
         resumeClock();
 
+        /* Loading the appropriate question on the textView when the user comes back. */
         tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter", 0)).getStatement());
     }
 
@@ -159,17 +180,28 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
+        saveLocalvarsToSharedPrefs();
+        pauseClock();
+        startTimeCountingService();
+        super.onPause();
+    }
+
+    private void startTimeCountingService() {
+
+        Intent intent = new Intent(this, TimeCountingForGameService.class);
+        intent.putExtra("timeForGame", timeForGame);
+        startService(intent);
+    }
+
+    private void pauseClock() {
+        handler.removeCallbacks(runnable);
+    }
+
+    private void saveLocalvarsToSharedPrefs() {
         editor.putLong("timeForGame", timeForGame);
         editor.putInt("numOfCorrect", numCorrect);
         editor.putInt("counter", counter);
         editor.commit();
-
-        Log.d(TAG, "onPause: " + sharedPreferences.getInt("counter", 1000));
-        handler.removeCallbacks(runnable);
-        Intent intent = new Intent(this, TimeCountingForGameService.class);
-        intent.putExtra("timeForGame", timeForGame);
-        startService(intent);
-        super.onPause();
     }
 
     private void stopTimeCountingService() {
@@ -177,53 +209,42 @@ public class GameActivity extends AppCompatActivity {
         stopService(intent);
     }
 
-
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
 
             TimePair time = beautifyTime(timeForGame);
 
-            String minutesString = "";
-            if (time.getMinutes() < 10) {
-                minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
-            } else {
-                minutesString = String.valueOf(time.getMinutes()) + ": ";
-            }
-
-            String secondsString = "";
-            if (time.getSeconds() < 10) {
-                secondsString = "0" + String.valueOf(time.getSeconds());
-            } else {
-                secondsString = String.valueOf(time.getSeconds());
-            }
-
-            tv_clock_minutes.setText(minutesString);
-            tv_clock_seconds.setText(secondsString);
+            tv_clock_minutes.setText(getMinutesString(time));
+            tv_clock_seconds.setText(getSecondsString(time));
             timeForGame = timeForGame + 1000;
+
             handler.postDelayed(this, 1000);
         }
     };
 
 
-    private void getQuestions() {
-        questions = DummyQuestion.getDummyQuestions();
-        //TODO: Get Questions based on number of questions and topic.
+
+    private String getSecondsString(TimePair time) {
+        String secondsString = "";
+        if (time.getSeconds() < 10) {
+            secondsString = "0" + String.valueOf(time.getSeconds());
+        } else {
+            secondsString = String.valueOf(time.getSeconds());
+        }
+
+        return secondsString;
     }
 
-    private void initViews() {
-        tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
-        tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
-        tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
+    private String getMinutesString(TimePair time) {
+        String minutesString = "";
+        if (time.getMinutes() < 10) {
+            minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
+        } else {
+            minutesString = String.valueOf(time.getMinutes()) + ": ";
+        }
 
-        list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
-
-        btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
-        btn_next.setText("Next");
-
-        gameAdapter = new GameAdapter();
-        list_options.setAdapter(gameAdapter);
-        list_options.setLayoutManager(new LinearLayoutManager(this));
+        return minutesString;
     }
 
     private class GameViewHolder extends RecyclerView.ViewHolder {

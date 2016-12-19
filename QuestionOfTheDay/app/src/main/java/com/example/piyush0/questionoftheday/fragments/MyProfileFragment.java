@@ -55,6 +55,7 @@ public class MyProfileFragment extends Fragment {
         tv_rating.setText("75");
 
         ratingBar = (SimpleRatingBar) view.findViewById(R.id.activity_profile_rating_bar);
+        ratingBar.setIndicator(true); /*This doesn't let the user change his rating*/
         ratingBarInit();
 
 

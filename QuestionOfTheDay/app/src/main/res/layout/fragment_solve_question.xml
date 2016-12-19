@@ -9,7 +9,7 @@
     <TextView
 
         android:id="@+id/fragment_question_tv_statement"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="What is x?"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/fragment_question_btn_submit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Submit"
