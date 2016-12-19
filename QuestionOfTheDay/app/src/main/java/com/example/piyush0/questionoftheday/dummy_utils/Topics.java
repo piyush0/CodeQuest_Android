@@ -19,6 +19,16 @@ public class Topics {
         topics.add("Python");
         topics.add("Android");
         topics.add("JavaScript");
+        topics.add("Java");
+        topics.add("C++");
+        topics.add("Python");
+        topics.add("Android");
+        topics.add("JavaScript");
+        topics.add("Java");
+        topics.add("C++");
+        topics.add("Python");
+        topics.add("Android");
+        topics.add("JavaScript");
 
         return topics;
 

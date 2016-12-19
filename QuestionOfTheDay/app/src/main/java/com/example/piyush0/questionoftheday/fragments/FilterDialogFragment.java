@@ -31,7 +31,7 @@ import cn.refactor.library.SmoothCheckBox;
 public class FilterDialogFragment extends DialogFragment {
 
     private OnSubmitListener onSubmitListener;
-    FragmentManager fragMan;
+    private FragmentManager fragMan;
 
     public static final String DATE_SORT = "Date Added";
     public static final String DIFFICULTY_SORT = "Difficulty";
@@ -46,6 +46,9 @@ public class FilterDialogFragment extends DialogFragment {
     CustomSpinner sortBySpinner;
     String selectedSort;
 
+    ArrayList<Boolean> filtersSelectedBool;
+    ArrayList<String> filtersSelected;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,10 +59,15 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     public void init(View view) {
+        filtersSelectedBool = new ArrayList<>();
+        filtersSelected = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.filter_dialog_recycler_view);
         btn_submit = (Button) view.findViewById(R.id.filter_dialog_frag_submit);
         btn_submit.setEnabled(false);
         topics = Topics.getTopics();
+        for (int i = 0; i < topics.size(); i++) {
+            filtersSelectedBool.add(false);
+        }
         recyclerView.setAdapter(new FilterAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         sortBySpinner = (CustomSpinner) view.findViewById(R.id.filter_dialog_frag_sortBy_spinner);
@@ -69,15 +77,10 @@ public class FilterDialogFragment extends DialogFragment {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> filtersSelected = new ArrayList<String>();
 
                 for (int i = 0; i < topics.size(); i++) {
-                    View cv = recyclerView.getChildAt(i);
-                    SmoothCheckBox checkBox = (SmoothCheckBox) cv.findViewById(R.id.list_item_filter_checkBox);
-
-                    if (checkBox.isChecked()) {
-                        TextView textView = (TextView) cv.findViewById(R.id.list_item_filter_textView);
-                        filtersSelected.add(textView.getText().toString());
+                    if (filtersSelectedBool.get(i)) {
+                        filtersSelected.add(topics.get(i));
                     }
                 }
 
@@ -123,7 +126,7 @@ public class FilterDialogFragment extends DialogFragment {
         SmoothCheckBox checkBox;
         TextView textView;
 
-        public FilterViewHolder(View itemView) {
+        FilterViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -144,13 +147,18 @@ public class FilterDialogFragment extends DialogFragment {
         }
 
         @Override
-        public void onBindViewHolder(final FilterViewHolder holder, int position) {
+        public void onBindViewHolder(final FilterViewHolder holder, final int position) {
             holder.checkBox.setChecked(false);
             holder.textView.setText(topics.get(position));
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.checkBox.setChecked(!holder.checkBox.isChecked(), true);
+                    if (holder.checkBox.isChecked()) {
+                        filtersSelectedBool.set(position, true);
+                    } else {
+                        filtersSelectedBool.set(position, false);
+                    }
                 }
             });
         }

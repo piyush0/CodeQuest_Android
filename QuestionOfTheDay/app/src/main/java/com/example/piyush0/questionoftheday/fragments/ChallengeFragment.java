@@ -24,23 +24,21 @@ import com.piotrek.customspinner.CustomSpinner;
  */
 public class ChallengeFragment extends Fragment {
 
-    Context context;
-    Button chooseOpponentButton;
+    private Context context;
 
-    CustomSpinner topicsSpinner;
-    CustomSpinner numOfQuestionSpinner;
+    private Button chooseOpponentButton;
+    private CustomSpinner topicsSpinner;
+    private CustomSpinner numOfQuestionSpinner;
 
-    String selectedTopic;
-    Integer numOfQuestionsSelected;
+    private String selectedTopic;
+    private Integer numOfQuestionsSelected;
 
     public ChallengeFragment() {
         // Required empty public constructor
     }
 
     public static ChallengeFragment newInstance() {
-        ChallengeFragment fragment = new ChallengeFragment();
-
-        return fragment;
+        return new ChallengeFragment();
     }
 
 
@@ -48,8 +46,10 @@ public class ChallengeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        context = getActivity().getBaseContext();
+        initContext();
+
         View view = inflater.inflate(R.layout.fragment_challenge, container, false);
+
         initViews(view);
         initButtonListener();
         initTopicAdapter();
@@ -58,32 +58,37 @@ public class ChallengeFragment extends Fragment {
         return view;
     }
 
-    public void initViews(View view) {
+    private void initContext() {
+        context = getActivity().getBaseContext();
+    }
+
+    private void initViews(View view) {
 
         chooseOpponentButton = (Button) view.findViewById(R.id.challenge_fragment_opponent_button);
+
+        /*Since no topic or numQues is selected, the button is disabled.*/
         chooseOpponentButton.setEnabled(false);
+
         numOfQuestionSpinner = (CustomSpinner) view.findViewById(R.id.challenge_fragment_noOfQues_spinner);
         topicsSpinner = (CustomSpinner) view.findViewById(R.id.challenge_fragment_topic_spinner);
 
     }
 
-    public void initTopicAdapter() {
+    private void initTopicAdapter() {
 
         final String hintText = "Select a topic...";
-        topicsSpinner.initializeStringValues((Topics.getTopics().toArray(new String[Topics.getTopics().size()])), hintText);
+        topicsSpinner.initializeStringValues((Topics.getTopics().
+                        toArray(new String[Topics.getTopics().size()])),
+                hintText);
+
         topicsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getSelectedItem().toString().equals(hintText)) {
-                    //Nothing to do
-                } else {
+                if (!adapterView.getSelectedItem().toString().equals(hintText)) {
                     selectedTopic = adapterView.getSelectedItem().toString();
-                    if (numOfQuestionsSelected == 0) {
-
-                    } else {
+                    if (numOfQuestionsSelected != 0) {
                         chooseOpponentButton.setEnabled(true);
                     }
-
                 }
             }
 
@@ -95,24 +100,22 @@ public class ChallengeFragment extends Fragment {
 
     }
 
-    public void initNumOfQuesAdapter() {
+    private void initNumOfQuesAdapter() {
 
         final String hintText = "Select Number of Questions...";
-        numOfQuestionSpinner.initializeStringValues(NumberOfOptions.getNumberOfOptions().toArray(new String[NumberOfOptions.getNumberOfOptions().size()]), hintText);
+        numOfQuestionSpinner.initializeStringValues(NumberOfOptions.
+                        getNumberOfOptions().
+                        toArray(new String[NumberOfOptions.getNumberOfOptions().size()]),
+                hintText);
+
         numOfQuestionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getSelectedItem().toString().equals(hintText)) {
-                    //Nothing to do
-                } else {
+                if (!adapterView.getSelectedItem().toString().equals(hintText)) {
                     numOfQuestionsSelected = Integer.valueOf(adapterView.getSelectedItem().toString());
-
-                    if (selectedTopic == null) {
-
-                    } else {
+                    if (selectedTopic != null) {
                         chooseOpponentButton.setEnabled(true);
                     }
-
                 }
             }
 
@@ -124,7 +127,7 @@ public class ChallengeFragment extends Fragment {
 
     }
 
-    public void initButtonListener() {
+    private void initButtonListener() {
         chooseOpponentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +139,5 @@ public class ChallengeFragment extends Fragment {
         });
 
     }
-
 
 }

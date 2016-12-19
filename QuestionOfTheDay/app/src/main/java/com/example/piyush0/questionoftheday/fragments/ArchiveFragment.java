@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 public class ArchiveFragment extends Fragment {
 
+    public static final String TAG = "ArchiveFrag";
+
     private RecyclerView questionsRecyclerView;
     private ArchiveAdapter archiveAdapter;
 
@@ -96,6 +98,9 @@ public class ArchiveFragment extends Fragment {
 
     private void getQuestion(ArrayList<String> filter, String selectedSort) {
         //TODO: get questions from filter.
+
+        Log.d(TAG, "getQuestion: " + filter);
+        Log.d(TAG, "getQuestion: " + selectedSort);
         archiveAdapter.notifyDataSetChanged();
     }
 
