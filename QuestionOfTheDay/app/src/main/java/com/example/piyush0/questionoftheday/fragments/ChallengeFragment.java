@@ -49,7 +49,8 @@ public class ChallengeFragment extends Fragment {
         initContext();
 
         View view = inflater.inflate(R.layout.fragment_challenge, container, false);
-
+        numOfQuestionsSelected = new Integer(0);
+        selectedTopic = new String("");
         initViews(view);
         initButtonListener();
         initTopicAdapter();

@@ -20,9 +20,7 @@ public class TipFragment extends Fragment {
     }
 
     public static TipFragment newInstance() {
-        TipFragment fragment = new TipFragment();
-
-        return fragment;
+        return new TipFragment();
     }
 
 

@@ -18,19 +18,16 @@ import com.iarcuschin.simpleratingbar.SimpleRatingBar;
  */
 public class MyProfileFragment extends Fragment {
 
-    ImageView imageView;
-    TextView tv_username, tv_name, tv_email, tv_rating;
-
-    SimpleRatingBar ratingBar;
+    private ImageView iv_userPic;
+    private TextView tv_username, tv_name, tv_email, tv_rating;
+    private SimpleRatingBar ratingBar;
 
     public MyProfileFragment() {
         // Required empty public constructor
     }
 
     public static MyProfileFragment newInstance() {
-        MyProfileFragment fragment = new MyProfileFragment();
-
-        return fragment;
+        return new MyProfileFragment();
     }
 
 
@@ -44,37 +41,35 @@ public class MyProfileFragment extends Fragment {
         return view;
     }
 
-    public void init(View view) {
+    private void init(View view) {
 
 
-        imageView = (ImageView) view.findViewById(R.id.activity_profile_picture);
+        iv_userPic = (ImageView) view.findViewById(R.id.activity_profile_picture);
         tv_username = (TextView) view.findViewById(R.id.activity_profile_username);
         tv_name = (TextView) view.findViewById(R.id.activity_profile_name);
         tv_email = (TextView) view.findViewById(R.id.activity_profile_email);
         tv_rating = (TextView) view.findViewById(R.id.activity_profile_rating);
-        tv_rating.setText("75");
+        //TODO: Get this rating from api call.
+        tv_rating.setText("48.123");
 
         ratingBar = (SimpleRatingBar) view.findViewById(R.id.activity_profile_rating_bar);
         ratingBar.setIndicator(true); /*This doesn't let the user change his rating*/
-        ratingBarInit();
-
-
+        initRatingBar();
     }
 
-    public float calculateStars(int rating) {
-        float perc = Float.valueOf(rating) / 100;
+    private float calculateStars(float rating) {
+        float perc = rating / 100;
         return perc * 5;
     }
 
-    public void ratingBarInit(){
+    private void initRatingBar() {
         ratingBar.setStarSize(80);
         ratingBar.setNumberOfStars(5);
         ratingBar.setStepSize(0.1f);
         ratingBar.setBorderColor(Color.BLUE);
         ratingBar.setFillColor(Color.parseColor("#ADD8E6"));
         ratingBar.setStarCornerRadius(10);
-        ratingBar.setRating(calculateStars(Integer.valueOf(tv_rating.getText().toString())));
-
+        ratingBar.setRating(calculateStars(Float.valueOf(tv_rating.getText().toString())));
 
     }
 

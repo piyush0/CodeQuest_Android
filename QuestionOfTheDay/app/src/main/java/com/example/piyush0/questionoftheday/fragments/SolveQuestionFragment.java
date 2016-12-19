@@ -29,28 +29,25 @@ import cn.refactor.library.SmoothCheckBox;
  * A simple {@link Fragment} subclass.
  */
 public class SolveQuestionFragment extends Fragment {
-    public static final String TAG = "SolveQuesFrag";
 
+    private TextView tv_quesStatement;
+    private RecyclerView optionsRecyclerView;
+    private Button btn_sumbit;
 
-    TextView tv_quesStatement;
-    RecyclerView recyclerViewOptions;
-    Button btn_sumbit;
-    Context context;
-    Question question;
+    private Context context;
 
+    private Question question;
 
-    Boolean isCorrectlySolved;
+    private Boolean isCorrectlySolved;
 
-    ArrayList<Boolean> optionsSelected;
+    private ArrayList<Boolean> optionsSelected;
 
     public SolveQuestionFragment() {
         // Required empty public constructor
     }
 
     public static SolveQuestionFragment newInstance() {
-        SolveQuestionFragment fragment = new SolveQuestionFragment();
-
-        return fragment;
+        return new SolveQuestionFragment();
     }
 
 
@@ -58,51 +55,61 @@ public class SolveQuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_solve_question, null);
+        View view = inflater.inflate(R.layout.fragment_solve_question, container, false);
         initViews(view);
+        getQuestion();
+        initContext();
+
+        setClickListenerOnButton();
+        return view;
+    }
+
+    private void initContext() {
+        context = getActivity().getBaseContext();
+    }
+
+    private void setClickListenerOnButton() {
 
         btn_sumbit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-//                isCorrectlySolved = CheckAnswer.isCorrect(recyclerViewOptions, question);
                 isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, question);
 
                 if (isCorrectlySolved) {
-
                     Toast.makeText(context, "Correct", Toast.LENGTH_SHORT).show();
                 } else {
-
                     Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show();
                 }
 
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_main, ArchiveFragment.newInstance()).commit();
+                fragmentManager.
+                        beginTransaction().
+                        replace(R.id.content_main, ArchiveFragment.newInstance()).
+                        commit();
             }
 
         });
-
-        return view;
     }
 
 
-    public void initViews(View view) {
-        context = getActivity().getBaseContext();
+    private void initViews(View view) {
+
         tv_quesStatement = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
-        recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         btn_sumbit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
 
+        optionsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
+        optionsRecyclerView.setAdapter(new OptionAdapter());
+        optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
+
+    }
+
+    private void getQuestion() {
+        //TODO: Get this from the id.
         question = DummyQuestion.getDummyQuestion();
         tv_quesStatement.setText(question.getStatement());
-        //TODO: Get this from the id.
-        recyclerViewOptions.setAdapter(new OptionAdapter());
-        recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
-
-        optionsSelected= InitOptionsSelectedArray.init(optionsSelected);
-
-        //TODO: Set on click listener to button.
-
     }
 
     public class OptionViewHolder extends RecyclerView.ViewHolder {
@@ -110,7 +117,7 @@ public class SolveQuestionFragment extends Fragment {
         SmoothCheckBox checkbox;
         TextView textView;
 
-        public OptionViewHolder(View itemView) {
+        OptionViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -122,11 +129,12 @@ public class SolveQuestionFragment extends Fragment {
 
 
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View convertView = li.inflate(R.layout.list_item_today_options, null);
+            View convertView = li.inflate(R.layout.list_item_today_options, parent, false);
 
             SolveQuestionFragment.OptionViewHolder optionViewHolder = new SolveQuestionFragment.OptionViewHolder(convertView);
             optionViewHolder.checkbox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_option_checkbox);
             optionViewHolder.textView = (TextView) convertView.findViewById(R.id.list_item_option_textView);
+
             return optionViewHolder;
         }
 
@@ -139,17 +147,15 @@ public class SolveQuestionFragment extends Fragment {
                 public void onClick(View v) {
                     holder.checkbox.setChecked(!holder.checkbox.isChecked(), true);
 
-                    if(holder.checkbox.isChecked()) {
+                    if (holder.checkbox.isChecked()) {
                         optionsSelected.set(holder.getAdapterPosition(), true);
-                    }
-                    else{
+                    } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
                 }
             });
 
         }
-
 
         @Override
         public int getItemCount() {

@@ -20,19 +20,13 @@ public class OOPSFragment extends Fragment {
     }
 
     public static OOPSFragment newInstance() {
-        OOPSFragment fragment = new OOPSFragment();
-
-        return fragment;
+        return new OOPSFragment();
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_oops, null);
-        return view;
+        return inflater.inflate(R.layout.fragment_oops, container, false);
     }
-
 }

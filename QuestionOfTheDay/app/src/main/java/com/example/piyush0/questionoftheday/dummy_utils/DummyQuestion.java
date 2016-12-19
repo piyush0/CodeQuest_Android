@@ -16,20 +16,10 @@ public class DummyQuestion {
 
         ArrayList<Option> options = new ArrayList<>();
 
-        options.add(new Option("op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op2op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
-        options.add(new Option("op3op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op4op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
-
-        options.add(new Option("op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op2op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
-        options.add(new Option("op3op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op4op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
-
-        options.add(new Option("op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op2op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
-        options.add(new Option("op3op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", true));
-        options.add(new Option("op4op1dsfnknklsdvlkndklnfsvklndvsklndklnvdklv", false));
+        options.add(new Option("op1", true));
+        options.add(new Option("op2", false));
+        options.add(new Option("op3", true));
+        options.add(new Option("op4", false));
 
 
         ArrayList<String> tags = new ArrayList<>();

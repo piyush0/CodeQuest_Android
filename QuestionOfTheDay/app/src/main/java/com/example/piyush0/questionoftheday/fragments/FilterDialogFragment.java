@@ -1,6 +1,5 @@
 package com.example.piyush0.questionoftheday.fragments;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
@@ -30,56 +27,76 @@ import cn.refactor.library.SmoothCheckBox;
 
 public class FilterDialogFragment extends DialogFragment {
 
-    private OnSubmitListener onSubmitListener;
-    private FragmentManager fragMan;
-
     public static final String DATE_SORT = "Date Added";
     public static final String DIFFICULTY_SORT = "Difficulty";
 
-    public void setOnSubmitListener(OnSubmitListener var) {
-        this.onSubmitListener = var;
-    }
+    private OnSubmitListener onSubmitListener;
 
-    RecyclerView recyclerView;
-    Button btn_submit;
-    ArrayList<String> topics;
-    CustomSpinner sortBySpinner;
-    String selectedSort;
+    private RecyclerView topicsRecyclerView;
+    private Button btn_submit;
+    private CustomSpinner sortBySpinner;
 
-    ArrayList<Boolean> filtersSelectedBool;
-    ArrayList<String> filtersSelected;
+    private ArrayList<String> topics;
+
+    private ArrayList<Boolean> filtersSelectedBoolean; /*This is a helper array which is later used to create filterSelected Array*/
+
+    private ArrayList<String> filtersSelected;
+    private String selectedSort;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter_dialog, null);
-        init(view);
-        fragMan = getActivity().getFragmentManager();
+        getTopics();
+        initFilterSelectedArrays();
+        initViews(view);
+        setClickListenerOnButton();
         return view;
     }
 
-    public void init(View view) {
-        filtersSelectedBool = new ArrayList<>();
+    private void initFilterSelectedArrays() {
+        filtersSelectedBoolean = new ArrayList<>();
         filtersSelected = new ArrayList<>();
-        recyclerView = (RecyclerView) view.findViewById(R.id.filter_dialog_recycler_view);
-        btn_submit = (Button) view.findViewById(R.id.filter_dialog_frag_submit);
-        btn_submit.setEnabled(false);
-        topics = Topics.getTopics();
+
+                /*Initialise the boolean array with all false.*/
         for (int i = 0; i < topics.size(); i++) {
-            filtersSelectedBool.add(false);
+            filtersSelectedBoolean.add(false);
         }
-        recyclerView.setAdapter(new FilterAdapter());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void getTopics() {
+        topics = Topics.getTopics();
+    }
+
+    protected void setOnSubmitListener(OnSubmitListener var) {
+        this.onSubmitListener = var;
+    }
+
+    private void initViews(View view) {
+
+        btn_submit = (Button) view.findViewById(R.id.filter_dialog_frag_submit);
+
+        /*Button is disabled because no sort is added yet.*/
+        btn_submit.setEnabled(false);
+
+        topicsRecyclerView = (RecyclerView) view.findViewById(R.id.filter_dialog_recycler_view);
+        topicsRecyclerView.setAdapter(new FilterAdapter());
+        topicsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         sortBySpinner = (CustomSpinner) view.findViewById(R.id.filter_dialog_frag_sortBy_spinner);
         initSortAdapter();
 
+    }
 
+    private void setClickListenerOnButton() {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                /*If booleanPosition is true, we add that topic to the resultant array*/
+
                 for (int i = 0; i < topics.size(); i++) {
-                    if (filtersSelectedBool.get(i)) {
+                    if (filtersSelectedBoolean.get(i)) {
                         filtersSelected.add(topics.get(i));
                     }
                 }
@@ -90,19 +107,18 @@ public class FilterDialogFragment extends DialogFragment {
         });
     }
 
-    public void initSortAdapter() {
+    private void initSortAdapter() {
 
         ArrayList<String> sorts = new ArrayList<>();
         sorts.add(DATE_SORT);
         sorts.add(DIFFICULTY_SORT);
+
         final String hintText = "Sort By...";
         sortBySpinner.initializeStringValues(sorts.toArray(new String[sorts.size()]), hintText);
         sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getSelectedItem().toString().equals(hintText)) {
-
-                } else {
+                if (!adapterView.getSelectedItem().toString().equals(hintText)) {
                     selectedSort = adapterView.getSelectedItem().toString();
                     btn_submit.setEnabled(true);
                 }
@@ -122,7 +138,7 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
 
-    public class FilterViewHolder extends RecyclerView.ViewHolder {
+    private class FilterViewHolder extends RecyclerView.ViewHolder {
         SmoothCheckBox checkBox;
         TextView textView;
 
@@ -131,7 +147,7 @@ public class FilterDialogFragment extends DialogFragment {
         }
     }
 
-    public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder> {
+    private class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder> {
 
         @Override
         public FilterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -155,9 +171,9 @@ public class FilterDialogFragment extends DialogFragment {
                 public void onClick(View v) {
                     holder.checkBox.setChecked(!holder.checkBox.isChecked(), true);
                     if (holder.checkBox.isChecked()) {
-                        filtersSelectedBool.set(position, true);
+                        filtersSelectedBoolean.set(position, true);
                     } else {
-                        filtersSelectedBool.set(position, false);
+                        filtersSelectedBoolean.set(position, false);
                     }
                 }
             });
@@ -169,7 +185,7 @@ public class FilterDialogFragment extends DialogFragment {
         }
     }
 
-    public interface OnSubmitListener {
+    protected interface OnSubmitListener {
         void filtersSelected(ArrayList<String> filters, String selectedSort);
     }
 
