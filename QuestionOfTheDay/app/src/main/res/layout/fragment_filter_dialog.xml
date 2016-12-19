@@ -36,36 +36,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
 
-            <LinearLayout
+
+            <com.piotrek.customspinner.CustomSpinner
+                android:id="@+id/filter_dialog_frag_sortBy_spinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"></com.piotrek.customspinner.CustomSpinner>
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sort By : "
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-                <Spinner
-                    android:id="@+id/filter_dialog_frag_sortBy_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Spinner>
-
-            </LinearLayout>
 
             <Button
+                android:layout_marginTop="10dp"
                 android:id="@+id/filter_dialog_frag_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/button_shape"
                 android:text="Done"
                 android:textAppearance="@style/Widget.AppCompat.Button.Colored"
                 android:textColor="#000000"
-                android:textSize="20sp"
-                android:background="@drawable/button_shape"/>
+                android:textSize="20sp" />
 
 
         </LinearLayout>

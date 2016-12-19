@@ -17,18 +17,18 @@ import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.activities.ListOfUsersChallengeActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.NumberOfOptions;
 import com.example.piyush0.questionoftheday.dummy_utils.Topics;
+import com.piotrek.customspinner.CustomSpinner;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChallengeFragment extends Fragment {
 
-    public static final String TAG = "ChallengeFragment";
-
     Context context;
     Button chooseOpponentButton;
-    Spinner topicsSpinner;
-    Spinner numOfQuestionSpinner;
+
+    CustomSpinner topicsSpinner;
+    CustomSpinner numOfQuestionSpinner;
 
     String selectedTopic;
     Integer numOfQuestionsSelected;
@@ -55,32 +55,36 @@ public class ChallengeFragment extends Fragment {
         initTopicAdapter();
         initNumOfQuesAdapter();
 
-
         return view;
     }
 
     public void initViews(View view) {
 
         chooseOpponentButton = (Button) view.findViewById(R.id.challenge_fragment_opponent_button);
-        numOfQuestionSpinner = (Spinner) view.findViewById(R.id.challenge_fragment_noOfQues_spinner);
-        topicsSpinner = (Spinner) view.findViewById(R.id.challenge_fragment_topic_spinner);
+        chooseOpponentButton.setEnabled(false);
+        numOfQuestionSpinner = (CustomSpinner) view.findViewById(R.id.challenge_fragment_noOfQues_spinner);
+        topicsSpinner = (CustomSpinner) view.findViewById(R.id.challenge_fragment_topic_spinner);
 
     }
 
     public void initTopicAdapter() {
-        ArrayAdapter<String> topicsAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                Topics.getTopics());
 
-
-        topicsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        topicsSpinner.setAdapter(topicsAdapter);
+        final String hintText = "Select a topic...";
+        topicsSpinner.initializeStringValues((Topics.getTopics().toArray(new String[Topics.getTopics().size()])), hintText);
         topicsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedTopic = adapterView.getSelectedItem().toString();
+                if (adapterView.getSelectedItem().toString().equals(hintText)) {
+                    //Nothing to do
+                } else {
+                    selectedTopic = adapterView.getSelectedItem().toString();
+                    if (numOfQuestionsSelected == 0) {
 
+                    } else {
+                        chooseOpponentButton.setEnabled(true);
+                    }
+
+                }
             }
 
             @Override
@@ -92,20 +96,24 @@ public class ChallengeFragment extends Fragment {
     }
 
     public void initNumOfQuesAdapter() {
-        ArrayAdapter<Integer> numOfQuesAdapter = new ArrayAdapter<Integer>(context,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                NumberOfOptions.getNumberOfOptions());
 
-
-        numOfQuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        numOfQuestionSpinner.setAdapter(numOfQuesAdapter);
+        final String hintText = "Select Number of Questions...";
+        numOfQuestionSpinner.initializeStringValues(NumberOfOptions.getNumberOfOptions().toArray(new String[NumberOfOptions.getNumberOfOptions().size()]), hintText);
         numOfQuestionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapterView.getSelectedItem().toString().equals(hintText)) {
+                    //Nothing to do
+                } else {
+                    numOfQuestionsSelected = Integer.valueOf(adapterView.getSelectedItem().toString());
 
-                numOfQuestionsSelected = Integer.valueOf(adapterView.getSelectedItem().toString());
+                    if (selectedTopic == null) {
 
+                    } else {
+                        chooseOpponentButton.setEnabled(true);
+                    }
+
+                }
             }
 
             @Override
@@ -121,8 +129,8 @@ public class ChallengeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ListOfUsersChallengeActivity.class);
-                intent.putExtra("selectedTopic",selectedTopic);
-                intent.putExtra("numOfQuestionsSelected",numOfQuestionsSelected);
+                intent.putExtra("selectedTopic", selectedTopic);
+                intent.putExtra("numOfQuestionsSelected", numOfQuestionsSelected);
                 startActivity(intent);
             }
         });

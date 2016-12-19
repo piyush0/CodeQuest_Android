@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import cn.refactor.library.SmoothCheckBox;
 
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
+
+    public static final String TAG = "ListAct";
 
     private RecyclerView usersRecyclerView;
     private Button btn_challenge;
@@ -87,6 +90,9 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         selectedTopic = intent.getStringExtra("selectedTopic");
         numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0); // 0 is default value.
+
+        Log.d(TAG, "getIntentExtras: " + selectedTopic);
+        Log.d(TAG, "getIntentExtras:  " + numOfQuestionsSelected);
     }
 
     private class UserViewHolder extends RecyclerView.ViewHolder {

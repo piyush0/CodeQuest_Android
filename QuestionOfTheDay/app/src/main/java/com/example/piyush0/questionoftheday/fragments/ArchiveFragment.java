@@ -1,6 +1,5 @@
 package com.example.piyush0.questionoftheday.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,120 +21,102 @@ import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ArchiveFragment extends Fragment {
 
-    public static final String TAG = "Archive Fragment";
-    RecyclerView recyclerView;
-    ArrayList<Question> questions;
-    ArchiveAdapter archiveAdapter;
+    private RecyclerView questionsRecyclerView;
+    private ArchiveAdapter archiveAdapter;
 
+    private ArrayList<Question> questions;
 
-    Context context;
-
+    private Context context;
 
     public ArchiveFragment() {
         // Required empty public constructor
     }
 
     public static ArchiveFragment newInstance() {
-        ArchiveFragment fragment = new ArchiveFragment();
-
-        return fragment;
+        return new ArchiveFragment();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.filter_menu_archive, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
 
         int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//
+
         if (id == R.id.action_filter) {
-            FragmentManager fm = getFragmentManager();
-            FilterDialogFragment filterDiagFrag = new FilterDialogFragment();
-            filterDiagFrag.show(fm, "filter");
-            filterDiagFrag.setOnSubmitListener(new FilterDialogFragment.OnSubmitListener() {
-                @Override
-                public void filtersSelected(ArrayList<String> filters, String selectedSort) {
-                    getQuestion(filters, selectedSort);
-                }
-
-
-            });
+            showDialog();
             return true;
+        } else if (id == R.id.action_refersh) {
+            //TODO: refresh the questions list.
         }
-
-        if (id == R.id.action_refersh) {
-            // Refresh the list
-        }
-
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FilterDialogFragment filterDiagFrag = new FilterDialogFragment();
+        filterDiagFrag.show(fragmentManager, "filter");
+        filterDiagFrag.setOnSubmitListener(new FilterDialogFragment.OnSubmitListener() {
+            @Override
+            public void filtersSelected(ArrayList<String> filters, String selectedSort) {
+                getQuestion(filters, selectedSort);
+            }
+
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        context = getActivity().getBaseContext();
-        setHasOptionsMenu(true);
+        initContext();
+        setHasOptionsMenu(true); /*This sets the menu.*/
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
-        questions = DummyQuestion.getDummyQuestions();
-        Log.d(TAG, "onCreateView: " + questions.size());
-
-
+        getDefaultQuestionsWithoutFilter();
         initRecyclerView(view);
         return view;
     }
 
-    public void getQuestion(ArrayList<String> filter, String selectedSort) {
-        Log.d(TAG, "getQuestion: " + selectedSort);
+    private void initContext() {
+        context = getActivity().getBaseContext();
+    }
+
+    private void getDefaultQuestionsWithoutFilter() {
+        //TODO: Get Question without filter.
+        questions = DummyQuestion.getDummyQuestions();
+    }
+
+    private void getQuestion(ArrayList<String> filter, String selectedSort) {
         //TODO: get questions from filter.
-        Log.d(TAG, "getQuestion: " + filter.size());
-
         archiveAdapter.notifyDataSetChanged();
-
     }
 
-
-    public void initRecyclerView(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_archive_list_questions);
+    private void initRecyclerView(View view) {
+        questionsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_archive_list_questions);
         archiveAdapter = new ArchiveAdapter();
-
-        recyclerView.setAdapter(archiveAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        questionsRecyclerView.setAdapter(archiveAdapter);
+        questionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
-
-    public class ArchiveViewHolder extends RecyclerView.ViewHolder {
+    private class ArchiveViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_question_statement;
         CardView cardView;
 
-        public ArchiveViewHolder(View itemView) {
+        ArchiveViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveViewHolder> {
+    private class ArchiveAdapter extends RecyclerView.Adapter<ArchiveViewHolder> {
 
         public ArchiveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -168,5 +149,4 @@ public class ArchiveFragment extends Fragment {
             return questions.size();
         }
     }
-
 }

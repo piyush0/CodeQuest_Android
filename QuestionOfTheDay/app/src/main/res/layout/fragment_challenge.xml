@@ -9,49 +9,70 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Make a quiz"
+        android:text="Make a Quiz!"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
 
     <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select topic"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-        <Spinner
-            android:layout_marginLeft="100dp"
-            android:id="@+id/challenge_fragment_topic_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></Spinner>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
-        <TextView
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="Topic : "-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="45dp"-->
+                <!--android:text="Number of Questions : "-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />-->
+
+        <!--</LinearLayout>-->
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select no of questions"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+            android:orientation="vertical">
 
-        <Spinner
-            android:layout_marginLeft="30dp"
-            android:id="@+id/challenge_fragment_noOfQues_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></Spinner>
+            <com.piotrek.customspinner.CustomSpinner
+                android:id="@+id/challenge_fragment_topic_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></com.piotrek.customspinner.CustomSpinner>
+
+            <!--<Spinner-->
+                <!--android:id="@+id/challenge_fragment_topic_spinner"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"></Spinner>-->
+
+            <com.piotrek.customspinner.CustomSpinner
+                android:id="@+id/challenge_fragment_noOfQues_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></com.piotrek.customspinner.CustomSpinner>
+
+
+            <!--<Spinner-->
+                <!--android:id="@+id/challenge_fragment_noOfQues_spinner"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"></Spinner>-->
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
+
+
 
 
     <Button
@@ -59,12 +80,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Choose Opponent"
+        android:background="@drawable/button_shape"
 
+        android:text="Choose Opponents"
         android:textAppearance="@style/Widget.AppCompat.Button.Colored"
         android:textColor="#000000"
-        android:textSize="20sp"
-        android:background="@drawable/button_shape"
-        />
+        android:textSize="20sp" />
 
 </LinearLayout>

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class NumberOfOptions {
 
-    public static ArrayList<Integer> getNumberOfOptions(){
-        ArrayList<Integer> retVal = new ArrayList<>();
+    public static ArrayList<String> getNumberOfOptions(){
+        ArrayList<String> retVal = new ArrayList<>();
 
         for(int i = 5; i<=10; i++){
-            retVal.add(i);
+            retVal.add(String.valueOf(i));
         }
 
         return retVal;

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.Topics;
+import com.piotrek.customspinner.CustomSpinner;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class FilterDialogFragment extends DialogFragment {
     RecyclerView recyclerView;
     Button btn_submit;
     ArrayList<String> topics;
-    Spinner sortBySpinner;
+    CustomSpinner sortBySpinner;
     String selectedSort;
 
     @Nullable
@@ -57,10 +58,11 @@ public class FilterDialogFragment extends DialogFragment {
     public void init(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.filter_dialog_recycler_view);
         btn_submit = (Button) view.findViewById(R.id.filter_dialog_frag_submit);
+        btn_submit.setEnabled(false);
         topics = Topics.getTopics();
         recyclerView.setAdapter(new FilterAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        sortBySpinner = (Spinner) view.findViewById(R.id.filter_dialog_frag_sortBy_spinner);
+        sortBySpinner = (CustomSpinner) view.findViewById(R.id.filter_dialog_frag_sortBy_spinner);
         initSortAdapter();
 
 
@@ -79,7 +81,7 @@ public class FilterDialogFragment extends DialogFragment {
                     }
                 }
 
-                onSubmitListener.filtersSelected(filtersSelected,selectedSort);
+                onSubmitListener.filtersSelected(filtersSelected, selectedSort);
                 dismiss();
             }
         });
@@ -90,20 +92,17 @@ public class FilterDialogFragment extends DialogFragment {
         ArrayList<String> sorts = new ArrayList<>();
         sorts.add(DATE_SORT);
         sorts.add(DIFFICULTY_SORT);
-
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                sorts);
-
-
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sortBySpinner.setAdapter(sortAdapter);
+        final String hintText = "Sort By...";
+        sortBySpinner.initializeStringValues(sorts.toArray(new String[sorts.size()]), hintText);
         sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedSort = adapterView.getSelectedItem().toString();
+                if (adapterView.getSelectedItem().toString().equals(hintText)) {
 
+                } else {
+                    selectedSort = adapterView.getSelectedItem().toString();
+                    btn_submit.setEnabled(true);
+                }
             }
 
             @Override
@@ -163,7 +162,7 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     public interface OnSubmitListener {
-        void filtersSelected(ArrayList<String> filters,String selectedSort);
+        void filtersSelected(ArrayList<String> filters, String selectedSort);
     }
 
 }
