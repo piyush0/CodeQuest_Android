@@ -51,4 +51,11 @@ repositories {
 dependencies {
     compile 'com.github.andyxialm:SmoothCheckBox:4d4825562b'
 }
+dependencies {
+    compile 'com.android.support:support-v4:24.+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:24.+'
+}
+
 

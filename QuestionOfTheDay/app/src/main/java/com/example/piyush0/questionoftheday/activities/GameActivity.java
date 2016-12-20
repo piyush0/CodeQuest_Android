@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment;
 import com.example.piyush0.questionoftheday.services.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SolveQuestionFragment.OnBooleanArrayPass {
 
     public static final String TAG = "GameActivity";
 
@@ -37,10 +39,7 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<String> usersChallenged;
 
     private ArrayList<Question> questions;
-    private GameAdapter gameAdapter;
-
-    private TextView tv_quesStatement, tv_clock_minutes, tv_clock_seconds;
-    private RecyclerView list_options;
+    private TextView tv_clock_minutes, tv_clock_seconds;
     private Button btn_next;
 
     private long timeForGame;
@@ -70,18 +69,21 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+
+        //TODO: Load the correct question using IDs.
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(0, false, false, "GameActivity")).
+                commit();
+
+
         tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
         tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
-        tv_quesStatement = (TextView) findViewById(R.id.fragment_question_tv_statement);
 
-        list_options = (RecyclerView) findViewById(R.id.fragment_question_options_list);
 
-        btn_next = (Button) findViewById(R.id.fragment_question_btn_submit);
+        btn_next = (Button) findViewById(R.id.actvity_game_btn_next);
         btn_next.setText("Next");
 
-        gameAdapter = new GameAdapter();
-        list_options.setAdapter(gameAdapter);
-        list_options.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void getQuestions() {
@@ -95,6 +97,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 boolean isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, questions.get(counter));
+                Log.d(TAG, "onClick: " + isCorrectlySolved);
                 optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
                 if (isCorrectlySolved) {
@@ -108,11 +111,15 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 if (counter == questions.size()) { /*Game ended*/
-
+                    Log.d(TAG, "onClick: " + timeForGame);
+                    Log.d(TAG, "onClick: " + numCorrect);
                     stopClock();
                     clearGameSharedPrefs();
-                    Toast.makeText(GameActivity.this, "Total correctly solved" + numCorrect + " Time: " + timeForGame, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(GameActivity.this, "Go to My Challenges to see the Results.", Toast.LENGTH_SHORT).show();
                     clearLocalVars();
+                    /*TODO: Make API call. You have the following vars:
+                    numCorrect, timeForGame*/
 
                 } else {
                     loadNextQuestion();
@@ -122,8 +129,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void loadNextQuestion() {
-        tv_quesStatement.setText(questions.get(counter).getStatement());
-        gameAdapter.notifyDataSetChanged();
+        //TODO: Get next question based on IDs.
+        getSupportFragmentManager().
+                beginTransaction().replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(0, false, false, "GameActivity")).
+                commit();
     }
 
     private void clearGameSharedPrefs() {
@@ -159,8 +168,6 @@ public class GameActivity extends AppCompatActivity {
         stopTimeCountingService();
         resumeClock();
 
-        /* Loading the appropriate question on the textView when the user comes back. */
-        tv_quesStatement.setText(questions.get(sharedPreferences.getInt("counter", 0)).getStatement());
     }
 
     private void resumeClock() {
@@ -224,7 +231,6 @@ public class GameActivity extends AppCompatActivity {
     };
 
 
-
     private String getSecondsString(TimePair time) {
         String secondsString = "";
         if (time.getSeconds() < 10) {
@@ -247,53 +253,10 @@ public class GameActivity extends AppCompatActivity {
         return minutesString;
     }
 
-    private class GameViewHolder extends RecyclerView.ViewHolder {
-
-        SmoothCheckBox option;
-        TextView textView;
-
-        GameViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    private class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
-
-        @Override
-        public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = li.inflate(R.layout.list_item_today_options, null);
-
-            GameViewHolder gameViewHolder = new GameViewHolder(view);
-            gameViewHolder.option = (SmoothCheckBox) view.findViewById(R.id.list_item_option_checkbox);
-            gameViewHolder.textView = (TextView) view.findViewById(R.id.list_item_option_textView);
-            return gameViewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(final GameViewHolder holder, int position) {
-            Log.d(TAG, "onBindViewHolder: " + questions.get(counter).getOptions().get(position).getOption_statement());
-            holder.option.setChecked(false);
-            holder.textView.setText(questions.get(counter).getOptions().get(position).getOption_statement());
-            holder.textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.option.setChecked(!holder.option.isChecked(), true);
-                    if (holder.option.isChecked()) {
-                        optionsSelected.set(holder.getAdapterPosition(), true);
-                    } else {
-                        optionsSelected.set(holder.getAdapterPosition(), false);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-
-            return questions.get(counter).getOptions().size();
-        }
+    @Override
+    public void onBooleanArrayPass(ArrayList<Boolean> optionsSelected) {
+        this.optionsSelected = optionsSelected;
+        Log.d(TAG, "onBooleanArrayPass: " + this.optionsSelected);
     }
 
     private TimePair beautifyTime(long miliseconds) {

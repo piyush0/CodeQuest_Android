@@ -17,18 +17,28 @@
 
 
             <LinearLayout
-                android:id="@+id/fragment_today_question_layout"
+                android:id="@+id/fragment_solve_today_frag_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"></LinearLayout>
 
-                <fragment
-                    android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+            <Button
+                android:id="@+id/fragment_solve_today_btn_sumbit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_shape"
+                android:text="Submit"
+                android:textAppearance="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-            </LinearLayout>
+            <!--<fragment-->
+            <!--android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp" />-->
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -38,10 +48,10 @@
 
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time : " />
+                    android:text="Time :- "
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
 
                 <LinearLayout

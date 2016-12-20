@@ -22,7 +22,7 @@ import com.example.piyush0.questionoftheday.models.Question;
 
 import java.util.ArrayList;
 
-public class ArchiveFragment extends Fragment {
+public class ArchiveFragment extends Fragment{
 
     public static final String TAG = "ArchiveFrag";
 
@@ -142,9 +142,13 @@ public class ArchiveFragment extends Fragment {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_main, SolveQuestionFragment.newInstance()).commit();
+                    fragmentManager.
+                            beginTransaction().
+                            replace(R.id.content_main, SolveQuestionFragment.newInstance(0, true, true, "ArchiveFragment")).
+                            commit();
+
+                    //TODO: Set correct id in newInstance parameter.
                 }
             });
         }

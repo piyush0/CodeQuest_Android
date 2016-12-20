@@ -1,12 +1,14 @@
 package com.example.piyush0.questionoftheday.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ import cn.refactor.library.SmoothCheckBox;
  */
 public class SolveQuestionFragment extends Fragment {
 
+    public static final String TAG = "Solve";
+
     private TextView tv_quesStatement;
     private RecyclerView optionsRecyclerView;
     private Button btn_sumbit;
@@ -39,33 +43,26 @@ public class SolveQuestionFragment extends Fragment {
     private Question question;
 
     private Boolean isCorrectlySolved;
+    private Boolean isFragment;
 
     private ArrayList<Boolean> optionsSelected;
+
+    private Boolean isButtonActivated;
+    private String source;
 
     public SolveQuestionFragment() {
         // Required empty public constructor
     }
 
-    public static SolveQuestionFragment newInstance() {
-        return new SolveQuestionFragment();
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_solve_question, container, false);
-        initViews(view);
-        getQuestion();
-        initContext();
-
-        setClickListenerOnButton();
-        return view;
-    }
-
-    private void initContext() {
-        context = getActivity().getBaseContext();
+    public static SolveQuestionFragment newInstance(Integer questionId, Boolean isButtonActivated, Boolean isFragment, String source) {
+        Bundle args = new Bundle();
+        args.putInt("questionId", questionId);
+        args.putBoolean("isButtonActivated", isButtonActivated);
+        args.putBoolean("isFragment", isFragment);
+        args.putString("source", source);
+        SolveQuestionFragment solveQuestionFragment = new SolveQuestionFragment();
+        solveQuestionFragment.setArguments(args);
+        return solveQuestionFragment;
     }
 
     private void setClickListenerOnButton() {
@@ -93,11 +90,45 @@ public class SolveQuestionFragment extends Fragment {
     }
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_solve_question, container, false);
+        isButtonActivated = getArguments().getBoolean("isButtonActivated");
+        isFragment = getArguments().getBoolean("isFragment");
+        this.source = getArguments().getString("source");
+        if (source.equals("SolveTodayQuestionFragment")) {
+            onBooleanArrayPasser = (OnBooleanArrayPass) getParentFragment();
+        } else {
+
+            if (isFragment) {
+
+                onAttatchFrag((Fragment) getHost());
+            } else {
+                onAttatchAct(getActivity());
+            }
+        }
+
+        initViews(view);
+        getQuestion();
+        initContext();
+        setClickListenerOnButton();
+        return view;
+    }
+
+    private void initContext() {
+        context = getActivity().getBaseContext();
+    }
+
+
     private void initViews(View view) {
 
         tv_quesStatement = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
         btn_sumbit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
-
+        if (isButtonActivated) {
+            btn_sumbit.setVisibility(View.VISIBLE);
+        }
         optionsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         optionsRecyclerView.setAdapter(new OptionAdapter());
         optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -108,6 +139,7 @@ public class SolveQuestionFragment extends Fragment {
 
     private void getQuestion() {
         //TODO: Get this from the id.
+        int questionId = getArguments().getInt("questionId");
         question = DummyQuestion.getDummyQuestion();
         tv_quesStatement.setText(question.getStatement());
     }
@@ -152,6 +184,8 @@ public class SolveQuestionFragment extends Fragment {
                     } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
+
+                    pass();
                 }
             });
 
@@ -161,6 +195,32 @@ public class SolveQuestionFragment extends Fragment {
         public int getItemCount() {
             return question.getOptions().size();
         }
+    }
+
+    public void pass() {
+        if (!isButtonActivated) {
+            onBooleanArrayPasser.onBooleanArrayPass(optionsSelected);
+        }
+
+        /*If button is not activated, checking must be taking in parent.*/
+    }
+
+    OnBooleanArrayPass onBooleanArrayPasser;
+
+
+    public void onAttatchAct(Activity activity) {
+        super.onAttach(activity);
+        onBooleanArrayPasser = (OnBooleanArrayPass) activity;
+    }
+
+    public void onAttatchFrag(Fragment fragment) {
+        Log.d(TAG, "onAttatchFrag: ");
+        onBooleanArrayPasser = (OnBooleanArrayPass) fragment;
+    }
+
+
+    public interface OnBooleanArrayPass {
+        void onBooleanArrayPass(ArrayList<Boolean> optionsSelected);
     }
 
 

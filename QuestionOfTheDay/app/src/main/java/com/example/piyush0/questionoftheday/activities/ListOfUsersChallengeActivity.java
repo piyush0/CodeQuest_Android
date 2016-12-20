@@ -25,8 +25,6 @@ import cn.refactor.library.SmoothCheckBox;
 
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
-    public static final String TAG = "ListAct";
-
     private RecyclerView usersRecyclerView;
     private Button btn_challenge;
 
@@ -81,6 +79,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     private void initViews() {
 
         btn_challenge = (Button) findViewById(R.id.activity_list_of_users_btn_challenege);
+        btn_challenge.setEnabled(false);
         usersRecyclerView = (RecyclerView) findViewById(R.id.activity_challenge_list_of_users);
         usersRecyclerView.setAdapter(new UserAdapter());
         usersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,9 +89,6 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         selectedTopic = intent.getStringExtra("selectedTopic");
         numOfQuestionsSelected = intent.getIntExtra("numOfQuestionsSelected", 0); // 0 is default value.
-
-        Log.d(TAG, "getIntentExtras: " + selectedTopic);
-        Log.d(TAG, "getIntentExtras:  " + numOfQuestionsSelected);
     }
 
     private class UserViewHolder extends RecyclerView.ViewHolder {
@@ -144,6 +140,13 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
                         usersChallenged.add(holder.tv_name.getText().toString());
                     } else {
                         usersChallenged.remove(holder.tv_name.getText().toString());
+                    }
+
+                    if(usersChallenged.size() > 0 ){
+                        btn_challenge.setEnabled(true);
+                    }
+                    else{
+                        btn_challenge.setEnabled(false);
                     }
 
                 }

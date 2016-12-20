@@ -19,27 +19,6 @@
         android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:text="Topic : "-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="45dp"-->
-                <!--android:text="Number of Questions : "-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />-->
-
-        <!--</LinearLayout>-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,30 +29,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></com.piotrek.customspinner.CustomSpinner>
 
-            <!--<Spinner-->
-                <!--android:id="@+id/challenge_fragment_topic_spinner"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"></Spinner>-->
-
             <com.piotrek.customspinner.CustomSpinner
                 android:id="@+id/challenge_fragment_noOfQues_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></com.piotrek.customspinner.CustomSpinner>
 
-
-            <!--<Spinner-->
-                <!--android:id="@+id/challenge_fragment_noOfQues_spinner"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"></Spinner>-->
-
-
         </LinearLayout>
 
 
     </LinearLayout>
-
-
-
 
     <Button
         android:id="@+id/challenge_fragment_opponent_button"

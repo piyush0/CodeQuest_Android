@@ -15,6 +15,7 @@ public class User {
     String email;
     ArrayList<String> tags;
     Integer score;
+    Integer unique_id;
 
     public User(String name, Integer score, String email) {
 

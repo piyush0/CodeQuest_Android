@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.ArchiveFragment;
 import com.example.piyush0.questionoftheday.fragments.ChallengeFragment;
+import com.example.piyush0.questionoftheday.fragments.MyChallengesFragment;
 import com.example.piyush0.questionoftheday.fragments.MyProfileFragment;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import com.example.piyush0.questionoftheday.utils.Refresh;
@@ -107,6 +108,11 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main,
                             MyProfileFragment.newInstance()).commit();
+        } else if (id == R.id.nav_my_challenges) {
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_main,
+                            MyChallengesFragment.newInstance()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

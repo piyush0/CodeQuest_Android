@@ -56,7 +56,7 @@ public class YouHaveANewQuesFragment extends Fragment {
                 editor.putBoolean("isOpened", true);
                 editor.putLong("timeForTodayQues", 0);
                 editor.commit();
-                
+
                 getFragmentManager().beginTransaction().
                         replace(R.id.content_main, SolveTodayQuestionFragment.newInstance()).commit();
             }

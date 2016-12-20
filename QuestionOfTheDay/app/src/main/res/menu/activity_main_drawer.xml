@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/main_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_today"
             android:icon="@drawable/ic_today_black_24dp"
@@ -16,6 +18,19 @@
             android:id="@+id/nav_archive"
             android:icon="@drawable/ic_library_books_black_24dp"
             android:title="Archive" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/my_group"
+
+        android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_my_challenges"
+            android:title="My Challenges" />
 
         <item
             android:id="@+id/nav_profile"

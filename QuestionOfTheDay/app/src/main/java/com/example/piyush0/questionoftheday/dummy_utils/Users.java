@@ -20,9 +20,6 @@ public class Users {
         users.add(new User("User5",35,"asdfv@gmail.com"));
         users.add(new User("User6",234,"asdfv@gmail.com"));
 
-
-
-
         return users;
     }
 }

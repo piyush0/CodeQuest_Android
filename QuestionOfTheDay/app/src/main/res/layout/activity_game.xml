@@ -19,11 +19,30 @@
         tools:context="com.example.piyush0.questionoftheday.activities.GameActivity">
 
 
-        <fragment
-            android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/activity_game_frag_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/actvity_game_btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tag="SolveQuesFrag" />
+            android:layout_marginTop="30dp"
+            android:text="Next"
+            android:textAppearance="@style/Widget.AppCompat.Button.Colored"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:background="@drawable/button_shape"/>
+
+        <!--<fragment-->
+            <!--android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:tag="SolveQuesFrag" />-->
 
 
         <LinearLayout
@@ -36,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time : "
+                android:text="Time :- "
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
 
