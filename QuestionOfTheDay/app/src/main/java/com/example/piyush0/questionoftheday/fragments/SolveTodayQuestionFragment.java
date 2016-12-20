@@ -34,41 +34,32 @@ import cn.refactor.library.SmoothCheckBox;
  */
 public class SolveTodayQuestionFragment extends Fragment {
 
-    Context context;
-
-    public static final String TAG = "TodayQuesFrag";
     public static final String SHARED_PREF_NAME = "TodaySolved";
 
-    TextView tv_question;
-    RecyclerView recyclerViewOptions;
-    Button submit;
-    Handler handler;
+    private Context context;
 
+    private TextView tv_question, tv_attemptsRemaining, tv_clock_seconds, tv_clock_minutes;
+    private RecyclerView recyclerViewOptions;
+    private Button btn_submit;
 
-    TextView tv_clock_seconds, tv_clock_minutes;
-    TextView tv_attemptsRemaining;
+    private Handler handler; /*This is being used to calculate the time*/
 
-    Question todaysQuestion;
-    Long timeTaken;
-    int attempts;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private FragmentManager fragmentManager;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    FragmentManager fragmentManager;
+    private Question todaysQuestion;
 
-
-    boolean isCorrectlySolved;
-
-    ArrayList<Boolean> optionsSelected;
+    private boolean isCorrectlySolved;
+    private Long timeTaken;
+    private int attempts;
+    private ArrayList<Boolean> optionsSelected;
 
     public SolveTodayQuestionFragment() {
-        // Required empty public constructor
     }
 
     public static SolveTodayQuestionFragment newInstance() {
-        SolveTodayQuestionFragment fragment = new SolveTodayQuestionFragment();
-
-        return fragment;
+        return new SolveTodayQuestionFragment();
     }
 
     @Override
@@ -76,14 +67,18 @@ public class SolveTodayQuestionFragment extends Fragment {
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        context = getActivity().getBaseContext();
-
-        View view = inflater.inflate(R.layout.fragment_solve_today_question, null);
-
+        initContext();
+        View view = inflater.inflate(R.layout.fragment_solve_today_question, container, false);
+        fragmentManager = getActivity().getSupportFragmentManager();
         initViews(view);
         optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
+        setClickListenerOnBtn();
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        return view;
+    }
+
+    private void setClickListenerOnBtn() {
+        btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attempts = sharedPreferences.getInt("attempts", 0);
@@ -109,30 +104,40 @@ public class SolveTodayQuestionFragment extends Fragment {
                 Refresh.refresh(sharedPreferences, fragmentManager, getContext());
             }
         });
+    }
 
-
-        return view;
+    private void initContext() {
+        context = getActivity().getBaseContext();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        initSharedPrefs();
         stopTimeCountingService();
-        editor = sharedPreferences.edit();
-        Long zero = 0L;
-        timeTaken = sharedPreferences.getLong("timeForTodayQues", zero);
+        initClock();
+    }
+
+    private void initClock() {
         handler = new Handler();
         handler.post(runnable);
     }
 
-    public void stopTimeCountingService() {
+    private void initSharedPrefs() {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        Long zero = 0L;
+        timeTaken = sharedPreferences.getLong("timeForTodayQues", zero);
+    }
+
+    private void stopTimeCountingService() {
         Intent intent = new Intent(getContext(), TimeCountingService.class);
         context.stopService(intent);
     }
 
-    public void initViews(View view) {
-        fragmentManager = getActivity().getSupportFragmentManager();
+    private void initViews(View view) {
+
         tv_question = (TextView) view.findViewById(R.id.fragment_question_tv_statement);
         tv_clock_minutes = (TextView) view.findViewById(R.id.fragment_solve_today_question_minute);
         tv_clock_seconds = (TextView) view.findViewById(R.id.fragment_solve_today_question_second);
@@ -140,7 +145,7 @@ public class SolveTodayQuestionFragment extends Fragment {
         recyclerViewOptions = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         recyclerViewOptions.setAdapter(new OptionAdapter());
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(context));
-        submit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
+        btn_submit = (Button) view.findViewById(R.id.fragment_question_btn_submit);
         sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         attempts = sharedPreferences.getInt("attempts", 0);
@@ -150,7 +155,7 @@ public class SolveTodayQuestionFragment extends Fragment {
 
     }
 
-    public class OptionViewHolder extends RecyclerView.ViewHolder {
+    private class OptionViewHolder extends RecyclerView.ViewHolder {
 
         SmoothCheckBox checkbox;
         TextView textView;
@@ -160,7 +165,7 @@ public class SolveTodayQuestionFragment extends Fragment {
         }
     }
 
-    public class OptionAdapter extends RecyclerView.Adapter<SolveTodayQuestionFragment.OptionViewHolder> {
+    private class OptionAdapter extends RecyclerView.Adapter<SolveTodayQuestionFragment.OptionViewHolder> {
 
         @Override
         public SolveTodayQuestionFragment.OptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -182,12 +187,11 @@ public class SolveTodayQuestionFragment extends Fragment {
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.checkbox.setChecked(!holder.checkbox.isChecked(),true);
+                    holder.checkbox.setChecked(!holder.checkbox.isChecked(), true);
 
-                    if(holder.checkbox.isChecked()) {
+                    if (holder.checkbox.isChecked()) {
                         optionsSelected.set(holder.getAdapterPosition(), true);
-                    }
-                    else{
+                    } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
                 }
@@ -239,7 +243,7 @@ public class SolveTodayQuestionFragment extends Fragment {
         super.onPause();
     }
 
-    public TimePair beautifyTime(long miliseconds) {
+    private TimePair beautifyTime(long miliseconds) {
 
         TimePair timePair = new TimePair();
         long minutes = (miliseconds / 1000) / 60;
@@ -250,23 +254,23 @@ public class SolveTodayQuestionFragment extends Fragment {
         return timePair;
     }
 
-    public class TimePair {
+    private class TimePair {
         long minutes;
         long seconds;
 
-        public long getMinutes() {
+        long getMinutes() {
             return minutes;
         }
 
-        public void setMinutes(long minutes) {
+        void setMinutes(long minutes) {
             this.minutes = minutes;
         }
 
-        public long getSeconds() {
+        long getSeconds() {
             return seconds;
         }
 
-        public void setSeconds(long seconds) {
+        void setSeconds(long seconds) {
             this.seconds = seconds;
         }
     }

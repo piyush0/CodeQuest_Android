@@ -18,9 +18,10 @@ import com.example.piyush0.questionoftheday.activities.MainActivity;
  */
 public class YouHaveANewQuesFragment extends Fragment {
 
-    Button btn_letsSolve;
-    SharedPreferences sharedPrefs;
-    SharedPreferences.Editor editor;
+    private Button btn_letsSolve;
+
+    private SharedPreferences sharedPrefs;
+    private SharedPreferences.Editor editor;
 
     public YouHaveANewQuesFragment() {
         // Required empty public constructor
@@ -28,31 +29,41 @@ public class YouHaveANewQuesFragment extends Fragment {
 
 
     public static YouHaveANewQuesFragment newInstance() {
-        YouHaveANewQuesFragment fragment = new YouHaveANewQuesFragment();
-
-        return fragment;
+        return new YouHaveANewQuesFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        initSharedPrefs();
+        View view = inflater.inflate(R.layout.fragment_you_have_a_new_ques, null);
+        initViews(view);
+        setClickedListenerOnBtn();
+        return view;
+    }
+
+    private void initSharedPrefs() {
+
         sharedPrefs = getActivity().getSharedPreferences(MainActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPrefs.edit();
+    }
 
-        View view = inflater.inflate(R.layout.fragment_you_have_a_new_ques, null);
-
-        btn_letsSolve = (Button) view.findViewById(R.id.fragment_today_btn_letsSolve);
+    private void setClickedListenerOnBtn() {
         btn_letsSolve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putBoolean("isOpened",true);
+                editor.putBoolean("isOpened", true);
                 editor.putLong("timeForTodayQues", 0);
-
                 editor.commit();
-                getFragmentManager().beginTransaction().replace(R.id.content_main,SolveTodayQuestionFragment.newInstance()).commit();
+                
+                getFragmentManager().beginTransaction().
+                        replace(R.id.content_main, SolveTodayQuestionFragment.newInstance()).commit();
             }
         });
-        return view;
+    }
+
+    private void initViews(View view) {
+        btn_letsSolve = (Button) view.findViewById(R.id.fragment_today_btn_letsSolve);
     }
 }
