@@ -6,9 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
+import com.example.piyush0.questionoftheday.utils.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -100,7 +101,7 @@ public class SolveQuestionFragment extends Fragment {
         this.source = getArguments().getString("source");
         if (source.equals("SolveTodayQuestionFragment")) {
             onBooleanArrayPasser = (OnBooleanArrayPass) getParentFragment();
-        } else if(source.equals("GameActivity")){
+        } else if (source.equals("GameActivity")) {
             onAttatchAct(getActivity());
         }
 
@@ -125,7 +126,11 @@ public class SolveQuestionFragment extends Fragment {
         }
         optionsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_question_options_list);
         optionsRecyclerView.setAdapter(new OptionAdapter());
+
         optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        optionsRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(
+                getContext()
+        ));
 
         optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
@@ -155,7 +160,7 @@ public class SolveQuestionFragment extends Fragment {
 
 
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View convertView = li.inflate(R.layout.list_item_today_options, parent, false);
+            View convertView = li.inflate(R.layout.list_item_options, parent, false);
 
             SolveQuestionFragment.OptionViewHolder optionViewHolder = new SolveQuestionFragment.OptionViewHolder(convertView);
             optionViewHolder.checkbox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_option_checkbox);

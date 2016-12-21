@@ -68,6 +68,8 @@ public class ChallengeDetailsFragment extends Fragment {
         tableView.setColumnModel(columnModel);
         tableView.setHeaderAdapter(new HeaderAdapter(getContext()));
 
+        /*I dont understand the code written below. Its was suggested as a hack on github as Header Adapter was not performing well*/
+
         ViewTreeObserver vto = tableView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

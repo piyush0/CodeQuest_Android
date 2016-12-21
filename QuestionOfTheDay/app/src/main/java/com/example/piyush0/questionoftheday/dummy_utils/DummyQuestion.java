@@ -16,7 +16,7 @@ public class DummyQuestion {
 
         ArrayList<Option> options = new ArrayList<>();
 
-        options.add(new Option("op1", true));
+        options.add(new Option("This is a big text to check sizes", true));
         options.add(new Option("op2", false));
         options.add(new Option("op3", true));
         options.add(new Option("op4", false));
@@ -26,7 +26,7 @@ public class DummyQuestion {
         tags.add("Java");
         tags.add("CPP");
 
-        Question question = new Question("What is ksalklcsa?What is ksalklcsaWhat is ksalklcsaWhat is ksalklcsaWhat is ksalklcsa",
+        Question question = new Question("What is abcd?",
                 options, tags, new Date(2016, 12, 14));
 
         return question;
