@@ -2,13 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.piyush0.questionoftheday.fragments.ChallengeDetailsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_challenge_details_rv_users_in_game"
+    <de.codecrafters.tableview.TableView
+        xmlns:table="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragment_challenge_details_tableView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
-
+        android:layout_height="match_parent"
+        table:tableView_columnCount="5"
+        android:divider="@android:color/black"
+        android:dividerHeight="1dip"
+        />
 
 </LinearLayout>

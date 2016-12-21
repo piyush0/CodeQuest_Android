@@ -36,12 +36,11 @@ import cn.refactor.library.SmoothCheckBox;
 public class SolveTodayQuestionFragment extends Fragment implements SolveQuestionFragment.OnBooleanArrayPass {
 
     public static final String SHARED_PREF_NAME = "TodaySolved";
-    public static final String TAG = "SolveToday";
+
 
     private Context context;
 
-    private TextView tv_question, tv_attemptsRemaining, tv_clock_seconds, tv_clock_minutes;
-    private RecyclerView recyclerViewOptions;
+    private TextView  tv_attemptsRemaining, tv_clock_seconds, tv_clock_minutes;
     private Button btn_submit;
 
     private Handler handler; /*This is being used to calculate the time*/
@@ -58,13 +57,12 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     private ArrayList<Boolean> optionsSelected;
 
 
-
     public SolveTodayQuestionFragment() {
-        Log.d(TAG, "SolveTodayQuestionFragment: " + "Empty const");
+
     }
 
     public static SolveTodayQuestionFragment newInstance() {
-        Log.d(TAG, "newInstance: ");
+
         return new SolveTodayQuestionFragment();
     }
 
@@ -72,7 +70,7 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(TAG, "onCreateView: ");
+
         getTodaysQuestion();
         initContext();
         View view = inflater.inflate(R.layout.fragment_solve_today_question, container, false);
@@ -83,31 +81,19 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     }
 
     private void setClickListenerOnBtn() {
-        Log.d(TAG, "setClickListenerOnBtn: ");
+
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: ");
+
                 attempts = sharedPreferences.getInt("attempts", 0);
                 attempts++;
                 editor.putInt("attempts", attempts);
 
                 tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
-                
-                Log.d(TAG, "onClick: " + optionsSelected);
 
                 isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, todaysQuestion);
-
-                Log.d(TAG, "onClick: " + isCorrectlySolved);
-                if (isCorrectlySolved) {
-
-                    editor.putBoolean("isCorrect", true);
-
-                } else {
-
-                    editor.putBoolean("isCorrect", false);
-                }
-
+                editor.putBoolean("isCorrect", isCorrectlySolved);
                 editor.commit();
 
                 Refresh.refresh(sharedPreferences, fragmentManager, getContext());
@@ -117,19 +103,19 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
     @Override
     public void onBooleanArrayPass(ArrayList<Boolean> optionsSelected) {
-        Log.d(TAG, "onBooleanArrayPass: ");
+
         this.optionsSelected = optionsSelected;
     }
 
 
     private void initContext() {
-        Log.d(TAG, "initContext: ");
+
         context = getActivity().getBaseContext();
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume: ");
+
         super.onResume();
         initSharedPrefs();
         stopTimeCountingService();
@@ -137,13 +123,13 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     }
 
     private void initClock() {
-        Log.d(TAG, "initClock: ");
+
         handler = new Handler();
         handler.post(runnable);
     }
 
     private void initSharedPrefs() {
-        Log.d(TAG, "initSharedPrefs: ");
+
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
@@ -152,13 +138,13 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     }
 
     private void stopTimeCountingService() {
-        Log.d(TAG, "stopTimeCountingService: ");
+
         Intent intent = new Intent(getContext(), TimeCountingService.class);
         context.stopService(intent);
     }
 
     private void initViews(View view) {
-        Log.d(TAG, "initViews: ");
+
         getChildFragmentManager().
                 beginTransaction().
                 replace(R.id.fragment_solve_today_frag_container, SolveQuestionFragment.newInstance(0, false, true, "SolveTodayQuestionFragment")).
@@ -177,23 +163,22 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     }
 
     private void getTodaysQuestion() {
-        Log.d(TAG, "getTodaysQuestion: ");
+
         todaysQuestion = DummyQuestion.getDummyQuestion();
     }
 
     private void initSharedPrefsOnCreate() {
-        Log.d(TAG, "initSharedPrefsOnCreate: ");
+
         sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         attempts = sharedPreferences.getInt("attempts", 0);
         tv_attemptsRemaining.setText(String.valueOf(3 - attempts));
     }
 
 
-
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "run: ");
+
 
             TimePair time = beautifyTime(timeTaken);
 
@@ -220,7 +205,7 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause: ");
+
         saveTimeTillNow();
         stopClock();
         startTimeCountingService();
@@ -228,25 +213,25 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     }
 
     private void saveTimeTillNow() {
-        Log.d(TAG, "saveTimeTillNow: ");
+
         editor.putLong("timeForTodayQues", timeTaken);
         editor.commit();
     }
 
     private void stopClock() {
-        Log.d(TAG, "stopClock: ");
+
         handler.removeCallbacks(runnable);
     }
 
     private void startTimeCountingService() {
-        Log.d(TAG, "startTimeCountingService: ");
+
         Intent intent = new Intent(getContext(), TimeCountingService.class);
         intent.putExtra("timeForTodayQues", timeTaken);
         context.startService(intent);
     }
 
     private TimePair beautifyTime(long miliseconds) {
-        Log.d(TAG, "beautifyTime: ");
+
         TimePair timePair = new TimePair();
         long minutes = (miliseconds / 1000) / 60;
         long seconds = (miliseconds / 1000) % 60;

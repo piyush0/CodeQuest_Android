@@ -100,14 +100,8 @@ public class SolveQuestionFragment extends Fragment {
         this.source = getArguments().getString("source");
         if (source.equals("SolveTodayQuestionFragment")) {
             onBooleanArrayPasser = (OnBooleanArrayPass) getParentFragment();
-        } else {
-
-            if (isFragment) {
-
-                onAttatchFrag((Fragment) getHost());
-            } else {
-                onAttatchAct(getActivity());
-            }
+        } else if(source.equals("GameActivity")){
+            onAttatchAct(getActivity());
         }
 
         initViews(view);
@@ -211,11 +205,6 @@ public class SolveQuestionFragment extends Fragment {
     public void onAttatchAct(Activity activity) {
         super.onAttach(activity);
         onBooleanArrayPasser = (OnBooleanArrayPass) activity;
-    }
-
-    public void onAttatchFrag(Fragment fragment) {
-        Log.d(TAG, "onAttatchFrag: ");
-        onBooleanArrayPasser = (OnBooleanArrayPass) fragment;
     }
 
 

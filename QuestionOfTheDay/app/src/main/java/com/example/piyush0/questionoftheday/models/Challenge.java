@@ -9,17 +9,50 @@ import java.util.Date;
 
 public class Challenge {
     ArrayList<User> usersInGame;
-    boolean isPending;
-    ArrayList<Double> marks;
+    ArrayList<Double> score;
+    ArrayList<Boolean> statuses;
     Date date;
     String topic;
     Integer challenge_Id;
 
-    public Challenge(ArrayList<User> usersInGame, Date date, String topic) {
+    public Challenge(ArrayList<User> usersInGame, ArrayList<Double> score, ArrayList<Boolean> pendingList, Date date, String topic, Integer challenge_Id) {
         this.usersInGame = usersInGame;
+        this.score = score;
+        this.statuses = pendingList;
         this.date = date;
         this.topic = topic;
+        this.challenge_Id = challenge_Id;
     }
+
+    public ArrayList<Double> getScore() {
+        return score;
+    }
+
+    public void setScore(ArrayList<Double> score) {
+        this.score = score;
+    }
+
+    public ArrayList<Boolean> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(ArrayList<Boolean> statuses) {
+        this.statuses = statuses;
+    }
+
+    public Integer getChallenge_Id() {
+        return challenge_Id;
+    }
+
+    public void setChallenge_Id(Integer challenge_Id) {
+        this.challenge_Id = challenge_Id;
+    }
+
+    //    public Challenge(ArrayList<User> usersInGame, Date date, String topic) {
+//        this.usersInGame = usersInGame;
+//        this.date = date;
+//        this.topic = topic;
+//    }
 
     public String usersChallenged() {
         String rv = "";
@@ -66,20 +99,12 @@ public class Challenge {
         this.usersInGame = usersInGame;
     }
 
-    public boolean isPending() {
-        return isPending;
-    }
-
-    public void setPending(boolean pending) {
-        isPending = pending;
-    }
-
     public ArrayList<Double> getMarks() {
-        return marks;
+        return score;
     }
 
     public void setMarks(ArrayList<Double> marks) {
-        this.marks = marks;
+        this.score = marks;
     }
 
     public String getTopic() {

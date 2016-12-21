@@ -16,8 +16,27 @@ public class DummyChallenges {
 
         ArrayList<Challenge> challenges = new ArrayList<>();
 
+        ArrayList<Boolean> statuses = new ArrayList<>();
+        for (int i = 0; i < DummyUsers.getUsers().size(); i++) {
+            if (i % 2 == 0) {
+                statuses.add(true);
+            } else {
+                statuses.add(false);
+            }
+        }
 
-        Challenge challenge1 = new Challenge(Users.getUsers(), new Date(2016, 2, 3), "C++");
+        ArrayList<Double> scores = new ArrayList<>();
+
+        scores.add(11.2);
+        scores.add(43.1);
+        scores.add(5.3);
+        scores.add(23.5);
+        scores.add(16.4);
+        scores.add(99.4);
+
+
+        Challenge challenge1 = new Challenge(DummyUsers.getUsers(), scores, statuses, new Date(2016, 2, 3), "C++", 0);
+
 
         User user1 = new User("A", 23, "fns");
         User user2 = new User("B", 24, "fnsfdsf");
@@ -27,9 +46,15 @@ public class DummyChallenges {
         users.add(user2);
 
 
-        Challenge challenge2 = new Challenge(users, new Date(2015, 4, 2), "JavaScript");
         challenges.add(challenge1);
-        challenges.add(challenge2);
+
+        challenges.add(challenge1);
+
+        challenges.add(challenge1);
+
+        challenges.add(challenge1);
+
+        challenges.add(challenge1);
 
         return challenges;
     }

@@ -1,5 +1,7 @@
 package com.example.piyush0.questionoftheday.dummy_utils;
 
+import android.widget.TextView;
+
 import com.example.piyush0.questionoftheday.models.User;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
  * Created by piyush0 on 05/12/16.
  */
 
-public class Users {
+public class DummyUsers {
 
     public static ArrayList<User> getUsers(){
         ArrayList<User> users = new ArrayList<>();

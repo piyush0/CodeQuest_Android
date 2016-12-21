@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
-import com.example.piyush0.questionoftheday.dummy_utils.Users;
+import com.example.piyush0.questionoftheday.dummy_utils.DummyUsers;
 import com.example.piyush0.questionoftheday.models.User;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
@@ -73,7 +72,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     }
 
     private void fetchUsers() {
-        users = Users.getUsers();
+        users = DummyUsers.getUsers();
     }
 
     private void initViews() {
