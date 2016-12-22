@@ -13,7 +13,6 @@ public class User {
     String name;
     String image_url;
     String email;
-    ArrayList<String> tags; //TODO: remove
     Integer score;
     Integer unique_id;
 
@@ -52,14 +51,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
         this.gravatarSupport();
-    }
-
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
     }
 
     public void gravatarSupport(){

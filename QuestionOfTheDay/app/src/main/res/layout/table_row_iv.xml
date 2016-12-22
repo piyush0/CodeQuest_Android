@@ -2,6 +2,6 @@
 
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:src="@mipmap/ic_launcher"
-    android:id="@+id/list_item_challenge_details_tv"
+    android:id="@+id/table_row_textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />

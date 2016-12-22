@@ -39,6 +39,7 @@
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".activities.GameResultsActivity"></activity>
     </application>
 
 </manifest>

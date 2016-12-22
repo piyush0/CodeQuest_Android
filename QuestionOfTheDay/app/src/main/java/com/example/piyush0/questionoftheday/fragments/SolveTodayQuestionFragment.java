@@ -25,6 +25,7 @@ import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
 import com.example.piyush0.questionoftheday.utils.Refresh;
+import com.example.piyush0.questionoftheday.utils.TimeUtil;
 
 import java.util.ArrayList;
 
@@ -179,25 +180,8 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
         @Override
         public void run() {
 
-
-            TimePair time = beautifyTime(timeTaken);
-
-            String minutesString = "";
-            if (time.getMinutes() < 10) {
-                minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
-            } else {
-                minutesString = String.valueOf(time.getMinutes()) + ": ";
-            }
-
-            String secondsString = "";
-            if (time.getSeconds() < 10) {
-                secondsString = "0" + String.valueOf(time.getSeconds());
-            } else {
-                secondsString = String.valueOf(time.getSeconds());
-            }
-
-            tv_clock_minutes.setText(minutesString);
-            tv_clock_seconds.setText(secondsString);
+            tv_clock_minutes.setText(TimeUtil.getMinutesAndSecond(timeTaken).get(0));
+            tv_clock_seconds.setText(TimeUtil.getMinutesAndSecond(timeTaken).get(1));
             timeTaken = timeTaken + 1000;
             handler.postDelayed(this, 1000);
         }
@@ -230,36 +214,5 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
         context.startService(intent);
     }
 
-    private TimePair beautifyTime(long miliseconds) {
-
-        TimePair timePair = new TimePair();
-        long minutes = (miliseconds / 1000) / 60;
-        long seconds = (miliseconds / 1000) % 60;
-
-        timePair.setMinutes(minutes);
-        timePair.setSeconds(seconds);
-        return timePair;
-    }
-
-    private class TimePair {
-        long minutes;
-        long seconds;
-
-        long getMinutes() {
-            return minutes;
-        }
-
-        void setMinutes(long minutes) {
-            this.minutes = minutes;
-        }
-
-        long getSeconds() {
-            return seconds;
-        }
-
-        void setSeconds(long seconds) {
-            this.seconds = seconds;
-        }
-    }
 
 }

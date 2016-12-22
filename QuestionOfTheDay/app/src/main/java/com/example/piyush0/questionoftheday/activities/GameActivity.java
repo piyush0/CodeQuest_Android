@@ -25,7 +25,9 @@ import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
+import com.example.piyush0.questionoftheday.utils.TimeUtil;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
@@ -222,10 +224,8 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         @Override
         public void run() {
 
-            TimePair time = beautifyTime(timeForGame);
-
-            tv_clock_minutes.setText(getMinutesString(time));
-            tv_clock_seconds.setText(getSecondsString(time));
+            tv_clock_minutes.setText(TimeUtil.getMinutesAndSecond(timeForGame).get(0));
+            tv_clock_seconds.setText(TimeUtil.getMinutesAndSecond(timeForGame).get(1));
             timeForGame = timeForGame + 1000;
 
             handler.postDelayed(this, 1000);
@@ -233,64 +233,11 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
     };
 
 
-    private String getSecondsString(TimePair time) {
-        String secondsString = "";
-        if (time.getSeconds() < 10) {
-            secondsString = "0" + String.valueOf(time.getSeconds());
-        } else {
-            secondsString = String.valueOf(time.getSeconds());
-        }
-
-        return secondsString;
-    }
-
-    private String getMinutesString(TimePair time) {
-        String minutesString = "";
-        if (time.getMinutes() < 10) {
-            minutesString = "0" + String.valueOf(time.getMinutes()) + ": ";
-        } else {
-            minutesString = String.valueOf(time.getMinutes()) + ": ";
-        }
-
-        return minutesString;
-    }
-
     @Override
     public void onBooleanArrayPass(ArrayList<Boolean> optionsSelected) {
         this.optionsSelected = optionsSelected;
         Log.d(TAG, "onBooleanArrayPass: " + this.optionsSelected);
     }
 
-    private TimePair beautifyTime(long miliseconds) {
-
-        TimePair timePair = new TimePair();
-        long minutes = (miliseconds / 1000) / 60;
-        long seconds = (miliseconds / 1000) % 60;
-
-        timePair.setMinutes(minutes);
-        timePair.setSeconds(seconds);
-        return timePair;
-    }
-
-    private class TimePair {
-        long minutes;
-        long seconds;
-
-        long getMinutes() {
-            return minutes;
-        }
-
-        void setMinutes(long minutes) {
-            this.minutes = minutes;
-        }
-
-        long getSeconds() {
-            return seconds;
-        }
-
-        void setSeconds(long seconds) {
-            this.seconds = seconds;
-        }
-    }
-
+    
 }
