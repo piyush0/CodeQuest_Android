@@ -13,7 +13,7 @@ public class User {
     String name;
     String image_url;
     String email;
-    ArrayList<String> tags;
+    ArrayList<String> tags; //TODO: remove
     Integer score;
     Integer unique_id;
 

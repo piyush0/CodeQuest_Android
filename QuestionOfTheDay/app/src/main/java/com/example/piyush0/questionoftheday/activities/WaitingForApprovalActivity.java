@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
@@ -15,7 +16,9 @@ import java.util.ArrayList;
 
 public class WaitingForApprovalActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Button btn_lets_go;
     private Button btn_temp;
+    private LinearLayout layout_loading, layout_loading_done;
 
     private String selectedTopic;
     private Integer numOfQuestionsSelected;
@@ -38,12 +41,30 @@ public class WaitingForApprovalActivity extends AppCompatActivity implements Vie
         getIntentExtras();
         logUsersChallenged();
 
-        btn_temp.setOnClickListener(this);
+        btn_lets_go.setOnClickListener(this);
     }
 
+    private void onLoadingDone() {
+        btn_temp.setVisibility(View.GONE);
+        layout_loading_done.setVisibility(View.VISIBLE);
+        layout_loading.setVisibility(View.GONE);
+        btn_lets_go.setVisibility(View.VISIBLE);
+    }
 
     private void initViews() {
-        btn_temp = (Button) findViewById(R.id.btn_temporary);
+        btn_lets_go = (Button) findViewById(R.id.activity_waiting_for_approval_btn_letsGo);
+        layout_loading = (LinearLayout) findViewById(R.id.activity_waiting_for_approval_waiting_layout);
+        layout_loading_done = (LinearLayout) findViewById(R.id.activity_waiting_for_approval_loading_done_layout);
+        layout_loading_done.setVisibility(View.GONE);
+        btn_lets_go.setVisibility(View.GONE);
+
+        btn_temp = (Button) findViewById(R.id.btn_temp);
+        btn_temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLoadingDone();
+            }
+        });
     }
 
     private void logUsersChallenged() {

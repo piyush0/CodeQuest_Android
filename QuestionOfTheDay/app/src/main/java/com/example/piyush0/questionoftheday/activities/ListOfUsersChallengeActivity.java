@@ -141,10 +141,9 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
                         usersChallenged.remove(holder.tv_name.getText().toString());
                     }
 
-                    if(usersChallenged.size() > 0 ){
+                    if (usersChallenged.size() > 0) {
                         btn_challenge.setEnabled(true);
-                    }
-                    else{
+                    } else {
                         btn_challenge.setEnabled(false);
                     }
 

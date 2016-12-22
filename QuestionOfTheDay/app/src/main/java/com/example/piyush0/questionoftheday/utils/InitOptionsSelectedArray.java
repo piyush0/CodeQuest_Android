@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class InitOptionsSelectedArray{
-    public static final int MAX_NUM_OF_OPTIONS = 20;
+    private static final int MAX_NUM_OF_OPTIONS = 20;
 
     public static ArrayList<Boolean> init(ArrayList<Boolean> optionsSelected) {
         optionsSelected = new ArrayList<>();
