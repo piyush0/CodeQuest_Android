@@ -1,10 +1,12 @@
 package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,20 +128,8 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
                 if (counter == questions.size()) { /*Game ended*/
                     Log.d(TAG, "onClick: " + timeForGame);
                     Log.d(TAG, "onClick: " + numCorrect);
-                    stopClock();
-                    clearGameSharedPrefs();
 
-
-                    Intent intent = new Intent(GameActivity.this, GameResultsActivity.class);
-                    intent.putExtra("timeForGame", timeForGame);
-                    intent.putExtra("optionsYouSelected", optionsYouSelected);
-                    intent.putExtra("correctsAndIncorrects", correctsAndIncorrects);
-
-                    clearLocalVars();
-
-                    startActivity(intent);
-                    finish();
-
+                    endGame();
 
                     /*TODO: Make API call. You have the following vars:
                     numCorrect, timeForGame*/
@@ -150,6 +140,29 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
             }
         });
     }
+
+    private void endGame() {
+        int diff = questions.size() - correctsAndIncorrects.size();
+
+        for (int i = 0; i < diff; i++) {
+            correctsAndIncorrects.add(false);
+            optionsYouSelected.add(new ArrayList<Integer>());
+        }
+        stopClock();
+        clearGameSharedPrefs();
+
+        Intent intent = new Intent(GameActivity.this, GameResultsActivity.class);
+        intent.putExtra("timeForGame", timeForGame);
+        intent.putExtra("optionsYouSelected", optionsYouSelected);
+        intent.putExtra("correctsAndIncorrects", correctsAndIncorrects);
+
+        clearLocalVars();
+
+        startActivity(intent);
+        finish();
+
+    }
+
 
     private ArrayList<Integer> getOptionsYouSelectedInt(ArrayList<Boolean> optionsSelectedBool, Question question) {
 
@@ -267,6 +280,29 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         }
     };
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Ending Game")
+                .setMessage("Are you sure you want to exit the game?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        endGame();
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    @Override
+    protected void onStop() {
+        endGame();
+        super.onStop();
+    }
 
     @Override
     public void onBooleanArrayPass(ArrayList<Boolean> optionsSelected) {

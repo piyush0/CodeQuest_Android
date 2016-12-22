@@ -41,7 +41,7 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
     private Context context;
 
-    private TextView  tv_attemptsRemaining, tv_clock_seconds, tv_clock_minutes;
+    private TextView tv_attemptsRemaining, tv_clock_seconds, tv_clock_minutes;
     private Button btn_submit;
 
     private Handler handler; /*This is being used to calculate the time*/
@@ -71,7 +71,7 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
         getTodaysQuestion();
         initContext();
         View view = inflater.inflate(R.layout.fragment_solve_today_question, container, false);
