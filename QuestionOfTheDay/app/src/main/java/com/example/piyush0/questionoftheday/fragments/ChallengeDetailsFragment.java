@@ -78,6 +78,7 @@ public class ChallengeDetailsFragment extends Fragment {
                 tableView.setHeaderAdapter(new HeaderAdapter(getContext()));
             }
         });
+
         tableView.setDataAdapter(new TableAdapter(getContext(), challenge.getUsersInGame()));
 
     }
@@ -90,7 +91,7 @@ public class ChallengeDetailsFragment extends Fragment {
 
     private class HeaderAdapter extends TableHeaderAdapter {
 
-        public HeaderAdapter(Context context) {
+        HeaderAdapter(Context context) {
             super(context);
         }
 

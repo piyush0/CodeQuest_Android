@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment;
+import com.example.piyush0.questionoftheday.models.Option;
 import com.example.piyush0.questionoftheday.services.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
@@ -52,6 +53,9 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
     private int counter;
     private int numCorrect;
 
+    private ArrayList<ArrayList<Integer>> optionsYouSelected;
+    private ArrayList<Boolean> correctsAndIncorrects;
+
     private ArrayList<Boolean> optionsSelected;
 
 
@@ -63,6 +67,9 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
         optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
+
+        optionsYouSelected = new ArrayList<>();
+        correctsAndIncorrects = new ArrayList<>();
 
         getQuestions();
         getIntentExtras();
@@ -82,7 +89,6 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         tv_clock_minutes = (TextView) findViewById(R.id.activity_game_clock_minutes);
         tv_clock_seconds = (TextView) findViewById(R.id.activity_game_clock_seconds);
 
-
         btn_next = (Button) findViewById(R.id.actvity_game_btn_next);
         btn_next.setText("Next");
 
@@ -98,8 +104,13 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
             @Override
             public void onClick(View view) {
 
+                ArrayList<Integer> optionsYouSelectedInt = getOptionsYouSelectedInt(optionsSelected, questions.get(counter));
+                optionsYouSelected.add(optionsYouSelectedInt);
                 boolean isCorrectlySolved = CheckAnswer.isCorrect(optionsSelected, questions.get(counter));
-                Log.d(TAG, "onClick: " + isCorrectlySolved);
+
+
+                correctsAndIncorrects.add(isCorrectlySolved);
+
                 optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 
                 if (isCorrectlySolved) {
@@ -118,8 +129,18 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
                     stopClock();
                     clearGameSharedPrefs();
 
-                    Toast.makeText(GameActivity.this, "Go to My Challenges to see the Results.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(GameActivity.this, GameResultsActivity.class);
+                    intent.putExtra("timeForGame", timeForGame);
+                    intent.putExtra("optionsYouSelected", optionsYouSelected);
+                    intent.putExtra("correctsAndIncorrects", correctsAndIncorrects);
+
                     clearLocalVars();
+
+                    startActivity(intent);
+                    finish();
+
+
                     /*TODO: Make API call. You have the following vars:
                     numCorrect, timeForGame*/
 
@@ -130,10 +151,24 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         });
     }
 
+    private ArrayList<Integer> getOptionsYouSelectedInt(ArrayList<Boolean> optionsSelectedBool, Question question) {
+
+        ArrayList<Integer> retVal = new ArrayList<>();
+
+        for (int i = 0; i < question.getOptions().size(); i++) {
+            if (optionsSelectedBool.get(i)) {
+                retVal.add(i);
+            }
+        }
+        Log.d(TAG, "getOptionsYouSelectedInt: " + retVal);
+        return retVal;
+
+    }
+
     private void loadNextQuestion() {
         //TODO: Get next question based on IDs.
         getSupportFragmentManager().
-                beginTransaction().replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(0, false, false, "GameActivity")).
+                beginTransaction().replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(counter, false, false, "GameActivity")).
                 commit();
     }
 
@@ -239,5 +274,5 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         Log.d(TAG, "onBooleanArrayPass: " + this.optionsSelected);
     }
 
-    
+
 }

@@ -139,7 +139,7 @@ public class SolveQuestionFragment extends Fragment {
     private void getQuestion() {
         //TODO: Get this from the id.
         int questionId = getArguments().getInt("questionId");
-        question = DummyQuestion.getDummyQuestion();
+        question = DummyQuestion.getDummyQuestions().get(questionId);
         tv_quesStatement.setText(question.getStatement());
     }
 
