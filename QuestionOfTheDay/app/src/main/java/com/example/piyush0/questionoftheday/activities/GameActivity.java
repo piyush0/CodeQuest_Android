@@ -60,6 +60,8 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
 
     private ArrayList<Boolean> optionsSelected;
 
+    private boolean finishedOnce;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         //TODO: Load the correct question using IDs.
         getSupportFragmentManager().
                 beginTransaction().
-                replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(0, false, false, "GameActivity")).
+                replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(0, false, "GameActivity")).
                 commit();
 
 
@@ -129,8 +131,11 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
                     Log.d(TAG, "onClick: " + timeForGame);
                     Log.d(TAG, "onClick: " + numCorrect);
 
-                    endGame();
 
+                    if (!finishedOnce) {
+                        finishedOnce = true;
+                        endGame();
+                    }
                     /*TODO: Make API call. You have the following vars:
                     numCorrect, timeForGame*/
 
@@ -159,7 +164,6 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         clearLocalVars();
 
         startActivity(intent);
-        finish();
 
     }
 
@@ -181,7 +185,7 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
     private void loadNextQuestion() {
         //TODO: Get next question based on IDs.
         getSupportFragmentManager().
-                beginTransaction().replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(counter, false, false, "GameActivity")).
+                beginTransaction().replace(R.id.activity_game_frag_container, SolveQuestionFragment.newInstance(counter, false, "GameActivity")).
                 commit();
     }
 
@@ -289,8 +293,10 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        endGame();
-                        finish();
+                        if (!finishedOnce) {
+                            finishedOnce = true;
+                            endGame();
+                        }
                     }
 
                 })
@@ -300,7 +306,12 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
 
     @Override
     protected void onStop() {
-        endGame();
+        if (!finishedOnce) {
+            finishedOnce = true;
+            endGame();
+        }
+        finish();
+
         super.onStop();
     }
 

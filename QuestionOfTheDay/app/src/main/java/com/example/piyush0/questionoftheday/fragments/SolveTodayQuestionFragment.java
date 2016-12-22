@@ -148,7 +148,7 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
         getChildFragmentManager().
                 beginTransaction().
-                replace(R.id.fragment_solve_today_frag_container, SolveQuestionFragment.newInstance(0, false, true, "SolveTodayQuestionFragment")).
+                replace(R.id.fragment_solve_today_frag_container, SolveQuestionFragment.newInstance(0, false, "SolveTodayQuestionFragment")).
                 commit();
 
 

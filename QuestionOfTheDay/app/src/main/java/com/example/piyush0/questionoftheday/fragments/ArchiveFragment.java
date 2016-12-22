@@ -145,7 +145,7 @@ public class ArchiveFragment extends Fragment{
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.
                             beginTransaction().
-                            replace(R.id.content_main, SolveQuestionFragment.newInstance(0, true, true, "ArchiveFragment")).
+                            replace(R.id.content_main, SolveQuestionFragment.newInstance(0, true, "ArchiveFragment")).
                             commit();
 
                     //TODO: Set correct id in newInstance parameter.

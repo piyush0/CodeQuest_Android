@@ -44,7 +44,7 @@ public class SolveQuestionFragment extends Fragment {
     private Question question;
 
     private Boolean isCorrectlySolved;
-    private Boolean isFragment;
+
 
     private ArrayList<Boolean> optionsSelected;
 
@@ -55,11 +55,11 @@ public class SolveQuestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SolveQuestionFragment newInstance(Integer questionId, Boolean isButtonActivated, Boolean isFragment, String source) {
+    public static SolveQuestionFragment newInstance(Integer questionId, Boolean isButtonActivated, String source) {
         Bundle args = new Bundle();
         args.putInt("questionId", questionId);
         args.putBoolean("isButtonActivated", isButtonActivated);
-        args.putBoolean("isFragment", isFragment);
+
         args.putString("source", source);
         SolveQuestionFragment solveQuestionFragment = new SolveQuestionFragment();
         solveQuestionFragment.setArguments(args);
@@ -97,7 +97,7 @@ public class SolveQuestionFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_solve_question, container, false);
         isButtonActivated = getArguments().getBoolean("isButtonActivated");
-        isFragment = getArguments().getBoolean("isFragment");
+
         this.source = getArguments().getString("source");
         if (source.equals("SolveTodayQuestionFragment")) {
             onBooleanArrayPasser = (OnBooleanArrayPass) getParentFragment();
