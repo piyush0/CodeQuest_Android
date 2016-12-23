@@ -38,11 +38,6 @@
             android:textSize="20sp"
             android:background="@drawable/button_shape"/>
 
-        <!--<fragment-->
-            <!--android:name="com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:tag="SolveQuesFrag" />-->
 
 
         <LinearLayout

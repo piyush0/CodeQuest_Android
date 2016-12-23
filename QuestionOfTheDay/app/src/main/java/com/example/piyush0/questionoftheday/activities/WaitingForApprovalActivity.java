@@ -82,7 +82,6 @@ public class WaitingForApprovalActivity extends AppCompatActivity implements Vie
 
     @Override
     public void onClick(View v) {
-
         sendIntent();
     }
 
