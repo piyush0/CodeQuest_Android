@@ -1,28 +1,18 @@
 package com.example.piyush0.questionoftheday.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.fragments.SolveQuestionFragment;
-import com.example.piyush0.questionoftheday.models.Option;
-import com.example.piyush0.questionoftheday.services.TimeCountingForGameService;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.CheckAnswer;
@@ -30,10 +20,7 @@ import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import com.example.piyush0.questionoftheday.utils.InitOptionsSelectedArray;
 import com.example.piyush0.questionoftheday.utils.TimeUtil;
 
-import java.sql.Time;
 import java.util.ArrayList;
-
-import cn.refactor.library.SmoothCheckBox;
 
 public class GameActivity extends AppCompatActivity implements SolveQuestionFragment.OnBooleanArrayPass {
 
@@ -48,8 +35,7 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
     private Button btn_next;
 
     private long timeForGame;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+
     private Handler handler;
 
     private int counter;
@@ -74,6 +60,9 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
 
         optionsYouSelected = new ArrayList<>();
         correctsAndIncorrects = new ArrayList<>();
+
+        handler = new Handler();
+        handler.post(runnable);
 
         getQuestions();
         getIntentExtras();
@@ -154,7 +143,7 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
             optionsYouSelected.add(new ArrayList<Integer>());
         }
         stopClock();
-        clearGameSharedPrefs();
+
 
         Intent intent = new Intent(GameActivity.this, GameResultsActivity.class);
         intent.putExtra("timeForGame", timeForGame);
@@ -189,12 +178,6 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
                 commit();
     }
 
-    private void clearGameSharedPrefs() {
-        editor.putLong("timeForGame", 0L);
-        editor.putInt("numOfCorrect", 0);
-        editor.putInt("counter", 0);
-        editor.commit();
-    }
 
     private void clearLocalVars() {
         timeForGame = 0L;
@@ -213,64 +196,6 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         usersChallenged = intent.getStringArrayListExtra("usersChallenged");
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        getSharedPrefs();
-        stopTimeCountingService();
-        resumeClock();
-
-    }
-
-    //TODO: On back press
-
-    private void resumeClock() {
-        handler = new Handler();
-        handler.post(runnable);
-    }
-
-    private void getSharedPrefs() {
-        sharedPreferences = getSharedPreferences(WaitingForApprovalActivity.SHARED_PREF_FOR_GAME, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-        counter = sharedPreferences.getInt("counter", 0);
-        numCorrect = sharedPreferences.getInt("numOfCorrect", 0);
-        Long zero = 0L;
-        timeForGame = sharedPreferences.getLong("timeForGame", zero);
-    }
-
-    @Override
-    public void onPause() {
-        saveLocalvarsToSharedPrefs();
-        pauseClock();
-        startTimeCountingService();
-        super.onPause();
-    }
-
-    private void startTimeCountingService() {
-
-        Intent intent = new Intent(this, TimeCountingForGameService.class);
-        intent.putExtra("timeForGame", timeForGame);
-        startService(intent);
-    }
-
-    private void pauseClock() {
-        handler.removeCallbacks(runnable);
-    }
-
-    private void saveLocalvarsToSharedPrefs() {
-        editor.putLong("timeForGame", timeForGame);
-        editor.putInt("numOfCorrect", numCorrect);
-        editor.putInt("counter", counter);
-        editor.commit();
-    }
-
-    private void stopTimeCountingService() {
-        Intent intent = new Intent(this, TimeCountingForGameService.class);
-        stopService(intent);
-    }
 
     private Runnable runnable = new Runnable() {
         @Override

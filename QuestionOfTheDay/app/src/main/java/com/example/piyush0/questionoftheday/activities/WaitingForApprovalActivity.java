@@ -24,10 +24,9 @@ public class WaitingForApprovalActivity extends AppCompatActivity implements Vie
     private Integer numOfQuestionsSelected;
     private ArrayList<String> usersChallenged;
 
-    private SharedPreferences.Editor editor;
 
     public static final String TAG = "WaitingForAppAct";
-    public static final String SHARED_PREF_FOR_GAME = "SharedPrefsForGame";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class WaitingForApprovalActivity extends AppCompatActivity implements Vie
 
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
 
-        initSharedPrefs();
+
         initViews();
         getIntentExtras();
         logUsersChallenged();
@@ -81,23 +80,12 @@ public class WaitingForApprovalActivity extends AppCompatActivity implements Vie
         usersChallenged = intent.getStringArrayListExtra("usersChallenged");
     }
 
-    private void initSharedPrefs() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FOR_GAME, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-    }
-
     @Override
     public void onClick(View v) {
-        initGameSharedPrefs();
+
         sendIntent();
     }
 
-    private void initGameSharedPrefs() {
-
-        editor.putLong("timeForGame", 0L);
-        editor.putInt("numOfCorrect", 0);
-        editor.commit();
-    }
 
     private void sendIntent() {
         Intent intent = new Intent(WaitingForApprovalActivity.this, GameActivity.class);

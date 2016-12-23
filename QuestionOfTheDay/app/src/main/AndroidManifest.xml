@@ -34,10 +34,6 @@
             android:name=".services.TimeCountingService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".services.TimeCountingForGameService"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity android:name=".activities.GameResultsActivity"></activity>
     </application>
