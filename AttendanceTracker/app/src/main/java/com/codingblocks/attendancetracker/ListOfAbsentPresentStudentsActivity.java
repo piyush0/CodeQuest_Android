@@ -35,7 +35,7 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         init();
     }
 
-    public void fetchStudents(Intent intent) {
+    private void fetchStudents(Intent intent) {
 
         ArrayList<Integer> presentIds = intent.getIntegerArrayListExtra("presentIds");
         ArrayList<Integer> absentIds = intent.getIntegerArrayListExtra("absentIds");
@@ -62,7 +62,7 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         }
     }
 
-    public void init() {
+    private void init() {
         presentList = (RecyclerView) findViewById(R.id.list_present);
         absentList = (RecyclerView) findViewById(R.id.list_absent);
         submitBtn = (Button) findViewById(R.id.list_item_students_btn_submit);
@@ -85,15 +85,15 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         absentList.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_name;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class PresentAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private class PresentAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -126,7 +126,7 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         }
     }
 
-    public class AbsentAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private class AbsentAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -27,33 +27,28 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    SwipeDeck cardStack;
-    String selectedBatch;
-    MyAdapter myAdapter;
-
-    LinearLayout background;
-
-    ArrayList<Student> students;
-
-    ArrayList<Integer> absentIds;
-    ArrayList<Integer> presentIds;
-
-    Handler handler;
-
-    Spinner spinner;
-
-
     public static final String TAG = "MainAct";
 
+    private SwipeDeck cardStack;
+
+    private String selectedBatch;
+    private MyAdapter myAdapter;
+
+    private LinearLayout background;
+
+    private ArrayList<Student> students;
+
+    private ArrayList<Integer> absentIds;
+    private ArrayList<Integer> presentIds;
+
+    private Handler handler;
+
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
 
         initViews();
         initSpinnerAdapter();
@@ -64,15 +59,13 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
     }
 
-    public void initViews() {
-
+    private void initViews() {
+        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         background = (LinearLayout) findViewById(R.id.activity_main);
         spinner = (Spinner) findViewById(R.id.spinner_batch);
-
     }
 
-
-    public void initSpinnerAdapter() {
+    private void initSpinnerAdapter() {
 
         ArrayList<String> batches = Batch.getDummyBatches();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, batches);
@@ -94,16 +87,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void fetchStudent(String batch) {
+    private void fetchStudent(String batch) {
         //TODO: Get students based on batch
+        absentIds = new ArrayList<>();
+        presentIds = new ArrayList<>();
         students = Student.getDummyStudents();
         myAdapter = new MyAdapter();
         cardStack.setAdapter(myAdapter);
         setupEventListener();
     }
 
-    public void setupEventListener() {
-
+    private void setupEventListener() {
 
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
@@ -143,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public class MyAdapter extends BaseAdapter {
+    private class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -196,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public class StudentViewHolder {
+    private class StudentViewHolder {
         TextView tv_name;
         TextView tv_batch;
         ImageView iv_photo;
