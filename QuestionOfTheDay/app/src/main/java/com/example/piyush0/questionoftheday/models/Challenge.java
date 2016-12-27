@@ -48,12 +48,6 @@ public class Challenge {
         this.challenge_Id = challenge_Id;
     }
 
-    //    public Challenge(ArrayList<User> usersInGame, Date date, String topic) {
-//        this.usersInGame = usersInGame;
-//        this.date = date;
-//        this.topic = topic;
-//    }
-
     public String usersChallenged() {
         String rv = "";
 

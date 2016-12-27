@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -173,7 +172,7 @@ public class SolveQuestionFragment extends Fragment {
         public void onBindViewHolder(final SolveQuestionFragment.OptionViewHolder holder, final int position) {
             holder.checkbox.setChecked(false);
             holder.textView.setText(question.getOptions().get(position).getOption_statement());
-            holder.textView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.checkbox.setChecked(!holder.checkbox.isChecked(), true);
@@ -183,6 +182,8 @@ public class SolveQuestionFragment extends Fragment {
                     } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
+
+
 
                     pass();
                 }

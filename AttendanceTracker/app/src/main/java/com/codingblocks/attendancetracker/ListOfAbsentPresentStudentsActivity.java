@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
 
-    Button submitBtn;
+    private Button submitBtn;
+    private RecyclerView presentList, absentList;
 
-    RecyclerView presentList, absentList;
-    ArrayList<Student> presentStudents, absentStudents;
+    private ArrayList<Student> presentStudents, absentStudents;
 
-    PresentAdapter presentAdapter;
-    AbsentAdapter absentAdapter;
+    private PresentAdapter presentAdapter;
+    private AbsentAdapter absentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,13 +139,13 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             holder.tv_name.setText(absentStudents.get(position).getName());
             holder.tv_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presentStudents.add(absentStudents.get(position));
-                    absentStudents.remove(absentStudents.get(position));
+                    presentStudents.add(absentStudents.get(holder.getAdapterPosition()));
+                    absentStudents.remove(absentStudents.get(holder.getAdapterPosition()));
 
                     presentAdapter.notifyDataSetChanged();
                     absentAdapter.notifyDataSetChanged();
