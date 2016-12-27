@@ -11,14 +11,24 @@ public class Question extends RealmObject{
 
     private String question;
     private RealmList<Option> options;
+    private RealmList<Topic> tags;
     private Integer id;
     private String date_added;
+
 
     public Question(String question, RealmList<Option> options, RealmList<Topic> tags, String date) {
         this.question = question;
         this.options = options;
-
         this.date_added = date;
+        this.tags = tags;
+    }
+
+    public RealmList<Topic> getTags() {
+        return tags;
+    }
+
+    public void setTags(RealmList<Topic> tags) {
+        this.tags = tags;
     }
 
     public Question() {

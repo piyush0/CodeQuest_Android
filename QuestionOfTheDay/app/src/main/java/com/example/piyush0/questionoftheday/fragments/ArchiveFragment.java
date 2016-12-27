@@ -20,7 +20,6 @@ import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.api.QuestionApi;
 import com.example.piyush0.questionoftheday.models.Question;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -65,7 +64,7 @@ public class ArchiveFragment extends Fragment {
             showDialog();
             return true;
         } else if (id == R.id.action_refersh) {
-            //TODO: refresh the questions list.
+            getDefaultQuestionsWithoutFilter();
         }
 
         return super.onOptionsItemSelected(item);
@@ -101,12 +100,11 @@ public class ArchiveFragment extends Fragment {
     }
 
     private void getDefaultQuestionsWithoutFilter() {
-        Log.d(TAG, "getDefaultQuestionsWithoutFilter: ");
-        String url = "http://10.0.3.2:6969/api/v1/questions/";
+        String url = getResources().getString(R.string.localhost_url) + "questions/";
         Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(url).build();
         QuestionApi questionApi = retrofit.create(QuestionApi.class);
 
-        questionApi.listQuestion().enqueue(new Callback<ArrayList<Question>>() {
+        questionApi.listQuestions().enqueue(new Callback<ArrayList<Question>>() {
             @Override
             public void onResponse(Call<ArrayList<Question>> call, Response<ArrayList<Question>> response) {
                 questions = response.body();
@@ -152,7 +150,7 @@ public class ArchiveFragment extends Fragment {
 
         public ArchiveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = li.inflate(R.layout.list_item_questions_archive, null);
+            View view = li.inflate(R.layout.list_item_questions_archive, parent, false);
 
             ArchiveViewHolder archiveViewHolder = new ArchiveViewHolder(view);
             archiveViewHolder.tv_question_statement = (TextView) view.findViewById(R.id.item_list_archive_question_statement);
@@ -161,7 +159,7 @@ public class ArchiveFragment extends Fragment {
             return archiveViewHolder;
         }
 
-        public void onBindViewHolder(ArchiveViewHolder holder, final int position) {
+        public void onBindViewHolder(final ArchiveViewHolder holder, final int position) {
 
 
             holder.tv_question_statement.setText(questions.get(position).getQuestion());
@@ -172,10 +170,11 @@ public class ArchiveFragment extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.
                             beginTransaction().
-                            replace(R.id.content_main, SolveQuestionFragment.newInstance(0, true, "ArchiveFragment")).
+                            replace(R.id.content_main, SolveQuestionFragment.newInstance(questions.get(holder.getAdapterPosition()).getId()
+                                    , true,
+                                    "ArchiveFragment")).
                             commit();
 
-                    //TODO: Set correct id in newInstance parameter.
                 }
             });
         }

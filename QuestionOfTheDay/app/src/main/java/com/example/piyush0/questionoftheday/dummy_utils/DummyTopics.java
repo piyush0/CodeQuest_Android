@@ -13,7 +13,6 @@ public class DummyTopics {
     public static ArrayList<String> getTopics(){
         ArrayList<String> topics = new ArrayList<>();
 
-
         topics.add("Java");
         topics.add("C++");
         topics.add("Python");

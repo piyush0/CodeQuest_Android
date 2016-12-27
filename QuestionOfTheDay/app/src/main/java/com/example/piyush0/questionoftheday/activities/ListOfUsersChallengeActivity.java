@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.api.UserApi;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyUsers;
 import com.example.piyush0.questionoftheday.models.User;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
@@ -21,6 +22,11 @@ import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
@@ -41,8 +47,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
 
         getIntentExtras();
         fetchUsers();
-        initViews();
-        setListenerToButtonChallenge();
+
     }
 
     private void setListenerToButtonChallenge() {
@@ -72,7 +77,24 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     }
 
     private void fetchUsers() {
-        users = DummyUsers.getUsers();
+        String url = getResources().getString(R.string.localhost_url) + "users/";
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(url).build() ;
+
+        UserApi userApi = retrofit.create(UserApi.class);
+
+        userApi.listUsers().enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                users = response.body();
+                initViews();
+                setListenerToButtonChallenge();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initViews() {
