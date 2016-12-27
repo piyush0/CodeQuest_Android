@@ -9,10 +9,8 @@ import java.util.ArrayList;
  * Created by piyush0 on 12/12/16.
  */
 
-
-
 public class Student  {
-    public static final String TAG = "students";
+
 
     Integer uniqueId;
     String name;
@@ -63,10 +61,10 @@ public class Student  {
 
         ArrayList<Student> students = new ArrayList<>();
 
-        for(int i = 0 ; i < 20 ; i++ ) {
+        for(int i = 0 ; i < 10 ; i++ ) {
 
             students.add(new Student(i, String.valueOf(i), i+"user", "www"));
-            Log.d(TAG, "getDummyStudents: " + students.get(students.size()-1).getName());
+
         }
 
 

@@ -17,7 +17,6 @@
         android:text="Click on student to change attendance"
         android:layout_width="match_parent"
         android:layout_weight="2"
-
         android:layout_height="0dp" />
 
     <LinearLayout

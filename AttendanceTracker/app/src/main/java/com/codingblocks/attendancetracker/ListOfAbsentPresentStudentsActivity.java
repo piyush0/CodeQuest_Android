@@ -98,7 +98,7 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = getLayoutInflater().inflate(R.layout.list_item_student_names, null);
+            View view = getLayoutInflater().inflate(R.layout.list_item_absent_present_students, null);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             myViewHolder.tv_name = (TextView) view.findViewById(R.id.list_item_student_names);
 
@@ -131,7 +131,7 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = getLayoutInflater().inflate(R.layout.list_item_student_names, null);
+            View view = getLayoutInflater().inflate(R.layout.list_item_absent_present_students, null);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             myViewHolder.tv_name = (TextView) view.findViewById(R.id.list_item_student_names);
 
