@@ -54,7 +54,8 @@ public class GameActivity extends AppCompatActivity implements SolveQuestionFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA,getWindow());
+
 
         optionsSelected = InitOptionsSelectedArray.init(optionsSelected);
 

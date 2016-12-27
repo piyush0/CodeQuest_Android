@@ -2,6 +2,8 @@ package com.example.piyush0.questionoftheday.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         /*This is done in every activity to change the font of the toolbar*/
-        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
+        FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA, getWindow());
+
 
         initToolbar();
         initDrawerAndNavigationView();

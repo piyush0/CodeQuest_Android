@@ -10,17 +10,16 @@ import com.example.piyush0.questionoftheday.activities.MainActivity;
 
 public class TimeCountingService extends Service {
 
-    long timeTaken;
-    Handler handler;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private long timeTaken;
+    private Handler handler;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public TimeCountingService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

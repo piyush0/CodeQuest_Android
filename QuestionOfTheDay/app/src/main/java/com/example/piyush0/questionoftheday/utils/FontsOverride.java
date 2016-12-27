@@ -11,6 +11,9 @@ import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.util.Log;
+import android.view.Window;
+
+import com.example.piyush0.questionoftheday.R;
 
 import java.lang.reflect.Field;
 
@@ -25,7 +28,7 @@ public class FontsOverride {
 
     public static final String FONT_PROXIMA_NOVA = "ProximaNova.ttf";
 
-    public static void applyFontForToolbarTitle(Activity act, String fontName){
+    public static void applyFontForToolbarTitle(Activity act, String fontName, Window window){
 
         ActionBar ab = act.getActionBar();
         if (ab == null) {
@@ -41,6 +44,10 @@ public class FontsOverride {
         } else {
             act.setTitle(s);
         }
+        window.setStatusBarColor(act.getResources().getColor(R.color.darkRed));
+        window.setNavigationBarColor(act.getResources().getColor(R.color.darkRed));
+
+
     }
 
     public static void setDefaultFont(Context context,
