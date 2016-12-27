@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
-import com.example.piyush0.questionoftheday.fragments.ChallengeDetailsFragment;
 import com.example.piyush0.questionoftheday.models.Question;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 import com.example.piyush0.questionoftheday.utils.TimeUtil;
@@ -116,7 +114,7 @@ public class GameResultsActivity extends AppCompatActivity {
                 case 1:
                     convertView = li.inflate(R.layout.table_row_tv, null);
                     TextView tv_question = (TextView) convertView;
-                    tv_question.setText(question.getStatement());
+                    tv_question.setText(question.getQuestion());
                     break;
 
                 case 2:
@@ -124,7 +122,7 @@ public class GameResultsActivity extends AppCompatActivity {
                     String text = "";
 
                     for (int i = 0; i < options.size(); i++) {
-                        text += question.getOptions().get(options.get(i)).getOption_statement() + "\n";
+                        text += question.getOptions().get(options.get(i)).getAnswer() + "\n";
                     }
 
                     convertView = li.inflate(R.layout.table_row_tv, null);
@@ -137,7 +135,7 @@ public class GameResultsActivity extends AppCompatActivity {
 
                     for (int i = 0; i < question.getOptions().size(); i++) {
                         if (question.getOptions().get(i).isCorrect()) {
-                            correctOptions += question.getOptions().get(i).getOption_statement() + "\n";
+                            correctOptions += question.getOptions().get(i).getAnswer() + "\n";
                         }
                     }
                     convertView = li.inflate(R.layout.table_row_tv, null);

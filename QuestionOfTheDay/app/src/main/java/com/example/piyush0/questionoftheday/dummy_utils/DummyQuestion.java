@@ -31,7 +31,7 @@ public class DummyQuestion {
         tags.add(new Topic("C++"));
 
         Question question = new Question("What is abcd?",
-                options, tags, new Date(2016, 12, 14));
+                options, tags, "2016");
 
         return question;
     }
@@ -64,10 +64,10 @@ public class DummyQuestion {
 
 
         Question question1 = new Question("What is abcde?",
-                options1, tags1, new Date(2016, 3, 15));
+                options1, tags1, "12/42/41");
 
         Question question2 = new Question("What is 2?",
-                options2, tags2, new Date(2015, 5, 24));
+                options2, tags2, "2/42/3");
 
         questions.add(question1);
         questions.add(question2);
@@ -78,7 +78,7 @@ public class DummyQuestion {
         options3.add(new Option("opb", false));
         options3.add(new Option("opc", false));
         options3.add(new Option("opd", false));
-        Question question3 = new Question("What is 3?", options3, new RealmList<Topic>(), new Date(2015, 5, 23));
+        Question question3 = new Question("What is 3?", options3, new RealmList<Topic>(), "2/4/24");
 
         questions.add(question3);
 

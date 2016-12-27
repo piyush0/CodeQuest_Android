@@ -10,6 +10,7 @@ import com.example.piyush0.questionoftheday.job.DemoSyncJob;
 import com.example.piyush0.questionoftheday.utils.FontsOverride;
 
 import io.realm.Realm;
+import retrofit2.Retrofit;
 
 /**
  * Created by piyush0 on 06/12/16.

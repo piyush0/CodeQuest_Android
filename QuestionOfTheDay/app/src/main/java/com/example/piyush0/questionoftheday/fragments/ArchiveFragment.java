@@ -17,12 +17,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
-import com.example.piyush0.questionoftheday.dummy_utils.DummyQuestion;
+import com.example.piyush0.questionoftheday.api.QuestionApi;
 import com.example.piyush0.questionoftheday.models.Question;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class ArchiveFragment extends Fragment{
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class ArchiveFragment extends Fragment {
 
     public static final String TAG = "ArchiveFrag";
 
@@ -32,6 +39,8 @@ public class ArchiveFragment extends Fragment{
     private ArrayList<Question> questions;
 
     private Context context;
+
+    private View outerView;
 
     public ArchiveFragment() {
         // Required empty public constructor
@@ -81,10 +90,10 @@ public class ArchiveFragment extends Fragment{
 
         initContext();
         setHasOptionsMenu(true); /*This sets the menu.*/
-        View view = inflater.inflate(R.layout.fragment_archive, container, false);
+        outerView = inflater.inflate(R.layout.fragment_archive, container, false);
         getDefaultQuestionsWithoutFilter();
-        initRecyclerView(view);
-        return view;
+
+        return outerView;
     }
 
     private void initContext() {
@@ -92,8 +101,26 @@ public class ArchiveFragment extends Fragment{
     }
 
     private void getDefaultQuestionsWithoutFilter() {
-        //TODO: Get Question without filter.
-        questions = DummyQuestion.getDummyQuestions();
+        Log.d(TAG, "getDefaultQuestionsWithoutFilter: ");
+        String url = "http://10.0.3.2:6969/api/v1/questions/";
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(url).build();
+        QuestionApi questionApi = retrofit.create(QuestionApi.class);
+
+        questionApi.listQuestion().enqueue(new Callback<ArrayList<Question>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Question>> call, Response<ArrayList<Question>> response) {
+                questions = response.body();
+                initRecyclerView(outerView);
+                Log.d(TAG, "onResponse: ");
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Question>> call, Throwable t) {
+                Log.d(TAG, "onFailure: ");
+                t.printStackTrace();
+            }
+        });
+
     }
 
     private void getQuestion(ArrayList<String> filter, String selectedSort) {
@@ -137,7 +164,7 @@ public class ArchiveFragment extends Fragment{
         public void onBindViewHolder(ArchiveViewHolder holder, final int position) {
 
 
-            holder.tv_question_statement.setText(questions.get(position).getStatement());
+            holder.tv_question_statement.setText(questions.get(position).getQuestion());
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -139,7 +139,7 @@ public class SolveQuestionFragment extends Fragment {
         //TODO: Get this from the id.
         int questionId = getArguments().getInt("questionId");
         question = DummyQuestion.getDummyQuestions().get(questionId);
-        tv_quesStatement.setText(question.getStatement());
+        tv_quesStatement.setText(question.getQuestion());
     }
 
     public class OptionViewHolder extends RecyclerView.ViewHolder {
@@ -171,7 +171,7 @@ public class SolveQuestionFragment extends Fragment {
         @Override
         public void onBindViewHolder(final SolveQuestionFragment.OptionViewHolder holder, final int position) {
             holder.checkbox.setChecked(false);
-            holder.textView.setText(question.getOptions().get(position).getOption_statement());
+            holder.textView.setText(question.getOptions().get(position).getAnswer());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

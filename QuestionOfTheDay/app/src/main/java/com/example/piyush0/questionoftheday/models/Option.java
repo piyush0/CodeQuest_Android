@@ -8,30 +8,30 @@ import io.realm.RealmObject;
 
 public class Option extends RealmObject {
 
-    private String option_statement;
-    private boolean isCorrect;
+    private String answer;
+    private boolean correct;
 
-    public Option(String option_statement, boolean isCorrect) {
-        this.option_statement = option_statement;
-        this.isCorrect = isCorrect;
+    public Option(String answer, boolean correct) {
+        this.answer = answer;
+        this.correct = correct;
     }
 
     public Option() {
     }
 
-    public String getOption_statement() {
-        return option_statement;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setOption_statement(String option_statement) {
-        this.option_statement = option_statement;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public boolean isCorrect() {
-        return isCorrect;
+        return correct;
     }
 
     public void setCorrect(boolean correct) {
-        isCorrect = correct;
+        this.correct = correct;
     }
 }
