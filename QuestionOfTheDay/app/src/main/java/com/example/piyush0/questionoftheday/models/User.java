@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class User {
 
-    String name;
-    String image_url;
-    String email;
-    Integer score;
-    Integer unique_id;
+    private String name;
+    private String image_url;
+    private String email;
+    private Integer score;
+    private Integer unique_id;
 
     public User(String name, Integer score, String email) {
 

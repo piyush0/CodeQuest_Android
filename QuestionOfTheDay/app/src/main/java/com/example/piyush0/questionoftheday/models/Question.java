@@ -3,19 +3,22 @@ package com.example.piyush0.questionoftheday.models;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
 /**
  * Created by piyush0 on 05/12/16.
  */
 
-public class Question {
+public class Question extends RealmObject{
 
-    String statement;
-    ArrayList<Option> options;
-    ArrayList<String> tags;
-    Integer questionID;
-    Date date_added;
+    private String statement;
+    private RealmList<Option> options;
+    private ArrayList<String> tags;
+    private Integer questionID;
+    private Date date_added;
 
-    public Question(String statement, ArrayList<Option> options, ArrayList<String> tags, Date date) {
+    public Question(String statement, RealmList<Option> options, ArrayList<String> tags, Date date) {
         this.statement = statement;
         this.options = options;
         this.tags = tags;
@@ -46,11 +49,11 @@ public class Question {
         this.statement = statement;
     }
 
-    public ArrayList<Option> getOptions() {
+    public RealmList<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(ArrayList<Option> options) {
+    public void setOptions(RealmList<Option> options) {
         this.options = options;
     }
 

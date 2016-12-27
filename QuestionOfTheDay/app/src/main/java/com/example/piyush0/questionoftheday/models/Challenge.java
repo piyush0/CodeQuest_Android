@@ -8,12 +8,12 @@ import java.util.Date;
  */
 
 public class Challenge {
-    ArrayList<User> usersInGame;
-    ArrayList<Double> score;
-    ArrayList<Boolean> statuses;
-    Date date;
-    String topic;
-    Integer challenge_Id;
+    private ArrayList<User> usersInGame;
+    private ArrayList<Double> score;
+    private ArrayList<Boolean> statuses;
+    private Date date;
+    private String topic;
+    private Integer challenge_Id;
 
     public Challenge(ArrayList<User> usersInGame, ArrayList<Double> score, ArrayList<Boolean> pendingList, Date date, String topic, Integer challenge_Id) {
         this.usersInGame = usersInGame;
