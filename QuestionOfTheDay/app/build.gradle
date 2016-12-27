@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 24
@@ -42,6 +43,8 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
+
+
 
 repositories {
     maven {

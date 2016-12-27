@@ -153,7 +153,7 @@ public class FilterDialogFragment extends DialogFragment {
         public FilterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View convertView = li.inflate(R.layout.list_item_filters, null);
+            View convertView = li.inflate(R.layout.list_item_filters, parent, false);
 
             FilterViewHolder filterViewHolder = new FilterViewHolder(convertView);
             filterViewHolder.checkBox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_filter_checkBox);
@@ -163,17 +163,17 @@ public class FilterDialogFragment extends DialogFragment {
         }
 
         @Override
-        public void onBindViewHolder(final FilterViewHolder holder, final int position) {
+        public void onBindViewHolder(final FilterViewHolder holder, int position) {
             holder.checkBox.setChecked(false);
             holder.textView.setText(topics.get(position));
-            holder.textView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.checkBox.setChecked(!holder.checkBox.isChecked(), true);
                     if (holder.checkBox.isChecked()) {
-                        filtersSelectedBoolean.set(position, true);
+                        filtersSelectedBoolean.set(holder.getAdapterPosition(), true);
                     } else {
-                        filtersSelectedBoolean.set(position, false);
+                        filtersSelectedBoolean.set(holder.getAdapterPosition(), false);
                     }
                 }
             });
