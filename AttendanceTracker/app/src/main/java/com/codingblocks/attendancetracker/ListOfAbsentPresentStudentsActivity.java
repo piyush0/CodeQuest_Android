@@ -106,13 +106,13 @@ public class ListOfAbsentPresentStudentsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             holder.tv_name.setText(presentStudents.get(position).getName());
             holder.tv_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    absentStudents.add(presentStudents.get(position));
-                    presentStudents.remove(presentStudents.get(position));
+                    absentStudents.add(presentStudents.get(holder.getAdapterPosition()));
+                    presentStudents.remove(presentStudents.get(holder.getAdapterPosition()));
 
                     presentAdapter.notifyDataSetChanged();
                     absentAdapter.notifyDataSetChanged();

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.codingblocks.attendancetracker.models.Batch;
 import com.codingblocks.attendancetracker.models.Student;
 import com.daprlabs.cardstack.SwipeDeck;
+import com.piotrek.customspinner.CustomSpinner;
 
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler handler;
 
-    private Spinner spinner;
+    private CustomSpinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +63,24 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         background = (LinearLayout) findViewById(R.id.activity_main);
-        spinner = (Spinner) findViewById(R.id.spinner_batch);
+        spinner = (CustomSpinner) findViewById(R.id.spinner_batch);
     }
 
     private void initSpinnerAdapter() {
+        final String hintText = "Choose a batch... ";
 
         ArrayList<String> batches = Batch.getDummyBatches();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, batches);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.initializeStringValues(batches.toArray(new String[batches.size()]), hintText);
 
-        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedBatch = adapterView.getSelectedItem().toString();
-                fetchStudent(selectedBatch);
+
+                if (!adapterView.getSelectedItem().toString().equals(hintText)) {
+                    selectedBatch = adapterView.getSelectedItem().toString();
+                    fetchStudent(selectedBatch);
+                }
+
 
             }
 
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchStudent(String batch) {
         //TODO: Get students based on batch
+        Log.d(TAG, "fetchStudent: ");
         absentIds = new ArrayList<>();
         presentIds = new ArrayList<>();
         students = Student.getDummyStudents();
