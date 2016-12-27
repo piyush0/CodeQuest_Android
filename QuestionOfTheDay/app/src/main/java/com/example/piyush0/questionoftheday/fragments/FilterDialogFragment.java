@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
-import com.example.piyush0.questionoftheday.dummy_utils.Topics;
+import com.example.piyush0.questionoftheday.dummy_utils.DummyTopics;
 import com.piotrek.customspinner.CustomSpinner;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     private void getTopics() {
-        topics = Topics.getTopics();
+        topics = DummyTopics.getTopics();
     }
 
     protected void setOnSubmitListener(OnSubmitListener var) {

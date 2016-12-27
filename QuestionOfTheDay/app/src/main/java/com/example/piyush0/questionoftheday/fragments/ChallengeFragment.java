@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.example.piyush0.questionoftheday.R;
 import com.example.piyush0.questionoftheday.activities.ListOfUsersChallengeActivity;
 import com.example.piyush0.questionoftheday.dummy_utils.NumberOfOptions;
-import com.example.piyush0.questionoftheday.dummy_utils.Topics;
+import com.example.piyush0.questionoftheday.dummy_utils.DummyTopics;
 import com.piotrek.customspinner.CustomSpinner;
 
 /**
@@ -78,8 +76,8 @@ public class ChallengeFragment extends Fragment {
     private void initTopicAdapter() {
 
         final String hintText = "Select a topic...";
-        topicsSpinner.initializeStringValues((Topics.getTopics().
-                        toArray(new String[Topics.getTopics().size()])),
+        topicsSpinner.initializeStringValues((DummyTopics.getTopics().
+                        toArray(new String[DummyTopics.getTopics().size()])),
                 hintText);
 
         topicsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

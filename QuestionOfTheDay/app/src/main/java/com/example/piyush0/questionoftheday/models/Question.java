@@ -14,15 +14,18 @@ public class Question extends RealmObject{
 
     private String statement;
     private RealmList<Option> options;
-    private ArrayList<String> tags;
+    private RealmList<Topic> tags;
     private Integer questionID;
     private Date date_added;
 
-    public Question(String statement, RealmList<Option> options, ArrayList<String> tags, Date date) {
+    public Question(String statement, RealmList<Option> options, RealmList<Topic> tags, Date date) {
         this.statement = statement;
         this.options = options;
         this.tags = tags;
         this.date_added = date;
+    }
+
+    public Question() {
     }
 
     public Date getDate_added() {
@@ -57,11 +60,11 @@ public class Question extends RealmObject{
         this.options = options;
     }
 
-    public ArrayList<String> getTags() {
+    public RealmList<Topic> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(RealmList<Topic> tags) {
         this.tags = tags;
     }
 }

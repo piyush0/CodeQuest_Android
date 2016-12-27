@@ -91,7 +91,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
     }
 
     private class UserViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout outerLayout;
+
         SmoothCheckBox checkBox;
         ImageView user_image;
         TextView tv_name, tv_score;
@@ -115,7 +115,6 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             userViewHolder.tv_score = (TextView) convertView.findViewById(R.id.user_list_tv_score);
             userViewHolder.user_image = (ImageView) convertView.findViewById(R.id.user_list_iv_userimage);
             userViewHolder.checkBox = (SmoothCheckBox) convertView.findViewById(R.id.list_item_user_challenge_checkbox);
-            userViewHolder.outerLayout = (LinearLayout) convertView.findViewById(R.id.list_item_user_outerLayout);
 
             return userViewHolder;
         }
@@ -129,7 +128,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
             holder.tv_score.setText(String.valueOf(user.getScore()));
             String image_url = user.getImage_url();
 
-            holder.outerLayout.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -141,11 +140,7 @@ public class ListOfUsersChallengeActivity extends AppCompatActivity {
                         usersChallenged.remove(holder.tv_name.getText().toString());
                     }
 
-                    if (usersChallenged.size() > 0) {
-                        btn_challenge.setEnabled(true);
-                    } else {
-                        btn_challenge.setEnabled(false);
-                    }
+                    btn_challenge.setEnabled(usersChallenged.size() > 0);
 
                 }
             });

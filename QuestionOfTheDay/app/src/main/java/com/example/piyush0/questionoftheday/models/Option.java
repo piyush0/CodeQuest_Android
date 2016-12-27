@@ -16,6 +16,9 @@ public class Option extends RealmObject {
         this.isCorrect = isCorrect;
     }
 
+    public Option() {
+    }
+
     public String getOption_statement() {
         return option_statement;
     }
