@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.piyush0.questionoftheday.R;
+import com.example.piyush0.questionoftheday.models.User;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyProfileFragment extends Fragment {
-
     private ImageView iv_userPic;
     private TextView tv_username, tv_name, tv_email, tv_rating;
     private SimpleRatingBar ratingBar;
