@@ -109,7 +109,6 @@ public class ArchiveFragment extends Fragment {
             public void onResponse(Call<ArrayList<Question>> call, Response<ArrayList<Question>> response) {
                 questions = response.body();
                 initRecyclerView(outerView);
-                Log.d(TAG, "onResponse: ");
             }
 
             @Override
@@ -122,10 +121,24 @@ public class ArchiveFragment extends Fragment {
     }
 
     private void getQuestion(ArrayList<String> filter, String selectedSort) {
-        //TODO: get questions from filter.
+        String url = getResources().getString(R.string.localhost_url) + "questions/";
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(url).build();
+        QuestionApi questionApi = retrofit.create(QuestionApi.class);
+        QuestionApi.Request request = new QuestionApi.Request();
+        request.setSortBy(selectedSort);
+        request.setFilters(filter);
+        questionApi.listQuestionWithFilter(request).enqueue(new Callback<ArrayList<Question>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Question>> call, Response<ArrayList<Question>> response) {
+                Log.d(TAG, "onResponse: " + response.body().get(0).getQuestion());
+            }
 
-        Log.d(TAG, "getQuestion: " + filter);
-        Log.d(TAG, "getQuestion: " + selectedSort);
+            @Override
+            public void onFailure(Call<ArrayList<Question>> call, Throwable t) {
+
+            }
+        });
+
         archiveAdapter.notifyDataSetChanged();
     }
 

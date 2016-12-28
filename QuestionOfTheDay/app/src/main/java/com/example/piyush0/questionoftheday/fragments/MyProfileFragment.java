@@ -66,8 +66,8 @@ public class MyProfileFragment extends Fragment {
         ratingBar.setStarSize(80);
         ratingBar.setNumberOfStars(5);
         ratingBar.setStepSize(0.1f);
-        ratingBar.setBorderColor(Color.BLUE);
-        ratingBar.setFillColor(Color.parseColor("#ADD8E6"));
+        ratingBar.setBorderColor(getResources().getColor(R.color.darkRed));
+        ratingBar.setFillColor(getResources().getColor(R.color.colorPrimary));
         ratingBar.setStarCornerRadius(10);
         ratingBar.setRating(calculateStars(Float.valueOf(tv_rating.getText().toString())));
 
