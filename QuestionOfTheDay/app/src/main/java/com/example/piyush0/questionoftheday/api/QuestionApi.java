@@ -21,6 +21,9 @@ public interface QuestionApi {
     @POST("archive")
     Call<ArrayList<Question>> listQuestionWithFilter(@Body Request request);
 
+    @GET("today")
+    Call<Question> getTodaysQuestion();
+
     class Request{
         ArrayList<String> filters;
         String sortBy;

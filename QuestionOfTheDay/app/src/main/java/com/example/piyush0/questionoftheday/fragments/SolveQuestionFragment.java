@@ -25,6 +25,7 @@ import com.example.piyush0.questionoftheday.utils.SimpleDividerItemDecoration;
 import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
+import io.realm.Realm;
 
 
 /**
@@ -136,8 +137,15 @@ public class SolveQuestionFragment extends Fragment {
     }
 
     private void getQuestion() {
-        int questionId = getArguments().getInt("questionId");
-        question = DummyQuestion.getDummyQuestions().get(questionId);
+        if (source.equals("SolveTodayQuestionFragment")) {
+            Realm realm = Realm.getDefaultInstance();
+            question = realm.where(Question.class).equalTo("isToday", true).findFirst();
+
+        } else {
+            int questionId = getArguments().getInt("questionId");
+            question = DummyQuestion.getDummyQuestions().get(questionId);
+        }
+
         tv_quesStatement.setText(question.getQuestion());
     }
 
@@ -181,7 +189,6 @@ public class SolveQuestionFragment extends Fragment {
                     } else {
                         optionsSelected.set(holder.getAdapterPosition(), false);
                     }
-
 
 
                     pass();

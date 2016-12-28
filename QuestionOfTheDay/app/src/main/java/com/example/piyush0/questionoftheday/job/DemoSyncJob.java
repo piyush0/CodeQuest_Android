@@ -18,11 +18,12 @@ public class DemoSyncJob extends Job {
 
     public static final String TAG = "job_demo_tag";
     private Context context;
+
     @Override
     @NonNull
     protected Result onRunJob(Params params) {
 
-        Refresh.job(context.getSharedPreferences(MainActivity.SHARED_PREF_NAME,Context.MODE_PRIVATE),context);
+        Refresh.job(context.getSharedPreferences(MainActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE), context);
 
         return Result.SUCCESS;
     }

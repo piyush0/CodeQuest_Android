@@ -14,13 +14,21 @@ public class Question extends RealmObject{
     private RealmList<Topic> tags;
     private Integer id;
     private String date_added;
-
+    private Boolean isToday;
 
     public Question(String question, RealmList<Option> options, RealmList<Topic> tags, String date) {
         this.question = question;
         this.options = options;
         this.date_added = date;
         this.tags = tags;
+    }
+
+    public Boolean getToday() {
+        return isToday;
+    }
+
+    public void setToday(Boolean today) {
+        isToday = today;
     }
 
     public RealmList<Topic> getTags() {
@@ -66,5 +74,8 @@ public class Question extends RealmObject{
         this.options = options;
     }
 
-
+    @Override
+    public String toString() {
+        return this.getQuestion() + " : " + this.isToday;
+    }
 }

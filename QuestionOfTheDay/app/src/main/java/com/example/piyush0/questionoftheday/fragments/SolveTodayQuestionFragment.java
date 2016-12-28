@@ -30,6 +30,8 @@ import com.example.piyush0.questionoftheday.utils.TimeUtil;
 import java.util.ArrayList;
 
 import cn.refactor.library.SmoothCheckBox;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +39,7 @@ import cn.refactor.library.SmoothCheckBox;
 public class SolveTodayQuestionFragment extends Fragment implements SolveQuestionFragment.OnBooleanArrayPass {
 
     public static final String SHARED_PREF_NAME = "TodaySolved";
-
+    public static final String TAG = "SolveToday";
 
     private Context context;
 
@@ -146,12 +148,6 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
     private void initViews(View view) {
 
-        getChildFragmentManager().
-                beginTransaction().
-                replace(R.id.fragment_solve_today_frag_container, SolveQuestionFragment.newInstance(0, false, "SolveTodayQuestionFragment")).
-                commit();
-
-
         tv_clock_minutes = (TextView) view.findViewById(R.id.fragment_solve_today_question_minute);
         tv_clock_seconds = (TextView) view.findViewById(R.id.fragment_solve_today_question_second);
         tv_attemptsRemaining = (TextView) view.findViewById(R.id.fragment_solve_today_question_attempts);
@@ -159,13 +155,19 @@ public class SolveTodayQuestionFragment extends Fragment implements SolveQuestio
 
         initSharedPrefsOnCreate();
 
-        //TODO: Get appropriate question
 
     }
 
     private void getTodaysQuestion() {
+        Realm realm = Realm.getDefaultInstance();
+        Log.d(TAG, "getTodaysQuestion: " + realm.where(Question.class).findAll());
+        todaysQuestion = realm.where(Question.class).equalTo("isToday", true).findFirst();
 
-        todaysQuestion = DummyQuestion.getDummyQuestion();
+        getChildFragmentManager().
+                beginTransaction().
+                replace(R.id.fragment_solve_today_frag_container,
+                        SolveQuestionFragment.newInstance(todaysQuestion.getId(), false, "SolveTodayQuestionFragment")).
+                commit();
     }
 
     private void initSharedPrefsOnCreate() {
